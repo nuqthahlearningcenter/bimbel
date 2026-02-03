@@ -1,0 +1,278 @@
+/* =========================================================
+   DESKTOP ONLY — CLEAN POLISH PACK (SAFE)
+   - Tidak mengubah tampilan mobile sama sekali
+   - Semua selector dikunci: (min-width:769px) + body.is-desktop
+   - Load PALING AKHIR setelah semua CSS lain
+   ========================================================= */
+
+@media (min-width: 769px) {
+    body.is-desktop {
+        /* ---------- Desktop tokens (opsional; tidak ganggu mobile) ---------- */
+        --desk-container: 1160px;
+        --desk-gap: 16px;
+        --desk-radius: 22px;
+        --desk-card-pad: 18px;
+        --desk-shadow: var(--shadow-md);
+    }
+
+    /* ========== 0) Guard: Pastikan elemen mobile tidak “nyasar” di desktop ========== */
+    body.is-desktop .m-topbar,
+    body.is-desktop .m-bottom-nav {
+        display: none !important;
+    }
+
+    /* ========== 1) Container & spacing desktop biar konsisten ========== */
+    body.is-desktop .container {
+        width: min(var(--desk-container), calc(100% - 48px)) !important;
+    }
+
+    body.is-desktop .section {
+        padding: 18px 0 28px !important;
+    }
+
+    /* Page shell: di desktop biar stabil & konsisten */
+    body.is-desktop #pageShell,
+    body.is-desktop .page-shell {
+        padding-bottom: 28px !important;
+    }
+
+    /* ========== 2) Top nav: rapikan alignment & “terlalu melebar” ========== */
+    body.is-desktop .top-nav {
+        left: 0;
+        right: 0;
+    }
+
+    body.is-desktop .top-nav .nav-inner {
+        max-width: var(--desk-container);
+        margin: 0 auto;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    body.is-desktop .brand {
+        min-width: 240px;
+    }
+
+    /* ========== 3) Home layout: hero & cards lebih rapi ========== */
+    body.is-desktop .hero {
+        gap: var(--desk-gap) !important;
+        align-items: stretch !important;
+    }
+
+    /* card “hero” dan “teacher” tinggi konsisten */
+    body.is-desktop .hero-card,
+    body.is-desktop .teacher-card {
+        border-radius: var(--radius-xl);
+    }
+
+    /* CTA hero: desktop jangan terlalu wrap acak */
+    body.is-desktop .hero-cta {
+        display: flex !important;
+        gap: 10px !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+    }
+
+    body.is-desktop .hero-cta a {
+        flex: 0 0 auto !important;
+        min-width: 160px;
+        justify-content: center;
+    }
+
+    /* Quick filter: lebih “desktop tidy” */
+    body.is-desktop .quick-filter {
+        padding: 16px !important;
+        border-radius: 20px !important;
+    }
+
+    body.is-desktop .mini-row {
+        gap: 10px !important;
+    }
+
+    /* ========== 4) Grid halaman Explore/Offline/Intensif: kartu & panel rapih ========== */
+    body.is-desktop .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 16px !important;
+    }
+
+    body.is-desktop .class-card {
+        border-radius: 22px !important;
+        padding: var(--desk-card-pad) !important;
+    }
+
+    /* sticky header di desktop biar tidak “nabrak” top-nav */
+    body.is-desktop .explore-sticky {
+        top: var(--shell-top) !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+
+    /* ========== 5) Learn layout: sidebar viewer lebih enak di desktop ========== */
+    body.is-desktop .learn-layout {
+        grid-template-columns: 360px 1fr !important;
+        gap: 16px !important;
+    }
+
+    body.is-desktop .lesson-list {
+        max-height: calc(100dvh - 240px) !important;
+        border-radius: 22px !important;
+    }
+
+    body.is-desktop .viewer {
+        min-height: 520px !important;
+        border-radius: 26px !important;
+    }
+
+    body.is-desktop .viewer-body iframe {
+        height: 520px !important;
+    }
+
+    /* ========== 6) Marketplace desktop: grid rapi & konsisten ========== */
+    body.is-desktop .product-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 16px !important;
+    }
+
+    body.is-desktop .product-card {
+        border-radius: 20px !important;
+    }
+
+    body.is-desktop .product-cover {
+        height: 170px !important;
+    }
+
+    /* ========== 7) News desktop: biar seimbang ========== */
+    body.is-desktop .news-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 16px !important;
+    }
+
+    body.is-desktop .news-card {
+        border-radius: 20px !important;
+    }
+
+    /* ========== 8) Modal di desktop: proporsi lebih nyaman ========== */
+    body.is-desktop .modal {
+        width: min(980px, 96%) !important;
+        border-radius: 28px !important;
+    }
+
+    body.is-desktop .modal-body {
+        gap: 16px !important;
+    }
+
+    body.is-desktop .preview {
+        border-radius: 24px !important;
+        min-height: 320px !important;
+    }
+
+    /* ========== 9) Teach page desktop: grid 2 kolom tetap rapi ========== */
+    body.is-desktop .route[data-route="teach"] .teach-grid {
+        gap: 14px !important;
+    }
+
+    /* ========== 10) Form & panel umum: tipografi desktop lebih lega ========== */
+    body.is-desktop .panel {
+        border-radius: var(--radius-xl) !important;
+    }
+
+    body.is-desktop .panel-bd {
+        padding: 16px !important;
+    }
+
+    body.is-desktop .input,
+    body.is-desktop .select {
+        border-radius: 16px !important;
+    }
+
+    /* ========== 11) Safety: Pastikan promo slider mobile tidak muncul di desktop ========== */
+    body.is-desktop .home-promo-slider {
+        display: none !important;
+    }
+}
+
+
+/* Desktop only: sembunyikan pill "Nuqthah Learning Center" */
+@media (min-width: 769px) {
+    #mobileTopTitle {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* DESKTOP ONLY — card statistik Al-Azhar */
+@media (min-width: 1024px) {
+
+    body.is-desktop .desk-stat-card {
+        border-radius: 22px;
+        padding: 16px;
+        box-shadow: var(--shadow-md);
+        background: var(--card);
+        border: 1px solid rgba(0, 0, 0, .06);
+    }
+
+    body.is-desktop .desk-stat-title {
+        font-weight: 900;
+        font-size: 14px;
+        margin: 0 0 10px;
+    }
+
+    body.is-desktop .desk-stat-row {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+    }
+
+    body.is-desktop .desk-stat-value {
+        font-size: 34px;
+        font-weight: 1000;
+        letter-spacing: -0.6px;
+        line-height: 1;
+    }
+
+    body.is-desktop .desk-stat-sub {
+        font-size: 12px;
+        opacity: .75;
+        font-weight: 800;
+    }
+
+    body.is-desktop .desk-stat-bar {
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, .08);
+        overflow: hidden;
+        margin-top: 12px;
+    }
+
+    body.is-desktop .desk-stat-bar>i {
+        display: block;
+        height: 100%;
+        width: 0%;
+        background: var(--primary);
+    }
+
+    body.is-desktop .desk-stat-meta {
+        margin-top: 10px;
+        font-size: 12px;
+        opacity: .75;
+    }
+
+    /* Letakkan card ini di home-grid (desktop) */
+    body.is-desktop .route[data-route="home"] .home-grid [data-area="alazharStat"] {
+        grid-area: alazharStat;
+    }
+}

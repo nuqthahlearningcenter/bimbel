@@ -1,0 +1,221 @@
+/* assets/teach.css
+   Styles KHUSUS halaman pendaftaran pengajar (route #teach).
+   Semua selector di-scope ke [data-route="teach"] supaya tidak mengganggu halaman lain.
+*/
+.route[data-route="teach"] .teach-grid {
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width:720px) {
+  .route[data-route="teach"] .teach-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.route[data-route="teach"] .teach-card {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface-solid) 78%, transparent);
+  border-radius: 18px;
+  padding: 14px 14px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform .18s var(--ease), box-shadow .18s var(--ease);
+  display: grid;
+  gap: 10px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.route[data-route="teach"] .teach-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.route[data-route="teach"] .teach-card:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.route[data-route="teach"] .teach-card:focus {
+  outline: none;
+  box-shadow: var(--shadow-sm), var(--ring);
+}
+
+.route[data-route="teach"] .teach-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.route[data-route="teach"] .teach-title {
+  font-size: 14px;
+  font-weight: 1000;
+  letter-spacing: -.2px;
+  line-height: 1.15;
+}
+
+.route[data-route="teach"] .teach-desc {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.route[data-route="teach"] .teach-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.route[data-route="teach"] .teach-pill {
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface-solid) 70%, transparent);
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-weight: 950;
+  color: color-mix(in srgb, var(--text) 86%, var(--muted));
+}
+
+.route[data-route="teach"] .teach-badge {
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-weight: 1000;
+  letter-spacing: .2px;
+  white-space: nowrap;
+}
+
+.route[data-route="teach"] .teach-badge.needed {
+  color: white;
+  background: linear-gradient(135deg, var(--primary), var(--primary2));
+  box-shadow: var(--shadow-glow);
+  border: none;
+}
+
+.route[data-route="teach"] .teach-badge.filled {
+  color: color-mix(in srgb, var(--text) 82%, var(--muted));
+  background: color-mix(in srgb, var(--surface-solid) 80%, transparent);
+  border: 1px solid var(--border);
+}
+
+/* Form spacing (tetap scoped) */
+.route[data-route="teach"] #teachFormPanel .input {
+  width: 100%;
+}
+
+/* ===== Improve "Kualifikasi Umum" & "Alur Pendaftaran" panels (rapi) =====
+   Target: box 2 kolom di halaman #teach (pakai .grid-2 + .panel dari style.css)
+*/
+.route[data-route="teach"] .grid-2 {
+  gap: 12px;
+  align-items: stretch;
+}
+
+.route[data-route="teach"] .grid-2>.panel {
+  height: 100%;
+}
+
+/* Konten dalam panel lebih konsisten */
+.route[data-route="teach"] .panel-bd {
+  padding: 16px;
+  gap: 10px;
+}
+
+/* Rapikan judul di dalam panel (h1/h2/h3/strong) */
+.route[data-route="teach"] .panel-bd h1,
+.route[data-route="teach"] .panel-bd h2,
+.route[data-route="teach"] .panel-bd h3,
+.route[data-route="teach"] .panel-bd h4 {
+  margin: 0 0 6px;
+  line-height: 1.2;
+}
+
+/* Rapikan paragraf & list agar tidak "mepet" / tidak berantakan */
+.route[data-route="teach"] .panel-bd p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.route[data-route="teach"] .panel-bd ul,
+.route[data-route="teach"] .panel-bd ol {
+  margin: 0;
+  padding-left: 18px;
+  /* indent rapi */
+  display: grid;
+  gap: 8px;
+  /* jarak antar item */
+}
+
+.route[data-route="teach"] .panel-bd li {
+  line-height: 1.45;
+}
+
+/* Jika ada teks panjang, biar tidak terlalu padat */
+.route[data-route="teach"] .panel-bd li p {
+  margin-top: 4px;
+}
+
+
+
+
+/* =========================
+   FIX: Teach page text color in dark mode
+   ========================= */
+
+/* Pastikan button card mewarisi warna teks tema */
+.route[data-route="teach"] .teach-card {
+  color: var(--text);
+  -webkit-text-fill-color: var(--text);
+  /* bantu iOS/Safari */
+}
+
+/* Pastikan semua teks di dalam kartu ikut tema */
+.route[data-route="teach"] .teach-card .teach-title {
+  color: var(--text);
+}
+
+.route[data-route="teach"] .teach-card .teach-meta {
+  color: var(--muted);
+}
+
+.route[data-route="teach"] .teach-card .teach-hint {
+  color: var(--muted);
+}
+
+/* (opsional) titik pemisah meta kalau ada */
+.route[data-route="teach"] .teach-card .teach-meta .dot {
+  background: color-mix(in srgb, var(--muted) 70%, transparent);
+}
+
+/* Pertegas kontras saat dark mode (tanpa menghilangkan elemen) */
+body.dark .route[data-route="teach"] .teach-card {
+  background: rgba(15, 23, 42, .72);
+  border-color: rgba(255, 255, 255, .12);
+}
+
+
+
+/* ==========================================
+   Teach page: Kualifikasi & Alur jadi vertikal
+   (1 atas, 1 bawah di HP)
+   ========================================== */
+
+@media (max-width: 600px) {
+
+  /* container dua kotak */
+  .route[data-route="teach"] .grid-2 {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+  }
+
+  /* masing-masing kotak full width */
+  .route[data-route="teach"] .grid-2>* {
+    width: 100%;
+  }
+}

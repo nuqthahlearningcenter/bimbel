@@ -1,0 +1,70 @@
+/* =========================================================
+   FIX KOMBINASI (tanpa merusak halaman lain):
+   1) HOME: jarak antara topbar dan foto slider tidak menempel lagi
+      (meng-override patch lama yang memberi margin-top negatif).
+   2) DESKTOP: m-topbar & m-bottom-nav disembunyikan (mobile-only).
+   3) Tombol tengah "Bimbel": pakai gambar assets/images/bimbel.png
+      dan pastikan teks/ikon bawaan tidak muncul/nyempil.
+
+   Cara pakai:
+   - Simpan file ini sebagai: nav-home-bimbel-fix.css
+   - Import SETELAH style.css (dan setelah CSS lain jika ada):
+     <link rel=\"stylesheet\" href=\"style.css\">
+     <link rel=\"stylesheet\" href=\"nav-home-bimbel-fix.css\">
+   ========================================================= */
+
+/* 2) Mobile nav jangan muncul di desktop */
+.m-topbar,
+.m-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  /* aktifkan lagi di mobile */
+  .m-topbar {
+    display: block;
+  }
+
+  .m-bottom-nav {
+    display: grid;
+  }
+
+  /* 1) HOME: batalkan patch lama yang 'naikkan' slider (margin negatif) */
+  .route[data-route="home"] .home-promo-slider {
+    margin-top: 18px !important;
+    /* atur sesuai garis merah */
+  }
+
+  .route[data-route="home"] .home-promo-slider+.hero-wrap {
+    margin-top: 0 !important;
+  }
+
+  /* 3) Tombol tengah: pakai gambar */
+  .m-bottom-nav .m-nav-mid {
+    background-image: url("assets/images/bimbel.png") !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 64px auto !important;
+  }
+
+  /* jika di HTML sudah ada <img class="m-mid-logo">, rapikan */
+  .m-bottom-nav .m-nav-mid .m-mid-logo {
+    width: 50px !important;
+    height: auto !important;
+    display: block !important;
+  }
+
+  /* pastikan teks/ikon bawaan tidak muncul & tidak nyempil */
+  .m-bottom-nav .m-nav-mid .m-mid-ico,
+  .m-bottom-nav .m-nav-mid .m-mid-txt {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+
+  .m-bottom-nav .m-nav-mid .m-mid-txt {
+    font-size: 0 !important;
+    line-height: 0 !important;
+  }
+}

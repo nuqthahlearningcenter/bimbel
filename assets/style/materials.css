@@ -1,0 +1,157 @@
+/* assets/materials.css
+   Styles KHUSUS untuk halaman Materi:
+   - Online  : route #explore
+   - Offline : route #offline
+   - Intensif: route #intensif
+   + tombol 3 pilihan di Home (kotak biru pada foto)
+
+   Semua selector dibuat scoped agar tidak konflik.
+*/
+
+/* === HOME: 3 tombol (Online/Offline/Intensif) === */
+.route[data-route="home"] .home-material-modes {
+  margin-top: 12px;
+}
+
+.route[data-route="home"] .home-material-modes .mode-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.route[data-route="home"] .home-material-modes .mode-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 10px;
+  border-radius: 16px;
+  font-weight: 950;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.route[data-route="home"] .home-material-modes .mode-btn .ico {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.route[data-route="home"] .home-material-modes .mode-btn .lbl {
+  font-size: 12px;
+  line-height: 1.1;
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  .route[data-route="home"] .home-material-modes .mode-actions {
+    gap: 10px;
+  }
+
+  .route[data-route="home"] .home-material-modes .mode-btn {
+    padding: 11px 8px;
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .route[data-route="home"] .home-material-modes .mode-btn .lbl {
+    font-size: 11px;
+  }
+}
+
+/* === MATERI: scope sticky header supaya konsisten untuk 3 halaman === */
+.route[data-route="explore"] .explore-sticky,
+.route[data-route="offline"] .explore-sticky,
+.route[data-route="intensif"] .explore-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  background: transparent;
+}
+
+/* Perbaiki spacing mini chips untuk 3 halaman (tanpa mengubah style global) */
+.route[data-route="explore"] #categoryChips,
+.route[data-route="offline"] #categoryChipsOffline,
+.route[data-route="intensif"] #categoryChipsIntensif {
+  padding-bottom: 2px;
+}
+
+
+
+/* ===== Filter Cepat: Mode Buttons ===== */
+.home-quick-modes {
+  display: flex;
+  gap: 10px;
+  margin: 12px 0 14px;
+}
+
+.home-quick-modes .mode-btn {
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  background: var(--surface-solid);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+/* aktif */
+.home-quick-modes .mode-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary2));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: var(--shadow-sm);
+}
+
+
+
+
+/* ===== Filter Cepat: Category Chips ===== */
+.home-quick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.home-quick-chips .chip {
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all .15s ease;
+}
+
+.home-quick-chips .chip:hover {
+  background: var(--surface-solid);
+}
+
+.home-quick-chips .chip.active {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-color: transparent;
+}
+
+
+
+/* override tombol mode yang aktif (yang biru) */
+.route[data-route="home"] .home-quick-modes .mode-btn.active,
+.route[data-route="home"] .home-material-modes .mode-btn.active {
+  background: #f4a417 !important;
+  /* atau gradient versi kamu */
+  border-color: rgb(146 71 0) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+/* kalau tombol non-aktif juga mau dipaksa */
+.route[data-route="home"] .home-quick-modes .mode-btn,
+.route[data-route="home"] .home-material-modes .mode-btn {
+  background: #f4a417 !important;
+  border-color: rgb(146 71 0) !important;
+  color: #fff !important;
+}

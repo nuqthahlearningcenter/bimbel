@@ -1,0 +1,41 @@
+/* =====================================================
+   NO-TOPNAV GAP FIX (NON-HOME)
+   Tujuan:
+   - Topbar (m-topbar) & top-nav hanya tampil di HOME
+   - Halaman selain HOME menempel ke atas (tanpa jarak kosong)
+   Catatan:
+   - app.js men-set: <body data-route="...">
+   - File ini harus di-load paling akhir (setelah overrides.css)
+===================================================== */
+
+/* NON-HOME: hilangkan ruang yang biasanya disediakan untuk header fixed */
+body[data-route]:not([data-route="home"]) {
+  --shell-top: 0px !important;
+  /* dipakai oleh .page-shell */
+  --nav-top: 0px !important;
+  --nav-height: 0px !important;
+}
+
+/* NON-HOME: pastikan shell tidak punya padding-top sisa */
+body[data-route]:not([data-route="home"]) .page-shell {
+  padding-top: 0 !important;
+}
+
+/* NON-HOME: sembunyikan top navigations */
+body[data-route]:not([data-route="home"]) #mTopbar,
+body[data-route]:not([data-route="home"]) .top-nav {
+  display: none !important;
+}
+
+/* NON-HOME: rapatkan section pertama */
+body[data-route]:not([data-route="home"]) .route.active>.section:first-child {
+  padding-top: 0 !important;
+}
+
+/* Sticky header di halaman Explore/Offline/Intensif: tempel ke atas */
+body[data-route]:not([data-route="home"]) .explore-sticky {
+  top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* HOME: biarkan normal (tidak override apa pun) */

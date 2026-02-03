@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+  <meta content="light dark" name="color-scheme" />
+  <title>Masisir — Nuqthah Learn</title>
+  <link href="assets/style/style.css" rel="stylesheet" />
+  <link href="assets/style/jago-warna.css" rel="stylesheet" />
+  <link href="assets/style/bimbel-midnav-image.css" rel="stylesheet" />
+  <link href="assets/style/home-top-gap.css" rel="stylesheet">
+  <link href="assets/style/teach.css" rel="stylesheet" />
+  <!-- Styles khusus halaman Materi (Online/Offline/Intensif) -->
+  <link href="assets/style/materials.css" rel="stylesheet" />
+  <link href="assets/style/desktop-only.css" rel="stylesheet" />
+  <link href="assets/style/overrides.css" rel="stylesheet" />
+  <link href="./manifest.webmanifest" rel="manifest">
+  <meta content="#2563eb" name="theme-color" />
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+  <meta content="default" name="apple-mobile-web-app-status-bar-style" />
+  <link href="./assets/icon/icon-192.png" rel="apple-touch-icon" />
+  <link href="assets/style/subjects-pages.css" rel="stylesheet" />
+  </link>
+  </link>
+  <link href="assets/style/no-topnav-gap.css" rel="stylesheet" />
+  <link href="assets/style/packages.css" rel="stylesheet" />
+</head>
+
+<body>
+  <!---
+  <!-- Splash -->
+  <div aria-hidden="true" id="splash">
+    <div class="splash-inner">
+      <div class="splash-logo"><span class="logo-mark">N</span></div>
+      <div class="splash-text">NUQTHAH</div>
+    </div>
+  </div>
+  <div class="mobile-top-title" id="mobileTopTitle">Nuqthah Learning Center</div>
+  <!-- PATCH: LIVIN NAV START -->
+  <!-- MOBILE TOPBAR (Livin-like) -->
+  <header aria-label="Mobile top bar" class="m-topbar" id="mTopbar">
+    <div class="m-topbar-inner">
+      <button aria-label="Profil / Home" class="m-prof" data-go="home" type="button">
+        <span class="m-ava">NH</span>
+        <span class="m-prof-txt">
+          <span class="m-prof-name">NUQTHAH</span>
+          <span class="m-prof-sub">learning center</span>
+        </span>
+      </button>
+      <div class="m-topbar-actions">
+        <!-- YouTube -->
+        <a aria-label="YouTube" class="m-ic" href="https://youtube.com/@malakahproject?si=OwHFEiYDYSlSgAl0"
+          rel="noopener" target="_blank">
+          <img alt="YouTube" class="m-ic-img" src="assets/icon/yt.png" />
+        </a>
+        <!-- Instagram -->
+        <a aria-label="Instagram" class="m-ic" href="https://www.instagram.com/markaznuqthah_?igsh=MTBiMmo3MXE5MDdsZA=="
+          rel="noopener" target="_blank">
+          <img alt="Instagram" class="m-ic-img" src="assets/icon/ig.png" />
+        </a>
+        <!-- Whatsapp -->
+        <a aria-label="Instagram" class="m-ic" href="https://chat.whatsapp.com/DvjPkbyggHx8zKYu3sJjq2?mode=gi_t"
+          rel="noopener" target="_blank">
+          <img alt="Whatsapp" class="m-ic-img" src="assets/icon/wa.png" />
+        </a>
+      </div>
+    </div>
+  </header>
+  <!-- MOBILE BOTTOM NAV (Livin-like) -->
+  <nav aria-label="Mobile bottom navigation" class="m-bottom-nav" id="mBottomNav">
+    <a aria-label="Beranda" class="m-nav-item" data-route="home" href="#home">
+      <span class="m-ico">🏠</span><span class="m-txt">Beranda</span>
+    </a>
+    <a aria-label="Info" class="m-nav-item" data-route="news" href="#news">
+      <span class="m-ico">📰</span><span class="m-txt">Info</span>
+    </a>
+    <!--tombol tengah besar: BIMBEL-->
+    <a aria-label="" class="m-nav-mid" data-route="explore" href="#explore">
+      <img alt="" class="m-mid-logo" src="assets/images/bimbel2.png" />
+      <!--
+      <span class="m-mid-ico" aria-hidden="true">🎯</span>
+      <span class="m-mid-txt" aria-hidden="true">Bimbel</span>-->
+    </a>
+    <a aria-label="Marketplace" class="m-nav-item" data-route="market" href="#market">
+      <span class="m-ico">🛒</span><span class="m-txt">Market</span>
+    </a>
+    <a aria-label="Pengaturan" class="m-nav-item" data-route="settings" href="#settings">
+      <span class="m-ico">⚙️</span><span class="m-txt">Setting</span>
+    </a>
+  </nav>
+  <!-- PATCH: LIVIN NAV END -->
+  <div aria-hidden="true" class="grain"></div>
+  <div class="app" id="app">
+    <!-- Top Nav (GLOBAL) -->
+    <header class="top-nav" role="banner">
+      <div class="container">
+        <div class="nav-inner">
+          <div aria-label="Kembali ke Beranda" class="brand" data-go="home" role="button" tabindex="0">
+            <div class="brand-mark">N</div>
+            <div class="brand-text">
+              <strong>Home</strong>
+              <span>SIAP • belajar lebih mudah dan fokus.</span>
+            </div>
+          </div>
+          <nav aria-label="Navigasi" class="nav-actions">
+            <button aria-label="Cari Materi" class="btn btn-soft" data-go="explore" type="button">
+              <span class="ico">🔎</span>
+              <span class="lbl">Cari Materi</span>
+              <span class="kbd">E</span>
+            </button>
+            <button aria-label="Tips Fokus" class="btn btn-soft" data-go="tips" type="button">
+              <span class="ico">🎯</span>
+              <span class="lbl">Tips Fokus</span>
+              <span class="kbd">T</span>
+            </button>
+            <button aria-label="Pengaturan" class="btn btn-icon" data-go="settings" title="Pengaturan" type="button">
+              ⚙️
+            </button>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <main class="page-shell" id="pageShell">
+      <!-- HOME -->
+      <section class="route" data-route="home" id="route-home">
+        <!-- HERO TEACHER MARQUEE (3 rows, infinite) -->
+        <section aria-label="Pengajar" class="teacher-marquee" id="teacherMarquee">
+          <div class="container">
+            <div class="tm-shell">
+              <div class="tm-row" data-row="1">
+                <div class="tm-track">
+                  <!-- Row 1: 10 cards (duplicated in markup for seamless loop) -->
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ahmad - Pengajar Fikih">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Ahmad" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Ahmad</div>
+                      <div class="tm-role">Pengajar Fikih</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Bilal - Pengajar Tauhid">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Bilal" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Bilal</div>
+                      <div class="tm-role">Pengajar Tauhid</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Hasan - Pengajar Bimbel">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Hasan" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Hasan</div>
+                      <div class="tm-role">Pengajar Bimbel</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Yusuf - Pengajar Nahwu">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Yusuf" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Yusuf</div>
+                      <div class="tm-role">Pengajar Nahwu</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ali - Pengajar Sharaf">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Ali" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Ali</div>
+                      <div class="tm-role">Pengajar Sharaf</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Umar - Pengajar Balaghah">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Umar" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Umar</div>
+                      <div class="tm-role">Pengajar Balaghah</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Zaid - Pengajar Mantiq">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Zaid" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Zaid</div>
+                      <div class="tm-role">Pengajar Mantiq</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Musa - Pengajar Adabul Bahs">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Musa" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Musa</div>
+                      <div class="tm-role">Pengajar Adabul Bahs</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Salman - Pengajar Bahasa">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Salman" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Salman</div>
+                      <div class="tm-role">Pengajar Bahasa</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Khalid - Pengajar Akademik">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Khalid" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Khalid</div>
+                      <div class="tm-role">Pengajar Akademik</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ahmad - Pengajar Fikih">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Ahmad" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Ahmad</div>
+                      <div class="tm-role">Pengajar Fikih</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Bilal - Pengajar Tauhid">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Bilal" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Bilal</div>
+                      <div class="tm-role">Pengajar Tauhid</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Hasan - Pengajar Bimbel">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Hasan" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Hasan</div>
+                      <div class="tm-role">Pengajar Bimbel</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Yusuf - Pengajar Nahwu">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Yusuf" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Yusuf</div>
+                      <div class="tm-role">Pengajar Nahwu</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ali - Pengajar Sharaf">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Ali" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Ali</div>
+                      <div class="tm-role">Pengajar Sharaf</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Umar - Pengajar Balaghah">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Umar" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Umar</div>
+                      <div class="tm-role">Pengajar Balaghah</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Zaid - Pengajar Mantiq">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Zaid" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Zaid</div>
+                      <div class="tm-role">Pengajar Mantiq</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Musa - Pengajar Adabul Bahs">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Musa" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Musa</div>
+                      <div class="tm-role">Pengajar Adabul Bahs</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Salman - Pengajar Bahasa">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Salman" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Salman</div>
+                      <div class="tm-role">Pengajar Bahasa</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Khalid - Pengajar Akademik">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Khalid" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Khalid</div>
+                      <div class="tm-role">Pengajar Akademik</div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+              <div class="tm-row" data-row="2">
+                <div class="tm-track">
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Yusuf - Pengajar Nahwu">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Yusuf" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Yusuf</div>
+                      <div class="tm-role">Pengajar Nahwu</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ali - Pengajar Sharaf">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Ali" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Ali</div>
+                      <div class="tm-role">Pengajar Sharaf</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Umar - Pengajar Balaghah">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Umar" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Umar</div>
+                      <div class="tm-role">Pengajar Balaghah</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Zaid - Pengajar Mantiq">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Zaid" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Zaid</div>
+                      <div class="tm-role">Pengajar Mantiq</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Musa - Pengajar Adabul Bahs">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Musa" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Musa</div>
+                      <div class="tm-role">Pengajar Adabul Bahs</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Salman - Pengajar Bahasa">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Salman" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Salman</div>
+                      <div class="tm-role">Pengajar Bahasa</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Khalid - Pengajar Akademik">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Khalid" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Khalid</div>
+                      <div class="tm-role">Pengajar Akademik</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ahmad - Pengajar Fikih">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Ahmad" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Ahmad</div>
+                      <div class="tm-role">Pengajar Fikih</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Bilal - Pengajar Tauhid">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Bilal" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Bilal</div>
+                      <div class="tm-role">Pengajar Tauhid</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Hasan - Pengajar Bimbel">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Hasan" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Hasan</div>
+                      <div class="tm-role">Pengajar Bimbel</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Yusuf - Pengajar Nahwu">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Yusuf" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Yusuf</div>
+                      <div class="tm-role">Pengajar Nahwu</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ali - Pengajar Sharaf">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Ali" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Ali</div>
+                      <div class="tm-role">Pengajar Sharaf</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Umar - Pengajar Balaghah">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Umar" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Umar</div>
+                      <div class="tm-role">Pengajar Balaghah</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Zaid - Pengajar Mantiq">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Zaid" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Zaid</div>
+                      <div class="tm-role">Pengajar Mantiq</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Musa - Pengajar Adabul Bahs">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Musa" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Musa</div>
+                      <div class="tm-role">Pengajar Adabul Bahs</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Salman - Pengajar Bahasa">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Salman" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Salman</div>
+                      <div class="tm-role">Pengajar Bahasa</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Khalid - Pengajar Akademik">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Khalid" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Khalid</div>
+                      <div class="tm-role">Pengajar Akademik</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ahmad - Pengajar Fikih">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Ahmad" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Ahmad</div>
+                      <div class="tm-role">Pengajar Fikih</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Bilal - Pengajar Tauhid">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Bilal" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Bilal</div>
+                      <div class="tm-role">Pengajar Tauhid</div>
+                    </div>
+                  </article>
+                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Hasan - Pengajar Bimbel">
+                    <div class="tm-avatar">
+                      <img src="assets/images/nu.png" alt="Ust. Hasan" loading="lazy" decoding="async"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
+                      <span class="tm-fallback" aria-hidden="true">U</span>
+                    </div>
+                    <div class="tm-text">
+                      <div class="tm-name">Ust. Hasan</div>
+                      <div class="tm-role">Pengajar Bimbel</div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </section>
+
+        <!-- 3 tombol pilihan materi (Online / Offline / Intensif)
+             Lokasi: tepat di bawah slider (sesuai kotak biru di foto)
+        -->
+        <!---(Online / Offline / Intensif)
+        Lokasi: tepat di bawah slider (sesuai kotak biru di foto)
+        -->
+        <section aria-label="Pilih jenis bimbel" class="home-material-modes">
+          <div class="container">
+            <div class="mode-actions">
+              <a aria-label="Bimbel Online" class="btn btn-soft mode-btn" data-route="explore" href="#explore">
+                <span class="ico">🌐</span>
+                <span class="lbl">Bimbel Online</span>
+              </a>
+              <a aria-label="Bimbel Offline" class="btn btn-soft mode-btn" data-route="offline" href="#offline">
+                <span class="ico">🏫</span>
+                <span class="lbl">Bimbel Offline</span>
+              </a>
+              <a aria-label="Pembelajaran Intensif" class="btn btn-soft mode-btn" data-route="intensif"
+                href="#intensif">
+                <span class="ico">⚡</span>
+                <span class="lbl">Pembelajaran Intensif</span>
+              </a>
+            </div>
+          </div>
+        </section>
+        <section class="hero-wrap">
+          <div class="container">
+            <div class="home-grid">
+              <!-- HERO / PLATFORM CARD -->
+              <div class="card hero-card" data-area="hero">
+                <div class="hero-top">
+                  <div class="hero-copy">
+                    <!----
+                    <h1 class="hero-title">Platform pembelajaran MASISIR.</h1>
+                    <p class="hero-sub">
+                      Disini MASISIR akan lebih mudah menemukan manteri perkulian atau kajian internsif bersama
+                      <b>Nuqthah Learning Center</Center></b>.
+                    </p>
+                    --->
+                  </div>
+                </div>
+                <!-- QUICK FILTER -->
+                <div class="quick-filter">
+                  <div class="qf-head">
+                    <div class="qf-title"><span class="emoji"></span> ruang belajar</div>
+                    <!---<div class="qf-sub">Tap kategori untuk langsung memfilter materi di halaman “Cari Materi”.</div>---->
+                  </div>
+                  <div aria-label="Pelajaran favorit" class="home-subjects" id="homeQuickChips"></div>
+                </div>
+
+                <!-- PAKET PILIHAN (4 tiles) -->
+                <div class="card packages-card" data-area="packages">
+                  <div class="packages-head">
+                    <div class="packages-title-row">
+                      <!--- <div class="packages-title">Paket Pilihan</div>
+                      <div class="packages-hint">Pilih paket untuk melihat gabungan materi.</div>---->
+                    </div>
+                  </div>
+
+                  <div class="packages-grid" id="homePackageTiles" aria-label="Paket pilihan">
+                    <div class="pkg-tile" data-to="paket-online" role="button" tabindex="0"
+                      aria-label="Paket Bimbel Online">
+                      <div class="pkg-thumb online"></div>
+                      <div class="pkg-name">Paket Bimbel Online</div>
+                      <a class="btn soft pkg-action" href="#paket-online" data-route="paket-online">Lihat Paket</a>
+                    </div>
+
+                    <div class="pkg-tile" data-to="paket-offline" role="button" tabindex="0"
+                      aria-label="Paket Bimbel Offline">
+                      <div class="pkg-thumb offline"></div>
+                      <div class="pkg-name">Paket Bimbel Offline</div>
+                      <a class="btn soft pkg-action" href="#paket-offline" data-route="paket-offline">Lihat Paket</a>
+                    </div>
+
+                    <div class="pkg-tile" data-to="paket-intensif" role="button" tabindex="0"
+                      aria-label="Paket Intensif">
+                      <div class="pkg-thumb intensif"></div>
+                      <div class="pkg-name">Paket Intensif</div>
+                      <a class="btn soft pkg-action" href="#paket-intensif" data-route="paket-intensif">Lihat Paket</a>
+                    </div>
+
+                    <div class="pkg-tile" data-to="tanya-langsung" role="button" tabindex="0"
+                      aria-label="Tanya Langsung">
+                      <div class="pkg-thumb chat"></div>
+                      <div class="pkg-name">Tanya Langsung</div>
+                      <a class="btn soft pkg-action" href="#tanya-langsung" data-route="tanya-langsung">Chat
+                        Konsultan</a>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PROMO 
+                <div class="promo-card">
+
+                  <div class="promo-actions">
+                    <a class="btn" href="#focus" data-route="focus">Mulai Fokus</a>
+                    <a class="btn soft" href="#news" data-route="news">Info Masisir</a>
+                    <a class="btn" href="#teacher" data-route="teacher">Profil Pengajar</a>
+                    <a class="btn soft" href="#market" data-route="market">Marketplace</a>
+
+
+                  </div>
+                </div>-->
+              </div>
+              <!-- TEACHER REGISTRATION -->
+              <div class="card reg-card reg-teacher" data-area="teachreg">
+                <div class="reg-head">
+                  <div class="reg-title">Daftar jadi Pengajar Bimbel</div>
+                  <div class="reg-pill">Pendidikan S2 (minimal)</div>
+                </div>
+                <div class="reg-desc">Daftar ke admin untuk verifikasi. Tulis profil singkat &amp; bidang pengajaran.
+                </div>
+                <a class="btn primary" id="btnRegisterTeacher">Daftar jadi Pengajar disini</a>
+              </div>
+              <!-- TEACHER PROFILE -->
+              <div class="card teacher-profile" data-area="teacher">
+                <div class="tp-media">
+                  <img alt="Profil pengajar"
+                    onerror="this.style.display='none'; this.parentElement.classList.add('noimg');"
+                    src="./assets/images/nu.png" />
+                  <!---<div class="tp-fallback">M</div>---->
+                </div>
+                <div class="tp-info-box">
+                  <div class="tp-kicker">Profil Para Pengajar </div>
+                  <div class="tp-name">Nuqthah Learning Center
+                  </div>
+                  <div class="tp-meta">Profesional • Berpengalaman • Akademisi</div>
+                  <!----
+                  <div class="tp-desc">
+                    Profil pengajar bisa kamu ganti — simpan file <b>teacher.jpg</b> di <code>assets/images</code>.
+                  </div>
+                  -->
+                  <div class="tp-actions">
+                    <a class="btn" data-route="teacher" href="#teacher">Lihat Profil Pengajar</a>
+                  </div>
+                </div>
+              </div>
+              <!-- BENEFITS -->
+              <div class="card benefits-card" data-area="benefits">
+                <div class="benef-head">
+                  <div class="benef-title">Belajar terarah &amp; nyaman</div>
+                  <div class="benef-sub">Fokus pada materi, minim distraksi.</div>
+                </div>
+                <div class="benef-list">
+                  <div class="benef-item"><span class="check">✅</span> Rencana belajar bertahap</div>
+                  <div class="benef-item"><span class="check">✅</span> Progres &amp; catatan tersimpan</div>
+                  <div class="benef-item"><span class="check">✅</span> Preview dulu sebelum buka</div>
+                </div>
+                <div class="benef-actions">
+                  <a class="btn primary" data-route="explore" href="#explore">Cari Materi</a>
+                  <a class="btn" data-route="focus" href="#focus">Mode Fokus</a>
+                </div>
+              </div>
+              <a class="btn" data-route="focus" href="#focus">Mode Fokus</a>
+              <a class="btn soft" data-route="news" href="#news">Info Mahasiswa</a>
+              <!-- SELLER REGISTRATION -->
+              <div class="card reg-card reg-seller" data-area="sellerreg">
+                <div class="reg-head">
+                  <div class="reg-title">Daftar jadi Seller</div>
+                  <div class="reg-pill">Marketplace (tambahan)</div>
+                </div>
+                <div class="reg-desc">Jika ingin jualan di Marketplace, daftar ke admin. Sertakan juga nomor WhatsApp
+                  kamu.</div>
+                <a class="btn primary" id="btnRegisterSeller">Daftar Seller (WA Admin)</a>
+                <div class="reg-note">Catatan: foto produk bisa diupload setelah admin mengaktifkan role seller.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- TEACHER (Profil Lengkap Pengajar) -->
+        <section aria-label="Profil Pengajar" class="route" data-route="teacher" id="route-teacher">
+          <section class="section">
+            <div class="container">
+              <div class="section-title">Profil Pengajar 👨‍🏫</div>
+              <div class="panel">
+                <div class="panel-bd">
+                  <div class="teacher-profile" style="margin:0;">
+                    <div class="tp-media">
+                      <img alt="Profil pengajar"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');"
+                        src="./assets/images/nu.png" />
+                      <div class="tp-fallback">M</div>
+                    </div>
+                    <div class="tp-info-box">
+                      <div class="tp-kicker">Pengajar</div>
+                      <div class="tp-name">Ust Alfian Qotrunnnnn. Sl.M</div>
+                      <div class="tp-meta">Bimbingan • Bahasa • Akademik</div>
+                      <!-- 
+                      <div class="tp-desc">
+                        Profil pengajar bisa kamu ganti — simpan file <b>teacher.jpg</b> di <code>assets/images</code>.
+                      </div>  -->
+                      <!-- Info lengkap (silakan tambah detail teks di sini tanpa menghapus yang lama) -->
+                      <div class="muted" style="margin-top:10px;">
+                        <b>Profil Lengkap:</b>
+                        <div style="margin-top:6px;">
+                          • Fokus: Bimbingan bahasa &amp; akademik<br />
+                          • Metode: Terarah, bertahap, dan nyaman<br />
+                          • Catatan: Konten ini bisa kamu kembangkan sesuai kebutuhan profil
+                        </div>
+                      </div>
+                      <div class="tp-actions" style="margin-top:14px;">
+                        <a class="btn" data-route="explore" href="#explore">Lihat Materi</a>
+                        <a class="btn btn-soft" data-route="home" href="#home">Kembali</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="section">
+            <div class="container">
+              <div class="panel">
+                <div class="panel-bd">
+                  <div class="teacher-profile" style="margin:0;">
+                    <div class="tp-media">
+                      <img alt="Profil pengajar"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');"
+                        src="./assets/images/nu.png" />
+                      <div class="tp-fallback">M</div>
+                    </div>
+                    <div class="tp-info-box">
+                      <div class="tp-kicker">Pengajar</div>
+                      <div class="tp-name">Ust Alfian Qotrunnnnn. Sl.M</div>
+                      <div class="tp-meta">Bimbingan • Bahasa • Akademik</div>
+                      <!-- 
+                      <div class="tp-desc">
+                        Profil pengajar bisa kamu ganti — simpan file <b>teacher.jpg</b> di <code>assets/images</code>.
+                      </div>
+-->
+                      <!-- Info lengkap (silakan tambah detail teks di sini tanpa menghapus yang lama) -->
+                      <div class="muted" style="margin-top:10px;">
+                        <b>Profil Lengkap:</b>
+                        <div style="margin-top:6px;">
+                          • Fokus: Bimbingan bahasa &amp; akademik<br />
+                          • Metode: Terarah, bertahap, dan nyaman<br />
+                          • Catatan: Konten ini bisa kamu kembangkan sesuai kebutuhan profil
+                        </div>
+                      </div>
+                      <div class="tp-actions" style="margin-top:14px;">
+                        <a class="btn" data-route="explore" href="#explore">Lihat Materi</a>
+                        <a class="btn btn-soft" data-route="home" href="#home">Kembali</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="section">
+            <div class="container">
+              <div class="panel">
+                <div class="panel-bd">
+                  <div class="teacher-profile" style="margin:0;">
+                    <div class="tp-media">
+                      <img alt="Profil pengajar"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');"
+                        src="./assets/images/nu.png" />
+                      <div class="tp-fallback">M</div>
+                    </div>
+                    <div class="tp-info-box">
+                      <div class="tp-kicker">Pengajar</div>
+                      <div class="tp-name">Ust Alfian Qotrunnnnn. Sl.M</div>
+                      <div class="tp-meta">Bimbingan • Bahasa • Akademik</div>
+                      <!-- 
+                      <div class="tp-desc">
+                        Profil pengajar bisa kamu ganti — simpan file <b>teacher.jpg</b> di <code>assets/images</code>.
+                      </div>
+-->
+                      <!-- Info lengkap (silakan tambah detail teks di sini tanpa menghapus yang lama) -->
+                      <div class="muted" style="margin-top:10px;">
+                        <b>Profil Lengkap:</b>
+                        <div style="margin-top:6px;">
+                          • Fokus: Bimbingan bahasa &amp; akademik<br />
+                          • Metode: Terarah, bertahap, dan nyaman<br />
+                          • Catatan: Konten ini bisa kamu kembangkan sesuai kebutuhan profil
+                        </div>
+                      </div>
+                      <div class="tp-actions" style="margin-top:14px;">
+                        <a class="btn" data-route="explore" href="#explore">Lihat Materi</a>
+                        <a class="btn btn-soft" data-route="home" href="#home">Kembali</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="section">
+            <div class="container">
+              <div class="panel">
+                <div class="panel-bd">
+                  <div class="teacher-profile" style="margin:0;">
+                    <div class="tp-media">
+                      <img alt="Profil pengajar"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');"
+                        src="./assets/images/nu.png" />
+                      <div class="tp-fallback">M</div>
+                    </div>
+                    <div class="tp-info-box">
+                      <div class="tp-kicker">Pengajar</div>
+                      <div class="tp-name">Ust Alfian Qotrunnnnn. Sl.M</div>
+                      <div class="tp-meta">Bimbingan • Bahasa • Akademik</div>
+                      <!-- 
+                      <div class="tp-desc">
+                        Profil pengajar bisa kamu ganti — simpan file <b>teacher.jpg</b> di <code>assets/images</code>.
+                      </div>
+-->
+                      <!-- Info lengkap (silakan tambah detail teks di sini tanpa menghapus yang lama) -->
+                      <div class="muted" style="margin-top:10px;">
+                        <b>Profil Lengkap:</b>
+                        <div style="margin-top:6px;">
+                          • Fokus: Bimbingan bahasa &amp; akademik<br />
+                          • Metode: Terarah, bertahap, dan nyaman<br />
+                          • Catatan: Konten ini bisa kamu kembangkan sesuai kebutuhan profil
+                        </div>
+                      </div>
+                      <div class="tp-actions" style="margin-top:14px;">
+                        <a class="btn" data-route="explore" href="#explore">Lihat Materi</a>
+                        <a class="btn btn-soft" data-route="home" href="#home">Kembali</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+        <footer class="container foot">
+          © <span id="year"></span> Masisir — Nuqthah Learning Center • Cairo, Mesir
+        </footer>
+      </section>
+      <!-- TEACH NEEDS / DAFTAR PENGAJAR -->
+      <section aria-label="Info Pengajar" class="route" data-route="teach" id="route-teach">
+        <div class="container">
+          <div class="section-head">
+            <h2>Materi yang akan diajarkan</h2>
+            <p class="muted">Di sini kamu bisa lihat materi apa saja yang tersedia, dan apakah masih dibutuhkan pengajar
+              untuk tiap materi.</p>
+          </div>
+          <div class="panel">
+            <div class="panel-bd">
+              <div class="muted" id="teachNeedSummary"></div>
+              <div class="class-grid" id="teachNeedGrid" style="margin-top:14px;"></div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+                <button class="btn btn-soft" data-go="home" type="button">Kembali</button>
+                <button class="btn primary" id="teachRegisterBtn" type="button">Daftar Pengajar (WA Admin)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- EXPLORE -->
+      <section class="route" data-route="explore" id="route-explore">
+        <section class="section">
+          <div class="container">
+            <!-- Sticky header (tidak ikut scroll) -->
+            <div class="explore-sticky">
+              <!-- PATCH: BIMBEL TABS START -->
+              <div aria-label="Pilihan Bimbel" class="bimbel-tabs" role="tablist">
+                <a class="btab" data-tab="explore" href="#explore">Bimbel Online</a>
+                <a class="btab" data-tab="offline" href="#offline">Bimbel Offline</a>
+                <a class="btab" data-tab="intensif" href="#intensif">Intensif</a>
+              </div>
+              <!-- PATCH: BIMBEL TABS END -->
+              <div class="section-title-row">
+                <div class="section-title">Cari Materi 🔎</div>
+              </div>
+              <div class="toolbar">
+                <div class="search">
+                  <div class="icon">🔎</div>
+                  <input autocomplete="off" id="searchInput" placeholder="Cari materi… " type="text" />
+                  <button aria-label="Hapus pencarian" class="clear" id="clearSearch" type="button">×</button>
+                </div>
+                <div class="toolbar-right">
+                  <button class="btn" id="resetFilters" type="button">Reset</button>
+                  <button class="btn btn-primary" data-go="learn" type="button">Mode Fokus</button>
+                </div>
+              </div>
+              <div class="mini-row" id="categoryChips"></div>
+            </div>
+            <div aria-label="Daftar materi" class="card-grid" id="classGrid"></div>
+            <div class="card-grid" id="skeletonGrid" style="display:none;"></div>
+            <div class="hint-foot">Tip: klik kartu untuk preview via modal (nggak langsung buka link).</div>
+          </div>
+        </section>
+      </section>
+      <!-- BIMBEL OFFLINE (halaman baru - mirip Explore) -->
+      <section class="route" data-route="offline" id="route-offline">
+        <section class="section">
+          <div class="container">
+            <div class="explore-sticky">
+              <!-- PATCH: BIMBEL TABS START -->
+              <div aria-label="Pilihan Bimbel" class="bimbel-tabs" role="tablist">
+                <a class="btab" data-tab="explore" href="#explore">Bimbel Online</a>
+                <a class="btab" data-tab="offline" href="#offline">Bimbel Offline</a>
+                <a class="btab" data-tab="intensif" href="#intensif">Intensif</a>
+              </div>
+              <!-- PATCH: BIMBEL TABS END -->
+              <div class="section-title-row">
+                <div class="section-title">Bimbel Offline 🏫</div>
+              </div>
+              <div class="toolbar">
+                <div class="search">
+                  <div class="icon">🔎</div>
+                  <input autocomplete="off" id="searchInputOffline" placeholder="Cari materi offline… " type="text" />
+                  <button aria-label="Hapus pencarian" class="clear" id="clearSearchOffline" type="button">×</button>
+                </div>
+                <div class="toolbar-right">
+                  <button class="btn" id="resetFiltersOffline" type="button">Reset</button>
+                  <button class="btn btn-primary" data-go="learn" type="button">Mode Fokus</button>
+                </div>
+              </div>
+              <div class="mini-row" id="categoryChipsOffline"></div>
+            </div>
+            <div aria-label="Daftar materi offline" class="card-grid" id="classGridOffline"></div>
+            <div class="card-grid" id="skeletonGridOffline" style="display:none;"></div>
+            <div class="hint-foot">Tip: klik kartu untuk preview via modal (nggak langsung buka link).</div>
+          </div>
+        </section>
+      </section>
+      <!-- PEMBELAJARAN INTENSIF (halaman baru - mirip Explore) -->
+      <section class="route" data-route="intensif" id="route-intensif">
+        <section class="section">
+          <div class="container">
+            <div class="explore-sticky">
+              <!-- PATCH: BIMBEL TABS START -->
+              <div aria-label="Pilihan Bimbel" class="bimbel-tabs" role="tablist">
+                <a class="btab" data-tab="explore" href="#explore">Bimbel Online</a>
+                <a class="btab" data-tab="offline" href="#offline">Bimbel Offline</a>
+                <a class="btab" data-tab="intensif" href="#intensif">Intensif</a>
+              </div>
+              <!-- PATCH: BIMBEL TABS END -->
+              <div class="section-title-row">
+                <div class="section-title">Pembelajaran Intensif ⚡</div>
+              </div>
+              <div class="toolbar">
+                <div class="search">
+                  <div class="icon">🔎</div>
+                  <input autocomplete="off" id="searchInputIntensif" placeholder="Cari materi intensif… " type="text" />
+                  <button aria-label="Hapus pencarian" class="clear" id="clearSearchIntensif" type="button">×</button>
+                </div>
+                <div class="toolbar-right">
+                  <button class="btn" id="resetFiltersIntensif" type="button">Reset</button>
+                  <button class="btn btn-primary" data-go="learn" type="button">Mode Fokus</button>
+                </div>
+              </div>
+              <div class="mini-row" id="categoryChipsIntensif"></div>
+            </div>
+            <div aria-label="Daftar materi intensif" class="card-grid" id="classGridIntensif"></div>
+            <div class="card-grid" id="skeletonGridIntensif" style="display:none;"></div>
+            <div class="hint-foot">Tip: klik kartu untuk preview via modal (nggak langsung buka link).</div>
+          </div>
+        </section>
+      </section>
+      <!-- PAKET PAGES -->
+      <section class="route" data-route="paket-online" id="route-paket-online">
+        <section class="section">
+          <div class="container">
+            <div class="pkg-page-head">
+              <div>
+                <div class="pkgTitle">Paket Bimbel Online</div>
+                <div class="pkgSubtitle">Gabungan materi online (4 materi per paket).</div>
+              </div>
+              <a class="btn soft" href="#home" data-route="home">Kembali</a>
+            </div>
+            <div class="bundle-grid" aria-label="Daftar paket online"></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="route" data-route="paket-offline" id="route-paket-offline">
+        <section class="section">
+          <div class="container">
+            <div class="pkg-page-head">
+              <div>
+                <div class="pkgTitle">Paket Bimbel Offline</div>
+                <div class="pkgSubtitle">Gabungan materi offline (4 materi per paket).</div>
+              </div>
+              <a class="btn soft" href="#home" data-route="home">Kembali</a>
+            </div>
+            <div class="bundle-grid" aria-label="Daftar paket offline"></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="route" data-route="paket-intensif" id="route-paket-intensif">
+        <section class="section">
+          <div class="container">
+            <div class="pkg-page-head">
+              <div>
+                <div class="pkgTitle">Paket Intensif</div>
+                <div class="pkgSubtitle">Program intensif (4 materi per paket).</div>
+              </div>
+              <a class="btn soft" href="#home" data-route="home">Kembali</a>
+            </div>
+            <div class="bundle-grid" aria-label="Daftar paket intensif"></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="route" data-route="tanya-langsung" id="route-tanya-langsung">
+        <section class="section">
+          <div class="container">
+            <div class="pkg-page-head">
+              <div>
+                <div class="pkgTitle">Tanya Langsung</div>
+                <div class="pkgSubtitle">Chat langsung dengan konsultan/pengajar.</div>
+              </div>
+              <a class="btn soft" href="#home" data-route="home">Kembali</a>
+            </div>
+            <div class="bundle-grid" aria-label="Daftar sesi konsultasi"></div>
+          </div>
+        </section>
+      </section>
+
+      <!-- TIPS -->
+      <section class="route" data-route="tips" id="route-tips">
+        <section class="section">
+          <div class="container">
+            <div class="section-title">Tips Fokus 🎯</div>
+            <div class="card-grid">
+              <div class="class-card elite" tabindex="0">
+                <div class="badge premium">FOCUS</div>
+                <h3>Ritual 7 Menit Sebelum Belajar</h3>
+                <p>Rapihin meja → set target kecil → matiin notif → minum air → buka materi. Biar otak “masuk mode”.</p>
+                <div class="meta">🧠 Fokus • ⚡ Cepat • ✅ Konsisten</div>
+              </div>
+              <div class="class-card" tabindex="0">
+                <div class="badge new">TIP</div>
+                <h3>Teknik 25/5 (Pomodoro)</h3>
+                <p>25 menit fokus, 5 menit istirahat. Ulang 3–4 ronde. Setelah itu break lebih panjang.</p>
+                <div class="meta">⏱️ Waktu • 🎯 Fokus • 🔁 Ulang</div>
+              </div>
+              <div class="class-card" tabindex="0">
+                <div class="badge popular">PRO</div>
+                <h3>Belajar “kecil tapi tiap hari”</h3>
+                <p>Lebih menang daripada nunggu mood. Target 10–15 menit pun sah, yang penting rutin.</p>
+                <div class="meta">📆 Konsisten • 📌 Ringan • 🔥 Streak</div>
+              </div>
+              <div class="class-card" tabindex="0">
+                <div class="badge new">ANTI-DRIFT</div>
+                <h3>Kalau mulai terdistraksi…</h3>
+                <p>Tulis gangguan di catatan (parking lot), balik ke materi. Otak tenang karena “nggak lupa”.</p>
+                <div class="meta">📝 Catatan • 🧊 Tenang • 🎧 Flow</div>
+              </div>
+            </div>
+            <div class="tips-actions">
+              <button class="btn btn-primary" data-go="learn" type="button">Praktek di Mode Fokus</button>
+              <button class="btn" data-go="explore" type="button">Cari Materi</button>
+            </div>
+          </div>
+        </section>
+      </section>
+      <!-- LEARN (Focus Mode) -->
+      <section class="route" data-route="learn" id="route-learn">
+        <section class="section">
+          <div class="container">
+            <div class="learn-head">
+              <div>
+                <h2>Mode Fokus ✍️</h2>
+                <p>Pilih materi di kiri → preview di kanan. Catatan &amp; progres otomatis tersimpan.</p>
+              </div>
+              <div class="learn-tools">
+                <div class="progress-mini">
+                  <span class="muted">Progres</span>
+                  <div class="bar"><i id="learnBar"></i></div>
+                  <b id="learnPct">0%</b>
+                </div>
+                <button class="btn" id="learnReset" type="button">Reset</button>
+              </div>
+            </div>
+            <div class="learn-layout">
+              <div class="panel">
+                <div class="panel-hd">
+                  <strong>Daftar Materi</strong>
+                  <span class="small" id="learnCount">0</span>
+                </div>
+                <div class="lesson-list" id="learnList"></div>
+              </div>
+              <div class="learn-main">
+                <div class="viewer">
+                  <div class="viewer-hd">
+                    <div class="title">
+                      <strong id="learnTitle">Pilih materi</strong>
+                      <span id="learnMeta">—</span>
+                    </div>
+                    <div class="viewer-actions">
+                      <button class="btn" id="learnDone" type="button">Tandai Selesai</button>
+                      <button class="btn btn-primary" id="learnOpen" type="button">Buka materi</button>
+                    </div>
+                  </div>
+                  <div class="viewer-body">
+                    <div class="viewer-empty" id="learnEmpty">Pilih satu materi untuk mulai.</div>
+                    <iframe id="learnFrame" loading="lazy" referrerpolicy="no-referrer" title="Preview materi"></iframe>
+                  </div>
+                </div>
+                <div class="notes panel">
+                  <div class="panel-hd">
+                    <strong>Catatan</strong>
+                    <span class="small">tersimpan</span>
+                  </div>
+                  <textarea id="learnNotes" placeholder="Tulis catatan di sini…"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+      <!-- NEWS -->
+      <section class="route" data-route="news" id="route-news">
+        <section class="section">
+          <div class="container">
+            <div class="news-head">
+              <div>
+                <div class="section-title">Info Mahasiswa 🇮🇩 (Al-Azhar Cairo)</div>
+                <div class="section-sub">Kabar, pengumuman organisasi, kegiatan, dan info penting.</div>
+              </div>
+              <button class="btn btn-primary" data-go="settings" type="button">Panel Reporter</button>
+            </div>
+            <div class="news-filters">
+              <div class="search small">
+                <div class="icon">🔎</div>
+                <input autocomplete="off" id="newsSearch" placeholder="Cari berita…" type="text" />
+              </div>
+              <select aria-label="Filter organisasi" class="select" id="orgFilter">
+                <option value="all">Semua organisasi</option>
+              </select>
+            </div>
+            <div aria-label="Daftar berita" class="news-grid" id="newsGrid"></div>
+            <div class="pager">
+              <button class="btn" id="newsPrev" type="button">Sebelumnya</button>
+              <div class="muted" id="newsPageInfo">—</div>
+              <button class="btn" id="newsNext" type="button">Berikutnya</button>
+            </div>
+          </div>
+        </section>
+      </section>
+      <!-- MARKETPLACE -->
+      <section aria-label="Marketplace" class="route" data-route="market" id="route-market">
+        <section class="section">
+          <div class="container">
+            <div class="market-head">
+              <div>
+                <div class="section-title">Marketplace — Barang &amp; Jasa</div>
+                <div class="section-sub">Tambahan untuk kebutuhan mahasiswa. Klik produk untuk detail &amp; foto.</div>
+              </div>
+              <button class="btn btn-primary" data-go="settings" type="button">Panel Seller</button>
+            </div>
+            <div class="market-tools">
+              <div class="search">
+                <div class="icon">🔎</div>
+                <input autocomplete="off" id="productSearch" placeholder="Cari produk / jasa…" type="search" />
+                <button aria-label="Hapus pencarian" class="clear" id="clearProductSearch" type="button">×</button>
+              </div>
+              <div aria-label="Filter jenis" class="market-filters" role="tablist">
+                <button class="chip is-active" data-filter="all" type="button">Semua</button>
+                <button class="chip" data-filter="barang" type="button">Barang</button>
+                <button class="chip" data-filter="jasa" type="button">Jasa</button>
+              </div>
+            </div>
+            <div aria-label="Daftar produk" class="product-grid" id="productGrid"></div>
+            <div class="pager">
+              <button class="btn" id="prodPrev" type="button">Sebelumnya</button>
+              <div class="muted" id="prodPageInfo">—</div>
+              <button class="btn" id="prodNext" type="button">Berikutnya</button>
+            </div>
+          </div>
+        </section>
+      </section>
+      <!-- SETTINGS -->
+      <section aria-label="Pengaturan" class="route" data-route="settings" id="route-settings">
+        <section class="section">
+          <div class="container">
+            <div class="section-title">Pengaturan ⚙️</div>
+            <div class="grid-2">
+              <div class="panel">
+                <div class="panel-hd">
+                  <strong>Tampilan</strong>
+                  <span class="small">Tema</span>
+                </div>
+                <div class="panel-bd">
+                  <div class="row-between">
+                    <div>
+                      <b>Mode gelap</b>
+                      <div class="muted">Preferensi tersimpan di perangkat.</div>
+                    </div>
+                    <button class="btn btn-soft" id="darkToggleSettings" type="button">Toggle</button>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-hd">
+                  <strong>Admin</strong>
+                  <span class="small">Seller / Reporter</span>
+                </div>
+                <div class="panel-bd">
+                  <p class="muted">
+                    Untuk menambah produk/berita, admin harus mengaktifkan nomor WhatsApp sebagai <b>Seller</b> atau
+                    <b>Reporter</b>.
+                    Untuk sekarang, daftar ke admin dulu (WA), dan minta admin menambahkan nomor kamu ke sistem.
+                  </p>
+                  <div class="admin-gate">
+                    <label class="muted" for="adminWA">Nomor WhatsApp kamu</label>
+                    <input autocomplete="off" class="input" id="adminWA" placeholder="contoh: 62812..." type="tel" />
+                    <div class="admin-actions">
+                      <button class="btn" id="unlockSeller" type="button">Unlock Seller</button>
+                      <button class="btn" id="unlockReporter" type="button">Unlock Reporter</button>
+                      <button class="btn" id="lockAdmin" type="button">Lock</button>
+                    </div>
+                    <div class="muted" id="adminStatus">Status: terkunci</div>
+                  </div>
+                  <div class="admin-panels">
+                    <div aria-label="Panel Seller" class="admin-panel" hidden="" id="sellerPanel">
+                      <div class="panel-hd2">
+                        <strong>Tambah Produk</strong>
+                        <span class="small">disimpan (hybrid)</span>
+                      </div>
+                      <div class="form">
+                        <input class="input" id="pName" placeholder="Nama produk/jasa" />
+                        <textarea class="input" id="pDesc" placeholder="Deskripsi singkat"></textarea>
+                        <div class="grid-2 tight">
+                          <input class="input" id="pPrice" placeholder="Harga (contoh: 25.000)" />
+                          <select class="select" id="pType">
+                            <option value="barang">Barang</option>
+                            <option value="jasa">Jasa</option>
+                          </select>
+                        </div>
+                        <input class="input" id="pSellerWA" placeholder="WA penjual (contoh: 62812...)" />
+                        <label class="muted">Foto produk (bisa lebih dari 1) — otomatis dikompres sebelum
+                          disimpan</label>
+                        <input accept="image/*" class="input" id="pImages" multiple="" type="file" />
+                        <button class="btn btn-primary" id="addProduct" type="button">Simpan Produk</button>
+                        <div class="muted">
+                          Jika gagal upload (perangkat berat / storage penuh), kirim foto ke admin untuk ditambahkan
+                          manual.
+                        </div>
+                      </div>
+                    </div>
+                    <div aria-label="Panel Reporter" class="admin-panel" hidden="" id="reporterPanel">
+                      <div class="panel-hd2">
+                        <strong>Tambah Berita</strong>
+                        <span class="small">organisasi &amp; kategori</span>
+                      </div>
+                      <div class="form">
+                        <input class="input" id="nTitle" placeholder="Judul berita" />
+                        <textarea class="input" id="nBody" placeholder="Isi berita (ringkas &amp; jelas)"></textarea>
+                        <div class="grid-2 tight">
+                          <input class="input" id="nOrg" placeholder="Nama organisasi (contoh: PPMI / DKKM / Senat)" />
+                          <input class="input" id="nField"
+                            placeholder="Bidang (contoh: sosial / pendidikan / olahraga)" />
+                        </div>
+                        <label class="muted">Foto berita (opsional) — otomatis dikompres</label>
+                        <input accept="image/*" class="input" id="nImage" type="file" />
+                        <button class="btn btn-primary" id="addNews" type="button">Simpan Berita</button>
+                        <div class="muted">
+                          Catatan reporter: sertakan <b>nama organisasi</b> &amp; <b>bidang</b> agar berita bisa
+                          dikategorikan.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mini-actions">
+                    <button class="btn" id="btnRegisterSeller2" type="button">Daftar Seller (WA Admin)</button>
+                    <button class="btn" id="btnRegisterReporter" type="button">Daftar Reporter (WA Admin)</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <footer class="container foot subtle">
+              Tip: simpan foto profil pengajar di <b>assets/images/teacher.jpg</b>.
+            </footer>
+          </div>
+        </section>
+      </section>
+    </main>
+    <!-- Modal (Preview: materi & produk) -->
+    <div aria-hidden="true" class="modal-overlay" id="modalOverlay">
+      <div aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog">
+        <div class="modal-header">
+          <div class="modal-title">
+            <strong id="modalTitle">Preview</strong>
+            <span id="modalSubtitle">—</span>
+          </div>
+          <button aria-label="Tutup" class="modal-close" id="modalClose" type="button">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="preview" id="modalPreview">
+            <div class="ph" id="modalPlaceholder">Loading preview…</div>
+            <!-- For products: image carousel -->
+            <div class="img-carousel" hidden="" id="modalCarousel">
+              <button aria-label="Sebelumnya" class="ic-nav left" id="icPrev" type="button">‹</button>
+              <img alt="" decoding="async" id="modalImage" loading="lazy" />
+              <button aria-label="Berikutnya" class="ic-nav right" id="icNext" type="button">›</button>
+              <div aria-hidden="true" class="ic-dots" id="icDots"></div>
+            </div>
+            <!-- For lessons: iframe -->
+            <iframe id="modalFrame" loading="lazy" referrerpolicy="no-referrer" title="Preview"></iframe>
+          </div>
+          <div class="modal-info">
+            <div class="info-row">
+              <strong style="font-size:13px;">Tentang</strong>
+              <p id="modalDesc">—</p>
+            </div>
+            <div class="info-badges" id="modalBadges"></div>
+            <p class="muted" id="modalNote">Tip: gunakan preview ini untuk memastikan konten sesuai.</p>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn" id="modalCancel" type="button">Tutup</button>
+          <button class="btn btn-primary" id="modalPrimary" type="button">Aksi</button>
+          <button class="btn btn-soft" id="modalSecondary" type="button">Buka</button>
+        </div>
+      </div>
+    </div>
+    <!-- Toast -->
+    <div aria-live="polite" class="toast" id="toast" role="status">
+      <div class="dotty"></div>
+      <div>
+        <strong id="toastTitle">Berhasil</strong>
+        <span id="toastMsg">—</span>
+      </div>
+      <button aria-label="Tutup" id="toastClose" type="button">×</button>
+    </div>
+  </div>
+  <script defer="" src="assets/js/lessons-data.js"></script>
+  <script defer="" src="assets/js/lessons-offline-data.js"></script>
+  <script defer="" src="assets/js/lessons-intensif-data.js"></script>
+  <script defer="" src="assets/js/news-data.js"></script>
+  <script defer="" src="assets/js/products-data.js"></script>
+  <script defer="" src="assets/js/desktop-only.js"></script>
+  <script defer="" src="assets/js/home-top-fix.js"></script>
+  <script defer="" src="assets/js/mobile-title-pack.js"></script>
+  <script defer="" src="assets/js/teacher-fix.js"></script>
+  <script defer="" src="assets/js/teach.js"></script>
+  <!-- SUBJECT PAGES DATA (kitab per halaman) -->
+  <script defer="" src="assets/js/subject-nahwu-data.js"></script>
+  <script defer="" src="assets/js/subject-sharaf-data.js"></script>
+  <script defer="" src="assets/js/subject-mantiq-data.js"></script>
+  <script defer="" src="assets/js/subject-balaghah-data.js"></script>
+  <script defer="" src="assets/js/subject-adabul-bahs-data.js"></script>
+  <script defer="" src="assets/js/subject-semua-data.js"></script>
+  <script defer="" src="assets/js/subjects-pages.js"></script>
+  <script defer="" src="assets/js/packages.js"></script>
+  <script defer="" src="assets/js/app.js"></script>
+  <script>
+    (function () {
+      const isLocal =
+        location.hostname === "localhost" ||
+        location.hostname === "127.0.0.1" ||
+        location.hostname === "" ||
+        /^192\.168\./.test(location.hostname) ||
+        /^10\./.test(location.hostname);
+
+      const params = new URLSearchParams(location.search);
+      const noSW = params.get("nosw") === "1" || localStorage.getItem("nuqthah_no_sw") === "1";
+
+      // Saat DEV: pastikan tidak ada SW nyangkut yang bikin CSS/JS tidak berubah
+      if (isLocal || noSW) {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.getRegistrations().then((regs) => regs.forEach((r) => r.unregister()));
+        }
+        return;
+      }
+
+      // Production: register SW
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("./service-worker.js")
+            .catch((err) => console.error("Service Worker gagal:", err));
+        });
+      }
+    })();
+  </script>
+
+  <script>
+    // Safety: always hide splash after page is loaded, even if some JS modules fail.
+    window.addEventListener("load", () => {
+      const splash = document.getElementById("splash");
+      if (!splash) return;
+      splash.classList.add("hide");
+      // remove from DOM after fade
+      setTimeout(() => { try { splash.remove(); } catch (e) { } }, 800);
+    });
+  </script>
+
+</body>
+
+</html>

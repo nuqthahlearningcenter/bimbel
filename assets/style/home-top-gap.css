@@ -1,0 +1,25 @@
+/* =====================================================
+   HOME ONLY — JARAK TOPNAV ↔ FOTO/SLIDER (PROMO)
+   =====================================================
+
+   MASALAHNYA kenapa tidak berubah:
+   1) Di Home, elemen fotonya pakai class: .home-promo-slider (lihat index.html)
+      jadi rule lama untuk .home-hero/.hero/.slider tidak kena.
+   2) File home-top-gap.css yang terpasang malah berisi margin-top: 0px !important
+      untuk selector yang tidak relevan, jadi tidak ada efek.
+
+   SOLUSI:
+   - Target langsung .home-promo-slider (khusus route home).
+   - Tambah jarak kecil ke blok tombol mode di bawahnya (opsional & aman).
+*/
+
+/* Jarak utama: topnav → slider promo (Home saja) */
+.route[data-route="home"] .home-promo-slider {
+   margin-top: 15px;
+   /* sesuaikan garis merah */
+}
+
+/* Rapikan jarak slider → tombol mode (Home saja) */
+.route[data-route="home"] .home-material-modes {
+   margin-top: 10px;
+}

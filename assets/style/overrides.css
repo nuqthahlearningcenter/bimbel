@@ -1,0 +1,146 @@
+/* overrides.css
+   Taruh semua perubahan custom kamu di sini.
+   Pastikan file ini di-load PALING TERAKHIR (setelah desktop-only.css).
+*/
+
+/* contoh:
+:root{
+  --primary: #2563eb;
+}
+body.dark{
+  --surface: #0b1220;
+}
+*/
+
+/* Tips:
+   - Jangan pakai !important kecuali terpaksa.
+   - Kalau harus override rule yang pakai !important, naikkan spesifisitas:
+     body .route[data-route="home"] .btn.primary { ... }
+*/
+/* =========================
+   Home - Pelajaran Favorit (grid seperti screenshot)
+   ========================= */
+.home-subjects {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.subject-btn {
+  border: 0;
+  background: transparent;
+  padding: 6px 4px;
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.subject-btn:active {
+  transform: translateY(1px);
+}
+
+.subject-ico {
+  width: 58px;
+  height: 58px;
+  border-radius: 22px;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  background: #f3f4f6;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08);
+}
+
+body.dark .subject-ico {
+  background: #1f2937;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14);
+}
+
+.subject-lbl {
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.05;
+  text-align: center;
+  color: var(--text);
+}
+
+@media (max-width:360px) {
+  .home-subjects {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+
+
+
+
+/* =========================
+   RUANGGURU-LIKE: NO BLUR / NO TRANSPARENCY
+   taruh PALING BAWAH overrides.css
+========================= */
+
+/* Hilangkan efek kaca global untuk modal */
+.modal,
+.modal * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+/* Modal utama: putih solid (bukan color-mix transparan) */
+.modal {
+  background: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Header/body modal yang sebelumnya pakai mix+transparent */
+.modal-header,
+.modal-actions,
+.modal-info,
+.preview {
+  background: #ffffff !important;
+}
+
+/* Overlay modal: gelap solid (tanpa blur) */
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.45) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Khusus sheet "Semua Pelajaran" (punyamu) */
+.subjects-sheet {
+  background: #ffffff !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+/* Overlay sheet "Semua Pelajaran" */
+.subjects-sheet-overlay {
+  background: rgba(0, 0, 0, 0.45) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* =====================================================
+   HOME — JARAK SLIDER PENGAJAR → RUANG BELAJAR
+   ===================================================== */
+
+/* khusus halaman Home */
+.route[data-route="home"] .teacher-marquee {
+  margin-bottom: 22px;
+  /* jarak utama */
+}
+
+/* mobile: sedikit lebih lega */
+@media (max-width: 768px) {
+  .route[data-route="home"] .teacher-marquee {
+    margin-bottom: 18px;
+  }
+}

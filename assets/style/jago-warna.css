@@ -1,0 +1,400 @@
+/* =========================================================
+   JAGO COLORS — SAFE OVERRIDES v2 (NO LAYOUT CHANGES)
+   ---------------------------------------------------------
+   Fix untuk:
+   - Warna yang masih "biru" (card filter cepat, indikator slider,
+     tombol/fab tengah bawah, dll)
+   - Background dibuat sedikit lebih putih (lebih netral)
+
+   IMPORTANT:
+   - File ini hanya menyentuh COLOR/SHADOW/BORDER/BG, tidak ada
+     position/padding/margin/size sehingga tidak merusak layout.
+   - Load PALING TERAKHIR.
+   ========================================================= */
+
+/* =========================
+   1) Background lebih putih (tanpa ubah layout)
+   ========================= */
+:root {
+    --bg: #fcfcfb;
+    /* lebih putih dari #fbfbf9 */
+    --bg2: #f9f9f9;
+    /* warm tipis */
+}
+
+/* Kalau file background kamu pakai layer radial, kecilkan intensitasnya */
+body {
+    background:
+        radial-gradient(1200px 650px at 22% -10%, rgb(var(--primary-rgb) / .08), transparent 62%),
+        radial-gradient(900px 520px at 88% 12%, rgb(var(--primary2-rgb) / .06), transparent 58%),
+        radial-gradient(900px 520px at 50% 110%, rgb(var(--primary-rgb) / .04), transparent 58%),
+        linear-gradient(180deg, var(--bg2), var(--bg)) !important;
+}
+
+/* =========================
+   2) Token warna utama
+   ========================= */
+:root {
+    --primary: #22c55e;
+    --primary2: #22c55e;
+    --accent: #f2bd48;
+
+    --text: #2b2b2b;
+    --muted: #453724;
+    --muted2: #9a8a74;
+
+    --surface: rgb(0 0 0 / 0%);
+    --surface-strong: rgba(255, 255, 255, .92);
+    --surface-solid: #ffffff;
+
+    --border: rgba(132, 91, 52, .14);
+    --border-strong: rgba(132, 91, 52, .22);
+
+    --primary-rgb: 242 189 72;
+    --primary2-rgb: 245 158 11;
+
+    --shadow-glow: 0 20px 60px rgb(var(--primary-rgb) / .28);
+    --ring: 0 0 0 4px rgb(var(--primary-rgb) / .22);
+}
+
+/* =========================
+   3) Hilangkan tint "biru" pada card tertentu
+   (khusus area home / filter cepat)
+   ========================= */
+.quick-filter,
+.home-quick-filter,
+.home-quick-modes,
+.filter-quick,
+.filter-card,
+.filter-box,
+[class*="quick-filter"],
+[class*="filter-quick"],
+[class*="filter-card"] {
+    background:
+        radial-gradient(520px 240px at 18% 0%, rgb(var(--primary-rgb) / .10), transparent 60%),
+        radial-gradient(520px 240px at 90% 10%, rgb(var(--primary2-rgb) / .06), transparent 60%),
+        color-mix(in srgb, var(--surface-solid) 86%, transparent) !important;
+    border-color: var(--border) !important;
+}
+
+/* Card/sheet umum tetap warm putih */
+.card,
+.panel,
+.box,
+.sheet,
+[class*="card"],
+[class*="panel"],
+[class*="box"],
+[class*="sheet"] {
+    background-color: var(--surface) !important;
+    border-color: var(--border) !important;
+}
+
+/* =========================
+   4) Mode buttons (Online/Offline/Intensif) agar tidak biru
+   ========================= */
+.home-quick-modes .mode-btn,
+.mode-btn,
+[class*="mode-btn"] {
+    background:
+        color-mix(in srgb, #f4a519 86%, transparent) !important;
+    border-color: var(--border) !important;
+    color: #ffffff !important;
+}
+
+.home-quick-modes .mode-btn,
+.mode-btn {
+    background-color: #f4a519 !important;
+    /* fallback */
+    background: color-mix(in srgb, #f4a519 86%, transparent) !important;
+    border-color: var(--border) !important;
+    color: #fff !important;
+}
+
+
+.home-quick-modes .mode-btn,
+.mode-btn,
+[class*="mode-btn"] {
+    background:
+        color-mix(in srgb, #f5a111 86%, transparent) !important;
+    border-color: var(--border) !important;
+    color: #ffffff !important;
+}
+
+
+.btn.primary,
+.btn.primary:visited,
+.btn.primary:hover,
+.btn.primary:active {
+    background-color: #f4a417 !important;
+    border-color: rgb(146 71 0) !important;
+    color: #fff !important;
+}
+
+/* =========================
+   5) Tombol primary yang masih biru (umum)
+   ========================= */
+.btn.primary,
+button.primary,
+a.primary {
+    background-color: #f4a417 !important;
+    /* fallback */
+    background: color-mix(in srgb, #f4a417 86%, transparent) !important;
+    border-color: rgb(146 71 0) !important;
+    color: #fff4f4 !important;
+}
+
+
+/* =========================
+   6) Indikator slider/dots (yang masih biru)
+   ========================= */
+.ic-dots i.active,
+.dots .active,
+.dot.active,
+.swiper-pagination-bullet-active,
+[class*="dot"].active {
+    background: linear-gradient(135deg, var(--primary), var(--primary2)) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.ic-dots i,
+.dots i,
+.swiper-pagination-bullet {
+    background: rgba(0, 0, 0, .14) !important;
+    border-color: rgba(0, 0, 0, .10) !important;
+}
+
+/* =========================
+   7) Tombol/fab tengah bawah (logo bulat yang masih biru)
+   ========================= */
+.fab,
+.floating-btn,
+.center-fab,
+.nav-fab,
+.bottom-fab,
+.bottom-nav .fab,
+.bottom-nav .center,
+.bottom-nav .center-btn,
+.bottom-nav .middle,
+.bottom-nav .middle-btn,
+[class*="fab"],
+[class*="floating"] {
+    background: linear-gradient(135deg, var(--primary), var(--primary2)) !important;
+    color: #2a1d0b !important;
+    border-color: rgba(255, 255, 255, .22) !important;
+    box-shadow: 0 18px 50px rgb(var(--primary2-rgb) / .20) !important;
+}
+
+/* Jika ikon/logo di dalamnya putih/biru, paksa jadi lebih netral */
+.fab svg,
+.center-fab svg,
+.floating-btn svg,
+.fab i,
+.center-fab i,
+.floating-btn i {
+    color: #2a1d0b !important;
+    fill: #2a1d0b !important;
+}
+
+/* =========================
+   8) Icon button di topbar agar tetap warm (bukan biru)
+   ========================= */
+.btn-icon,
+.icon-btn,
+.nav-btn,
+.action-btn,
+[class*="icon-btn"],
+[class*="nav-btn"],
+[class*="action-btn"] {
+    background-color: color-mix(in srgb, var(--surface-solid) 86%, transparent) !important;
+    border-color: var(--border) !important;
+    color: color-mix(in srgb, var(--text) 88%, var(--muted)) !important;
+}
+
+/* =========================
+   9) Muted text
+   ========================= */
+.muted,
+.subtle,
+.small,
+.hint,
+[class*="muted"],
+[class*="subtitle"],
+[class*="sub-title"] {
+    color: var(--muted) !important;
+}
+
+/* =========================
+   10) Inputs (warna saja)
+   ========================= */
+input,
+select,
+textarea {
+    border-color: var(--border) !important;
+    background-color: color-mix(in srgb, var(--surface-solid) 86%, transparent) !important;
+    color: var(--text) !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    box-shadow: var(--ring) !important;
+    border-color: color-mix(in srgb, var(--primary) 35%, var(--border)) !important;
+}
+
+
+
+/* Shadow agar card Filter Cepat terlihat timbul */
+.route[data-route="home"] .quick-filter {
+    background: #fffdf8;
+    /* pastikan solid */
+    box-shadow:
+        0 14px 32px rgba(0, 0, 0, 0.10),
+        0 4px 10px rgba(0, 0, 0, 0.06);
+
+    border-radius: 18px;
+}
+
+
+/* QUICK FILTER: bikin timbul (aman walau parent overflow:hidden) */
+.route[data-route="home"] .quick-filter {
+    position: relative;
+    background: #fffdf8 !important;
+    border: 1px solid rgba(0, 0, 0, .10) !important;
+
+    /* ini yang bikin “timbul” walau shadow luar ter-clip */
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .90),
+        inset 0 -10px 22px rgba(0, 0, 0, .06),
+        0 1px 0 rgba(0, 0, 0, .04) !important;
+
+    border-radius: 18px !important;
+}
+
+/* highlight lembut di atas card biar makin 3D */
+.route[data-route="home"] .quick-filter::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    pointer-events: none;
+    background: radial-gradient(600px 180px at 20% 0%, rgba(255, 255, 255, .75), transparent 55%);
+    opacity: .9;
+}
+
+/* Balikin tombol tengah ikut GRID (jangan absolute) */
+@media (max-width: 768px) {
+    .m-bottom-nav .m-nav-mid {
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        transform: none !important;
+
+        /* center di kolom tengah grid */
+        justify-self: center;
+        align-self: center;
+
+        /* tetap “naik” seperti desain */
+        margin-top: -22px;
+        /* sesuai style.css */
+    }
+}
+
+
+/* Icon gambar untuk tombol topbar */
+.m-topbar-actions .m-ic {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.m-topbar-actions .m-ic-img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: block;
+}
+
+
+
+.btn.primary,
+.btn.primary:visited,
+.btn.primary:hover,
+.btn.primary:active {
+    background-color: #f4a417 !important;
+    border-color: rgb(146 71 0) !important;
+    color: #fff !important;
+}
+
+
+
+/* =========================
+   OVERRIDE CSS yang disuntik app.js (hardcode biru)
+   ========================= */
+
+/* Active state untuk tombol mode di quick-filter (yang dipindah ke #homeQuickModeRow) */
+.quick-filter #homeQuickModeRow .mode-actions .qf-mode-btn.is-active {
+    border-color: color-mix(in srgb, var(--primary) 35%, var(--border)) !important;
+    background:
+        radial-gradient(260px 120px at 20% 0%, rgb(var(--primary-rgb) / .22), transparent 60%),
+        color-mix(in srgb, var(--surface-solid) 70%, transparent) !important;
+    color: var(--text) !important;
+}
+
+/* Modal Filter Cepat (yang dibuat oleh ensureQuickFilterModalStyle) */
+.qf-modal .qf-mode-btn.is-active {
+    background:
+        radial-gradient(260px 120px at 20% 0%, rgb(var(--primary-rgb) / .22), transparent 60%),
+        color-mix(in srgb, var(--surface-solid) 70%, transparent) !important;
+}
+
+.qf-modal .qf-chip-btn {
+    background:
+        radial-gradient(260px 120px at 20% 0%, rgb(var(--primary-rgb) / .22), transparent 60%),
+        color-mix(in srgb, var(--surface-solid) 70%, transparent) !important;
+    color: var(--text) !important;
+}
+
+/* Chip active di home/explore (style.css masih hardcode biru) */
+.chip.is-active,
+.chip.active {
+    background:
+        radial-gradient(260px 120px at 20% 0%, rgb(var(--primary-rgb) / .22), transparent 60%),
+        color-mix(in srgb, var(--surface-solid) 70%, transparent) !important;
+    border-color: color-mix(in srgb, var(--primary) 35%, var(--border)) !important;
+    color: var(--text) !important;
+}
+
+
+/* =========================
+   FIX WARNA QUICK FILTER HOME (yang di foto)
+   ========================= */
+
+/* tombol Online / Offline / Intensif */
+.qf-mode-btn {
+    background: #f5f5f4 !important;
+    border: 1px solid rgba(120, 72, 0, 0.25) !important;
+    color: #3b2f1c !important;
+}
+
+/* tombol aktif (yang masih biru di foto) */
+.qf-mode-btn.is-active {
+    background: linear-gradient(135deg,
+            #f4a417,
+            #facc15) !important;
+    border-color: rgba(120, 72, 0, 0.45) !important;
+    color: #2a1d0b !important;
+}
+
+/* chip kategori (Semua, Bimbel Syari'ah, dll) */
+.qf-chip-btn {
+    background: #ffffff !important;
+    border: 1px solid rgba(120, 72, 0, 0.25) !important;
+    color: #3b2f1c !important;
+}
+
+.qf-chip-btn.is-active {
+    background: #fde68a !important;
+    border-color: rgba(120, 72, 0, 0.45) !important;
+    color: #2a1d0b !important;
+}
