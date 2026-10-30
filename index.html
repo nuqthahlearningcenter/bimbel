@@ -1,1476 +1,1857 @@
 <!DOCTYPE html>
-
+<!-- index.html - Redesigned Student Dashboard & Katalog Nuqthah -->
 <html lang="id">
 
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width,initial-scale=1.0" name="viewport" />
-  <meta content="light dark" name="color-scheme" />
-  <title>Masisir — Nuqthah Learn</title>
-  <link href="assets/style/style.css" rel="stylesheet" />
-  <link href="assets/style/jago-warna.css" rel="stylesheet" />
-  <link href="assets/style/bimbel-midnav-image.css" rel="stylesheet" />
-  <link href="assets/style/home-top-gap.css" rel="stylesheet">
-  <link href="assets/style/teach.css" rel="stylesheet" />
-  <!-- Styles khusus halaman Materi (Online/Offline/Intensif) -->
-  <link href="assets/style/materials.css" rel="stylesheet" />
-  <link href="assets/style/desktop-only.css" rel="stylesheet" />
-  <link href="assets/style/overrides.css" rel="stylesheet" />
-  <link href="./manifest.webmanifest" rel="manifest">
-  <meta content="#2563eb" name="theme-color" />
-  <meta content="yes" name="apple-mobile-web-app-capable" />
-  <meta content="default" name="apple-mobile-web-app-status-bar-style" />
-  <link href="./assets/icon/icon-192.png" rel="apple-touch-icon" />
-  <link href="assets/style/subjects-pages.css" rel="stylesheet" />
-  </link>
-  </link>
-  <link href="assets/style/no-topnav-gap.css" rel="stylesheet" />
-  <link href="assets/style/packages.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Nuqthah Learning Center</title>
+
+    <meta name="theme-color" content="#0F4A3A">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png"
+        href="https://userkv.r2.mayar.id/landing-page/assets/nuqthah-kind-kingdom-2402/2ef2247a_file_0000000005ac82469e639ea2dfd71b0e.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+
+    <!-- CDNs -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2E5E4E',
+                        primarydark: '#1F4236',
+                        accent: '#C9A227',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .course-card {
+            box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            will-change: transform;
+        }
+
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        #materimu-drawer {
+            z-index: 90000 !important;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #drawer-overlay {
+            z-index: 89999 !important;
+        }
+
+        nav.main-nav {
+            z-index: 70000 !important;
+        }
+
+        .sticky-filter {
+            z-index: 60000 !important;
+            top: 48px;
+        }
+
+        @media (min-width: 768px) {
+            .sticky-filter {
+                top: 64px;
+            }
+        }
+
+        .modal-fade-in {
+            animation: modalFadeIn 0.3s ease-out forwards;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Toast & Loading */
+        @keyframes nlc-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #page-loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            z-index: 999999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+            transition: opacity 0.35s ease;
+            opacity: 1;
+        }
+
+        #page-loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .page-loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(46, 94, 78, 0.15);
+            border-top-color: #2E5E4E;
+            border-radius: 50%;
+            animation: nlc-spin 0.8s linear infinite;
+        }
+
+        .toast-item {
+            animation: toastIn .35s cubic-bezier(.21, 1.02, .73, 1) forwards;
+        }
+
+        .toast-item.leaving {
+            animation: toastOut .28s ease forwards;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(-14px) scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(-10px) scale(.97);
+            }
+        }
+
+        .toast-progress {
+            animation: toastProgress 4.5s linear forwards;
+        }
+
+        @keyframes toastProgress {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
+
+        .purchased-item {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.04) 0%, rgba(255, 255, 255, 1) 100%);
+            border-color: rgba(16, 185, 129, 0.25) !important;
+        }
+
+        /* Dashboard Widget Styles */
+        .stat-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+            border: 1px solid #f1f5f9;
+        }
+
+        .continue-card {
+            min-width: 280px;
+            max-width: 280px;
+        }
+    </style>
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="https://userkv.r2.mayar.id/landing-page/assets/nuqthah-kind-kingdom-2402/2ef2247a_file_0000000005ac82469e639ea2dfd71b0e.png" />
+    <link rel="manifest" href="/manifest.json" />
 </head>
 
-<body>
-  <!---
-  <!-- Splash -->
-  <div aria-hidden="true" id="splash">
-    <div class="splash-inner">
-      <div class="splash-logo"><span class="logo-mark">N</span></div>
-      <div class="splash-text">NUQTHAH</div>
+<body class="text-gray-800 overflow-x-hidden pt-12 md:pt-16">
+
+    <!-- TOAST CONTAINER (Z-Index Tertinggi agar selalu di atas modal) -->
+    <div id="toast-container" aria-live="polite"
+        class="fixed top-16 right-3 left-3 sm:left-auto sm:right-5 z-[999999999] flex flex-col items-end gap-2.5 pointer-events-none">
     </div>
-  </div>
-  <div class="mobile-top-title" id="mobileTopTitle">Nuqthah Learning Center</div>
-  <!-- PATCH: LIVIN NAV START -->
-  <!-- MOBILE TOPBAR (Livin-like) -->
-  <header aria-label="Mobile top bar" class="m-topbar" id="mTopbar">
-    <div class="m-topbar-inner">
-      <button aria-label="Profil / Home" class="m-prof" data-go="home" type="button">
-        <span class="m-ava">NH</span>
-        <span class="m-prof-txt">
-          <span class="m-prof-name">NUQTHAH</span>
-          <span class="m-prof-sub">learning center</span>
-        </span>
-      </button>
-      <div class="m-topbar-actions">
-        <!-- YouTube -->
-        <a aria-label="YouTube" class="m-ic" href="https://youtube.com/@malakahproject?si=OwHFEiYDYSlSgAl0"
-          rel="noopener" target="_blank">
-          <img alt="YouTube" class="m-ic-img" src="assets/icon/yt.png" />
-        </a>
-        <!-- Instagram -->
-        <a aria-label="Instagram" class="m-ic" href="https://www.instagram.com/markaznuqthah_?igsh=MTBiMmo3MXE5MDdsZA=="
-          rel="noopener" target="_blank">
-          <img alt="Instagram" class="m-ic-img" src="assets/icon/ig.png" />
-        </a>
-        <!-- Whatsapp -->
-        <a aria-label="Instagram" class="m-ic" href="https://chat.whatsapp.com/DvjPkbyggHx8zKYu3sJjq2?mode=gi_t"
-          rel="noopener" target="_blank">
-          <img alt="Whatsapp" class="m-ic-img" src="assets/icon/wa.png" />
-        </a>
-      </div>
+
+    <!-- PAGE LOADING OVERLAY -->
+    <div id="page-loading-overlay">
+        <div class="page-loading-spinner"></div>
+        <div class="text-primary text-xs font-bold tracking-widest uppercase opacity-85">Memuat Data...</div>
     </div>
-  </header>
-  <!-- MOBILE BOTTOM NAV (Livin-like) -->
-  <nav aria-label="Mobile bottom navigation" class="m-bottom-nav" id="mBottomNav">
-    <a aria-label="Beranda" class="m-nav-item" data-route="home" href="#home">
-      <span class="m-ico">🏠</span><span class="m-txt">Beranda</span>
-    </a>
-    <a aria-label="Info" class="m-nav-item" data-route="news" href="#news">
-      <span class="m-ico">📰</span><span class="m-txt">Info</span>
-    </a>
-    <!--tombol tengah besar: BIMBEL-->
-    <a aria-label="" class="m-nav-mid" data-route="explore" href="#explore">
-      <img alt="" class="m-mid-logo" src="assets/images/bimbel2.png" />
-      <!--
-      <span class="m-mid-ico" aria-hidden="true">🎯</span>
-      <span class="m-mid-txt" aria-hidden="true">Bimbel</span>-->
-    </a>
-    <a aria-label="Marketplace" class="m-nav-item" data-route="market" href="#market">
-      <span class="m-ico">🛒</span><span class="m-txt">Market</span>
-    </a>
-    <a aria-label="Pengaturan" class="m-nav-item" data-route="settings" href="#settings">
-      <span class="m-ico">⚙️</span><span class="m-txt">Setting</span>
-    </a>
-  </nav>
-  <!-- PATCH: LIVIN NAV END -->
-  <div aria-hidden="true" class="grain"></div>
-  <div class="app" id="app">
-    <!-- Top Nav (GLOBAL) -->
-    <header class="top-nav" role="banner">
-      <div class="container">
-        <div class="nav-inner">
-          <div aria-label="Kembali ke Beranda" class="brand" data-go="home" role="button" tabindex="0">
-            <div class="brand-mark">N</div>
-            <div class="brand-text">
-              <strong>Home</strong>
-              <span>SIAP • belajar lebih mudah dan fokus.</span>
+
+    <!-- NAVIGATION -->
+    <nav
+        class="main-nav fixed top-0 left-0 right-0 w-full bg-primary text-white shadow-md px-4 md:px-6 h-12 md:h-16 flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-2 md:gap-3 hover:opacity-90 transition-opacity">
+            <i class="fas fa-home text-xl md:text-2xl text-white"></i>
+            <span class="font-bold text-sm md:text-base hidden sm:inline">Beranda</span>
+        </a>
+
+        <div class="flex items-center gap-1.5 md:gap-3">
+            <!-- Trial Quiz (Tampil di mobile) -->
+            <a href="latihansoal.html"
+                class="bg-accent text-white px-3 py-1.5 md:px-4 md:py-1.5 rounded-lg font-bold text-[11px] md:text-sm hover:bg-opacity-90 transition-all shadow-sm whitespace-nowrap">
+                Trial Quiz
+            </a>
+
+            <button id="materimu-toggle-btn" onclick="toggleDrawer()"
+                class="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-2.5 py-1.5 md:px-3 md:py-1.5 rounded-lg transition-colors relative cursor-pointer">
+                <i class="far fa-bookmark"></i>
+                <span class="text-xs md:text-sm font-medium hidden sm:inline">Materimu</span>
+                <span id="materimu-badge"
+                    class="absolute -top-1 -right-1 bg-accent text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full border border-primary leading-none">0</span>
+            </button>
+
+            <div id="nav-auth-container" class="flex items-center ml-1">
+                <!-- Diisi oleh JavaScript -->
             </div>
-          </div>
-          <nav aria-label="Navigasi" class="nav-actions">
-            <button aria-label="Cari Materi" class="btn btn-soft" data-go="explore" type="button">
-              <span class="ico">🔎</span>
-              <span class="lbl">Cari Materi</span>
-              <span class="kbd">E</span>
-            </button>
-            <button aria-label="Tips Fokus" class="btn btn-soft" data-go="tips" type="button">
-              <span class="ico">🎯</span>
-              <span class="lbl">Tips Fokus</span>
-              <span class="kbd">T</span>
-            </button>
-            <button aria-label="Pengaturan" class="btn btn-icon" data-go="settings" title="Pengaturan" type="button">
-              ⚙️
-            </button>
-          </nav>
         </div>
-      </div>
-    </header>
-    <main class="page-shell" id="pageShell">
-      <!-- HOME -->
-      <section class="route" data-route="home" id="route-home">
-        <!-- HERO TEACHER MARQUEE (3 rows, infinite) -->
-        <section aria-label="Pengajar" class="teacher-marquee" id="teacherMarquee">
-          <div class="container">
-            <div class="tm-shell">
-              <div class="tm-row" data-row="1">
-                <div class="tm-track">
-                  <!-- Row 1: 10 cards (duplicated in markup for seamless loop) -->
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ahmad - Pengajar Fikih">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Ahmad" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Ahmad</div>
-                      <div class="tm-role">Pengajar Fikih</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Bilal - Pengajar Tauhid">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Bilal" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Bilal</div>
-                      <div class="tm-role">Pengajar Tauhid</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Hasan - Pengajar Bimbel">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Hasan" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Hasan</div>
-                      <div class="tm-role">Pengajar Bimbel</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Yusuf - Pengajar Nahwu">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Yusuf" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Yusuf</div>
-                      <div class="tm-role">Pengajar Nahwu</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ali - Pengajar Sharaf">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Ali" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Ali</div>
-                      <div class="tm-role">Pengajar Sharaf</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Umar - Pengajar Balaghah">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Umar" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Umar</div>
-                      <div class="tm-role">Pengajar Balaghah</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Zaid - Pengajar Mantiq">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Zaid" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Zaid</div>
-                      <div class="tm-role">Pengajar Mantiq</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Musa - Pengajar Adabul Bahs">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Musa" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Musa</div>
-                      <div class="tm-role">Pengajar Adabul Bahs</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Salman - Pengajar Bahasa">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Salman" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Salman</div>
-                      <div class="tm-role">Pengajar Bahasa</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Khalid - Pengajar Akademik">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Khalid" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Khalid</div>
-                      <div class="tm-role">Pengajar Akademik</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ahmad - Pengajar Fikih">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Ahmad" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Ahmad</div>
-                      <div class="tm-role">Pengajar Fikih</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Bilal - Pengajar Tauhid">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Bilal" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Bilal</div>
-                      <div class="tm-role">Pengajar Tauhid</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Hasan - Pengajar Bimbel">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Hasan" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Hasan</div>
-                      <div class="tm-role">Pengajar Bimbel</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Yusuf - Pengajar Nahwu">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Yusuf" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Yusuf</div>
-                      <div class="tm-role">Pengajar Nahwu</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ali - Pengajar Sharaf">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Ali" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Ali</div>
-                      <div class="tm-role">Pengajar Sharaf</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Umar - Pengajar Balaghah">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Umar" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Umar</div>
-                      <div class="tm-role">Pengajar Balaghah</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Zaid - Pengajar Mantiq">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Zaid" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Zaid</div>
-                      <div class="tm-role">Pengajar Mantiq</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Musa - Pengajar Adabul Bahs">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Musa" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Musa</div>
-                      <div class="tm-role">Pengajar Adabul Bahs</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Salman - Pengajar Bahasa">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Salman" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Salman</div>
-                      <div class="tm-role">Pengajar Bahasa</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Khalid - Pengajar Akademik">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Khalid" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Khalid</div>
-                      <div class="tm-role">Pengajar Akademik</div>
-                    </div>
-                  </article>
+    </nav>
+
+    <!-- DRAWER OVERLAY -->
+    <div id="drawer-overlay" onclick="toggleDrawer()"
+        class="fixed inset-0 bg-black/60 transition-opacity duration-300 opacity-0 pointer-events-none"></div>
+
+    <!-- MATERIMU DRAWER -->
+    <div id="materimu-drawer"
+        class="fixed inset-y-0 right-0 w-full max-w-[320px] md:max-w-[400px] bg-white shadow-2xl transition-transform duration-300 flex flex-col translate-x-full">
+        <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-primary text-white">
+            <div class="flex flex-col min-w-0 pr-2">
+                <div class="flex items-center gap-2">
+                    <h2 class="text-base md:text-lg font-bold truncate">Materi Tersimpan</h2>
+                    <span id="drawer-count-badge"
+                        class="bg-accent px-2 py-0.5 rounded-full text-[10px] font-bold uppercase whitespace-nowrap">0</span>
                 </div>
-              </div>
-              <div class="tm-row" data-row="2">
-                <div class="tm-track">
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Yusuf - Pengajar Nahwu">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Yusuf" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Yusuf</div>
-                      <div class="tm-role">Pengajar Nahwu</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ali - Pengajar Sharaf">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Ali" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Ali</div>
-                      <div class="tm-role">Pengajar Sharaf</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Umar - Pengajar Balaghah">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Umar" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Umar</div>
-                      <div class="tm-role">Pengajar Balaghah</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Zaid - Pengajar Mantiq">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Zaid" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Zaid</div>
-                      <div class="tm-role">Pengajar Mantiq</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Musa - Pengajar Adabul Bahs">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Musa" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Musa</div>
-                      <div class="tm-role">Pengajar Adabul Bahs</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Salman - Pengajar Bahasa">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Salman" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Salman</div>
-                      <div class="tm-role">Pengajar Bahasa</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Khalid - Pengajar Akademik">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Khalid" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Khalid</div>
-                      <div class="tm-role">Pengajar Akademik</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ahmad - Pengajar Fikih">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Ahmad" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Ahmad</div>
-                      <div class="tm-role">Pengajar Fikih</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Bilal - Pengajar Tauhid">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Bilal" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Bilal</div>
-                      <div class="tm-role">Pengajar Tauhid</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Hasan - Pengajar Bimbel">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Hasan" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Hasan</div>
-                      <div class="tm-role">Pengajar Bimbel</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Yusuf - Pengajar Nahwu">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Yusuf" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Yusuf</div>
-                      <div class="tm-role">Pengajar Nahwu</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ali - Pengajar Sharaf">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Ali" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Ali</div>
-                      <div class="tm-role">Pengajar Sharaf</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Umar - Pengajar Balaghah">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Umar" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Umar</div>
-                      <div class="tm-role">Pengajar Balaghah</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Zaid - Pengajar Mantiq">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Zaid" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Zaid</div>
-                      <div class="tm-role">Pengajar Mantiq</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Musa - Pengajar Adabul Bahs">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Musa" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Musa</div>
-                      <div class="tm-role">Pengajar Adabul Bahs</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Salman - Pengajar Bahasa">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Salman" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Salman</div>
-                      <div class="tm-role">Pengajar Bahasa</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Khalid - Pengajar Akademik">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Khalid" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Khalid</div>
-                      <div class="tm-role">Pengajar Akademik</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Ahmad - Pengajar Fikih">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Ahmad" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Ahmad</div>
-                      <div class="tm-role">Pengajar Fikih</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Bilal - Pengajar Tauhid">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Bilal" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Bilal</div>
-                      <div class="tm-role">Pengajar Tauhid</div>
-                    </div>
-                  </article>
-                  <article class="tm-card" tabindex="0" role="button" aria-label="Ust. Hasan - Pengajar Bimbel">
-                    <div class="tm-avatar">
-                      <img src="assets/images/nu.png" alt="Ust. Hasan" loading="lazy" decoding="async"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');" />
-                      <span class="tm-fallback" aria-hidden="true">U</span>
-                    </div>
-                    <div class="tm-text">
-                      <div class="tm-name">Ust. Hasan</div>
-                      <div class="tm-role">Pengajar Bimbel</div>
-                    </div>
-                  </article>
-                </div>
-              </div>
-
-
+                <span id="drawer-user-email" class="text-[10px] md:text-[11px] text-gray-300 truncate mt-0.5">Memuat
+                    email...</span>
             </div>
-          </div>
-        </section>
+            <button id="close-drawer" onclick="toggleDrawer()"
+                class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 shrink-0"><i
+                    class="fas fa-times"></i></button>
+        </div>
 
-        <!-- 3 tombol pilihan materi (Online / Offline / Intensif)
-             Lokasi: tepat di bawah slider (sesuai kotak biru di foto)
-        -->
-        <!---(Online / Offline / Intensif)
-        Lokasi: tepat di bawah slider (sesuai kotak biru di foto)
-        -->
-        <section aria-label="Pilih jenis bimbel" class="home-material-modes">
-          <div class="container">
-            <div class="mode-actions">
-              <a aria-label="Bimbel Online" class="btn btn-soft mode-btn" data-route="explore" href="#explore">
-                <span class="ico">🌐</span>
-                <span class="lbl">Bimbel Online</span>
-              </a>
-              <a aria-label="Bimbel Offline" class="btn btn-soft mode-btn" data-route="offline" href="#offline">
-                <span class="ico">🏫</span>
-                <span class="lbl">Bimbel Offline</span>
-              </a>
-              <a aria-label="Pembelajaran Intensif" class="btn btn-soft mode-btn" data-route="intensif"
-                href="#intensif">
-                <span class="ico">⚡</span>
-                <span class="lbl">Pembelajaran Intensif</span>
-              </a>
+        <div class="border-b border-gray-100 bg-gray-50/80">
+            <button id="toggle-manual-form" onclick="toggleManualForm()"
+                class="w-full px-5 py-4 flex items-center justify-between text-xs font-bold text-primary uppercase">
+                <div class="flex items-center gap-2"><i class="fas fa-link text-accent"></i><span>Tambah dari
+                        Link</span></div>
+                <i id="manual-chevron" class="fas fa-chevron-down transition-transform"></i>
+            </button>
+            <div id="manual-form-container" class="px-5 pb-5 space-y-3 hidden">
+                <input type="text" id="manual-name" placeholder="Nama Materi"
+                    class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-primary">
+                <input type="url" id="manual-link" placeholder="Link Produk / Daftar"
+                    class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-primary">
+                <button id="save-manual-btn" onclick="saveManualMaterial()"
+                    class="w-full py-2.5 bg-primary text-white text-xs font-bold rounded-lg shadow-sm">Simpan</button>
             </div>
-          </div>
-        </section>
-        <section class="hero-wrap">
-          <div class="container">
-            <div class="home-grid">
-              <!-- HERO / PLATFORM CARD -->
-              <div class="card hero-card" data-area="hero">
-                <div class="hero-top">
-                  <div class="hero-copy">
-                    <!----
-                    <h1 class="hero-title">Platform pembelajaran MASISIR.</h1>
-                    <p class="hero-sub">
-                      Disini MASISIR akan lebih mudah menemukan manteri perkulian atau kajian internsif bersama
-                      <b>Nuqthah Learning Center</Center></b>.
+        </div>
+
+        <div id="drawer-content" class="flex-grow overflow-y-auto p-4 space-y-3">
+            <div id="drawer-empty" class="h-full flex flex-col items-center justify-center text-center p-8 opacity-40">
+                <i class="far fa-bookmark text-5xl mb-4 text-primary"></i>
+                <p class="text-sm font-medium">Belum ada materi yang disimpan.</p>
+                <p class="text-[11px] mt-1 text-gray-500">Materi yang Anda beli akan otomatis muncul di sini.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= DASHBOARD SISWA (HERO SECTION) ================= -->
+    <section class="max-w-screen-xl mx-auto px-4 md:px-6 py-6 md:py-8" id="student-dashboard">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
+
+            <!-- Kartu Sambutan & Ringkasan -->
+            <div
+                class="md:col-span-2 bg-gradient-to-br from-primary to-primarydark text-white rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-lg">
+                <!-- Ornamen Background -->
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-white opacity-5 rounded-full blur-2xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-accent opacity-10 rounded-full blur-xl"></div>
+
+                <div class="relative z-10">
+                    <p class="text-accent text-sm font-bold tracking-widest uppercase mb-2">Assalamu'alaikum,</p>
+                    <h1 id="dashboard-greeting" class="text-2xl md:text-3xl font-bold mb-4">Siswa Nuqthah</h1>
+                    <p class="text-gray-200 text-sm md:text-base max-w-md mb-6 leading-relaxed">
+                        Teruslah menuntut ilmu, karena ilmu adalah cahaya. Lanjutkan progres belajarmu hari ini.
                     </p>
-                    --->
-                  </div>
-                </div>
-                <!-- QUICK FILTER -->
-                <div class="quick-filter">
-                  <div class="qf-head">
-                    <div class="qf-title"><span class="emoji"></span> ruang belajar</div>
-                    <!---<div class="qf-sub">Tap kategori untuk langsung memfilter materi di halaman “Cari Materi”.</div>---->
-                  </div>
-                  <div aria-label="Pelajaran favorit" class="home-subjects" id="homeQuickChips"></div>
-                </div>
 
-                <!-- PAKET PILIHAN (4 tiles) -->
-                <div class="card packages-card" data-area="packages">
-                  <div class="packages-head">
-                    <div class="packages-title-row">
-                      <!--- <div class="packages-title">Paket Pilihan</div>
-                      <div class="packages-hint">Pilih paket untuk melihat gabungan materi.</div>---->
-                    </div>
-                  </div>
-
-                  <div class="packages-grid" id="homePackageTiles" aria-label="Paket pilihan">
-                    <div class="pkg-tile" data-to="paket-online" role="button" tabindex="0"
-                      aria-label="Paket Bimbel Online">
-                      <div class="pkg-thumb online"></div>
-                      <div class="pkg-name">Paket Bimbel Online</div>
-                      <a class="btn soft pkg-action" href="#paket-online" data-route="paket-online">Lihat Paket</a>
-                    </div>
-
-                    <div class="pkg-tile" data-to="paket-offline" role="button" tabindex="0"
-                      aria-label="Paket Bimbel Offline">
-                      <div class="pkg-thumb offline"></div>
-                      <div class="pkg-name">Paket Bimbel Offline</div>
-                      <a class="btn soft pkg-action" href="#paket-offline" data-route="paket-offline">Lihat Paket</a>
-                    </div>
-
-                    <div class="pkg-tile" data-to="paket-intensif" role="button" tabindex="0"
-                      aria-label="Paket Intensif">
-                      <div class="pkg-thumb intensif"></div>
-                      <div class="pkg-name">Paket Intensif</div>
-                      <a class="btn soft pkg-action" href="#paket-intensif" data-route="paket-intensif">Lihat Paket</a>
-                    </div>
-
-                    <div class="pkg-tile" data-to="tanya-langsung" role="button" tabindex="0"
-                      aria-label="Tanya Langsung">
-                      <div class="pkg-thumb chat"></div>
-                      <div class="pkg-name">Tanya Langsung</div>
-                      <a class="btn soft pkg-action" href="#tanya-langsung" data-route="tanya-langsung">Chat
-                        Konsultan</a>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- PROMO 
-                <div class="promo-card">
-
-                  <div class="promo-actions">
-                    <a class="btn" href="#focus" data-route="focus">Mulai Fokus</a>
-                    <a class="btn soft" href="#news" data-route="news">Info Masisir</a>
-                    <a class="btn" href="#teacher" data-route="teacher">Profil Pengajar</a>
-                    <a class="btn soft" href="#market" data-route="market">Marketplace</a>
-
-
-                  </div>
-                </div>-->
-              </div>
-              <!-- TEACHER REGISTRATION -->
-              <div class="card reg-card reg-teacher" data-area="teachreg">
-                <div class="reg-head">
-                  <div class="reg-title">Daftar jadi Pengajar Bimbel</div>
-                  <div class="reg-pill">Pendidikan S2 (minimal)</div>
-                </div>
-                <div class="reg-desc">Daftar ke admin untuk verifikasi. Tulis profil singkat &amp; bidang pengajaran.
-                </div>
-                <a class="btn primary" id="btnRegisterTeacher">Daftar jadi Pengajar disini</a>
-              </div>
-              <!-- TEACHER PROFILE -->
-              <div class="card teacher-profile" data-area="teacher">
-                <div class="tp-media">
-                  <img alt="Profil pengajar"
-                    onerror="this.style.display='none'; this.parentElement.classList.add('noimg');"
-                    src="./assets/images/nu.png" />
-                  <!---<div class="tp-fallback">M</div>---->
-                </div>
-                <div class="tp-info-box">
-                  <div class="tp-kicker">Profil Para Pengajar </div>
-                  <div class="tp-name">Nuqthah Learning Center
-                  </div>
-                  <div class="tp-meta">Profesional • Berpengalaman • Akademisi</div>
-                  <!----
-                  <div class="tp-desc">
-                    Profil pengajar bisa kamu ganti — simpan file <b>teacher.jpg</b> di <code>assets/images</code>.
-                  </div>
-                  -->
-                  <div class="tp-actions">
-                    <a class="btn" data-route="teacher" href="#teacher">Lihat Profil Pengajar</a>
-                  </div>
-                </div>
-              </div>
-              <!-- BENEFITS -->
-              <div class="card benefits-card" data-area="benefits">
-                <div class="benef-head">
-                  <div class="benef-title">Belajar terarah &amp; nyaman</div>
-                  <div class="benef-sub">Fokus pada materi, minim distraksi.</div>
-                </div>
-                <div class="benef-list">
-                  <div class="benef-item"><span class="check">✅</span> Rencana belajar bertahap</div>
-                  <div class="benef-item"><span class="check">✅</span> Progres &amp; catatan tersimpan</div>
-                  <div class="benef-item"><span class="check">✅</span> Preview dulu sebelum buka</div>
-                </div>
-                <div class="benef-actions">
-                  <a class="btn primary" data-route="explore" href="#explore">Cari Materi</a>
-                  <a class="btn" data-route="focus" href="#focus">Mode Fokus</a>
-                </div>
-              </div>
-              <a class="btn" data-route="focus" href="#focus">Mode Fokus</a>
-              <a class="btn soft" data-route="news" href="#news">Info Mahasiswa</a>
-              <!-- SELLER REGISTRATION -->
-              <div class="card reg-card reg-seller" data-area="sellerreg">
-                <div class="reg-head">
-                  <div class="reg-title">Daftar jadi Seller</div>
-                  <div class="reg-pill">Marketplace (tambahan)</div>
-                </div>
-                <div class="reg-desc">Jika ingin jualan di Marketplace, daftar ke admin. Sertakan juga nomor WhatsApp
-                  kamu.</div>
-                <a class="btn primary" id="btnRegisterSeller">Daftar Seller (WA Admin)</a>
-                <div class="reg-note">Catatan: foto produk bisa diupload setelah admin mengaktifkan role seller.</div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <!-- TEACHER (Profil Lengkap Pengajar) -->
-        <section aria-label="Profil Pengajar" class="route" data-route="teacher" id="route-teacher">
-          <section class="section">
-            <div class="container">
-              <div class="section-title">Profil Pengajar 👨‍🏫</div>
-              <div class="panel">
-                <div class="panel-bd">
-                  <div class="teacher-profile" style="margin:0;">
-                    <div class="tp-media">
-                      <img alt="Profil pengajar"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');"
-                        src="./assets/images/nu.png" />
-                      <div class="tp-fallback">M</div>
-                    </div>
-                    <div class="tp-info-box">
-                      <div class="tp-kicker">Pengajar</div>
-                      <div class="tp-name">Ust Alfian Qotrunnnnn. Sl.M</div>
-                      <div class="tp-meta">Bimbingan • Bahasa • Akademik</div>
-                      <!-- 
-                      <div class="tp-desc">
-                        Profil pengajar bisa kamu ganti — simpan file <b>teacher.jpg</b> di <code>assets/images</code>.
-                      </div>  -->
-                      <!-- Info lengkap (silakan tambah detail teks di sini tanpa menghapus yang lama) -->
-                      <div class="muted" style="margin-top:10px;">
-                        <b>Profil Lengkap:</b>
-                        <div style="margin-top:6px;">
-                          • Fokus: Bimbingan bahasa &amp; akademik<br />
-                          • Metode: Terarah, bertahap, dan nyaman<br />
-                          • Catatan: Konten ini bisa kamu kembangkan sesuai kebutuhan profil
+                    <!-- Grid 2 Kolom di Mobile agar sejajar dan compact -->
+                    <div class="grid grid-cols-2 gap-2 md:flex md:gap-4 mt-6">
+                        <div
+                            class="bg-white/10 backdrop-blur-md rounded-xl p-2.5 md:p-3 px-3 md:px-4 flex items-center gap-2 md:gap-3 border border-white/10">
+                            <div
+                                class="w-8 h-8 md:w-10 md:h-10 bg-accent rounded-lg flex items-center justify-center shrink-0">
+                                <i class="fas fa-book-open text-white text-xs md:text-base"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p
+                                    class="text-[9px] md:text-[10px] text-gray-300 uppercase tracking-wider font-bold truncate">
+                                    Materi Terbuka</p>
+                                <p id="stat-purchased" class="text-base md:text-xl font-bold">0</p>
+                            </div>
                         </div>
-                      </div>
-                      <div class="tp-actions" style="margin-top:14px;">
-                        <a class="btn" data-route="explore" href="#explore">Lihat Materi</a>
-                        <a class="btn btn-soft" data-route="home" href="#home">Kembali</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-          <section class="section">
-            <div class="container">
-              <div class="panel">
-                <div class="panel-bd">
-                  <div class="teacher-profile" style="margin:0;">
-                    <div class="tp-media">
-                      <img alt="Profil pengajar"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');"
-                        src="./assets/images/nu.png" />
-                      <div class="tp-fallback">M</div>
-                    </div>
-                    <div class="tp-info-box">
-                      <div class="tp-kicker">Pengajar</div>
-                      <div class="tp-name">Ust Alfian Qotrunnnnn. Sl.M</div>
-                      <div class="tp-meta">Bimbingan • Bahasa • Akademik</div>
-                      <!-- 
-                      <div class="tp-desc">
-                        Profil pengajar bisa kamu ganti — simpan file <b>teacher.jpg</b> di <code>assets/images</code>.
-                      </div>
--->
-                      <!-- Info lengkap (silakan tambah detail teks di sini tanpa menghapus yang lama) -->
-                      <div class="muted" style="margin-top:10px;">
-                        <b>Profil Lengkap:</b>
-                        <div style="margin-top:6px;">
-                          • Fokus: Bimbingan bahasa &amp; akademik<br />
-                          • Metode: Terarah, bertahap, dan nyaman<br />
-                          • Catatan: Konten ini bisa kamu kembangkan sesuai kebutuhan profil
+                        <div
+                            class="bg-white/10 backdrop-blur-md rounded-xl p-2.5 md:p-3 px-3 md:px-4 flex items-center gap-2 md:gap-3 border border-white/10">
+                            <div
+                                class="w-8 h-8 md:w-10 md:h-10 bg-white/20 rounded-lg flex items-center justify-center shrink-0">
+                                <i class="fas fa-certificate text-white text-xs md:text-base"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p
+                                    class="text-[9px] md:text-[10px] text-gray-300 uppercase tracking-wider font-bold truncate">
+                                    Status Akun</p>
+                                <p id="stat-status" class="text-xs md:text-sm font-bold truncate">Guest</p>
+                            </div>
                         </div>
-                      </div>
-                      <div class="tp-actions" style="margin-top:14px;">
-                        <a class="btn" data-route="explore" href="#explore">Lihat Materi</a>
-                        <a class="btn btn-soft" data-route="home" href="#home">Kembali</a>
-                      </div>
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </section>
-          <section class="section">
-            <div class="container">
-              <div class="panel">
-                <div class="panel-bd">
-                  <div class="teacher-profile" style="margin:0;">
-                    <div class="tp-media">
-                      <img alt="Profil pengajar"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');"
-                        src="./assets/images/nu.png" />
-                      <div class="tp-fallback">M</div>
-                    </div>
-                    <div class="tp-info-box">
-                      <div class="tp-kicker">Pengajar</div>
-                      <div class="tp-name">Ust Alfian Qotrunnnnn. Sl.M</div>
-                      <div class="tp-meta">Bimbingan • Bahasa • Akademik</div>
-                      <!-- 
-                      <div class="tp-desc">
-                        Profil pengajar bisa kamu ganti — simpan file <b>teacher.jpg</b> di <code>assets/images</code>.
-                      </div>
--->
-                      <!-- Info lengkap (silakan tambah detail teks di sini tanpa menghapus yang lama) -->
-                      <div class="muted" style="margin-top:10px;">
-                        <b>Profil Lengkap:</b>
-                        <div style="margin-top:6px;">
-                          • Fokus: Bimbingan bahasa &amp; akademik<br />
-                          • Metode: Terarah, bertahap, dan nyaman<br />
-                          • Catatan: Konten ini bisa kamu kembangkan sesuai kebutuhan profil
+
+            <!-- Kartu Jadwal Terdekat (Dinamis dari Supabase) -->
+            <div
+                class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex flex-col justify-center relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full"></div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+                            <i class="far fa-calendar-alt text-lg"></i>
                         </div>
-                      </div>
-                      <div class="tp-actions" style="margin-top:14px;">
-                        <a class="btn" data-route="explore" href="#explore">Lihat Materi</a>
-                        <a class="btn btn-soft" data-route="home" href="#home">Kembali</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-          <section class="section">
-            <div class="container">
-              <div class="panel">
-                <div class="panel-bd">
-                  <div class="teacher-profile" style="margin:0;">
-                    <div class="tp-media">
-                      <img alt="Profil pengajar"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('noimg');"
-                        src="./assets/images/nu.png" />
-                      <div class="tp-fallback">M</div>
-                    </div>
-                    <div class="tp-info-box">
-                      <div class="tp-kicker">Pengajar</div>
-                      <div class="tp-name">Ust Alfian Qotrunnnnn. Sl.M</div>
-                      <div class="tp-meta">Bimbingan • Bahasa • Akademik</div>
-                      <!-- 
-                      <div class="tp-desc">
-                        Profil pengajar bisa kamu ganti — simpan file <b>teacher.jpg</b> di <code>assets/images</code>.
-                      </div>
--->
-                      <!-- Info lengkap (silakan tambah detail teks di sini tanpa menghapus yang lama) -->
-                      <div class="muted" style="margin-top:10px;">
-                        <b>Profil Lengkap:</b>
-                        <div style="margin-top:6px;">
-                          • Fokus: Bimbingan bahasa &amp; akademik<br />
-                          • Metode: Terarah, bertahap, dan nyaman<br />
-                          • Catatan: Konten ini bisa kamu kembangkan sesuai kebutuhan profil
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-sm">Jadwal Terdekat</h3>
+                            <p class="text-[11px] text-gray-500">Kelas online & offline</p>
                         </div>
-                      </div>
-                      <div class="tp-actions" style="margin-top:14px;">
-                        <a class="btn" data-route="explore" href="#explore">Lihat Materi</a>
-                        <a class="btn btn-soft" data-route="home" href="#home">Kembali</a>
-                      </div>
                     </div>
-                  </div>
                 </div>
-              </div>
+                <div id="dashboard-schedule"
+                    class="bg-gray-50 rounded-xl p-4 text-center border border-gray-100 border-dashed flex-grow flex flex-col justify-center items-center relative min-h-[140px]">
+                    <!-- Diisi oleh JS -->
+                    <i class="fas fa-mug-hot text-gray-300 text-2xl mb-2 animate-pulse"></i>
+                    <p class="text-xs text-gray-500 font-medium">Memuat jadwal...</p>
+                </div>
             </div>
-          </section>
-        </section>
-        <footer class="container foot">
-          © <span id="year"></span> Masisir — Nuqthah Learning Center • Cairo, Mesir
-        </footer>
-      </section>
-      <!-- TEACH NEEDS / DAFTAR PENGAJAR -->
-      <section aria-label="Info Pengajar" class="route" data-route="teach" id="route-teach">
-        <div class="container">
-          <div class="section-head">
-            <h2>Materi yang akan diajarkan</h2>
-            <p class="muted">Di sini kamu bisa lihat materi apa saja yang tersedia, dan apakah masih dibutuhkan pengajar
-              untuk tiap materi.</p>
-          </div>
-          <div class="panel">
-            <div class="panel-bd">
-              <div class="muted" id="teachNeedSummary"></div>
-              <div class="class-grid" id="teachNeedGrid" style="margin-top:14px;"></div>
-              <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
-                <button class="btn btn-soft" data-go="home" type="button">Kembali</button>
-                <button class="btn primary" id="teachRegisterBtn" type="button">Daftar Pengajar (WA Admin)</button>
-              </div>
-            </div>
-          </div>
         </div>
-      </section>
-      <!-- EXPLORE -->
-      <section class="route" data-route="explore" id="route-explore">
-        <section class="section">
-          <div class="container">
-            <!-- Sticky header (tidak ikut scroll) -->
-            <div class="explore-sticky">
-              <!-- PATCH: BIMBEL TABS START -->
-              <div aria-label="Pilihan Bimbel" class="bimbel-tabs" role="tablist">
-                <a class="btab" data-tab="explore" href="#explore">Bimbel Online</a>
-                <a class="btab" data-tab="offline" href="#offline">Bimbel Offline</a>
-                <a class="btab" data-tab="intensif" href="#intensif">Intensif</a>
-              </div>
-              <!-- PATCH: BIMBEL TABS END -->
-              <div class="section-title-row">
-                <div class="section-title">Cari Materi 🔎</div>
-              </div>
-              <div class="toolbar">
-                <div class="search">
-                  <div class="icon">🔎</div>
-                  <input autocomplete="off" id="searchInput" placeholder="Cari materi… " type="text" />
-                  <button aria-label="Hapus pencarian" class="clear" id="clearSearch" type="button">×</button>
-                </div>
-                <div class="toolbar-right">
-                  <button class="btn" id="resetFilters" type="button">Reset</button>
-                  <button class="btn btn-primary" data-go="learn" type="button">Mode Fokus</button>
-                </div>
-              </div>
-              <div class="mini-row" id="categoryChips"></div>
-            </div>
-            <div aria-label="Daftar materi" class="card-grid" id="classGrid"></div>
-            <div class="card-grid" id="skeletonGrid" style="display:none;"></div>
-            <div class="hint-foot">Tip: klik kartu untuk preview via modal (nggak langsung buka link).</div>
-          </div>
-        </section>
-      </section>
-      <!-- BIMBEL OFFLINE (halaman baru - mirip Explore) -->
-      <section class="route" data-route="offline" id="route-offline">
-        <section class="section">
-          <div class="container">
-            <div class="explore-sticky">
-              <!-- PATCH: BIMBEL TABS START -->
-              <div aria-label="Pilihan Bimbel" class="bimbel-tabs" role="tablist">
-                <a class="btab" data-tab="explore" href="#explore">Bimbel Online</a>
-                <a class="btab" data-tab="offline" href="#offline">Bimbel Offline</a>
-                <a class="btab" data-tab="intensif" href="#intensif">Intensif</a>
-              </div>
-              <!-- PATCH: BIMBEL TABS END -->
-              <div class="section-title-row">
-                <div class="section-title">Bimbel Offline 🏫</div>
-              </div>
-              <div class="toolbar">
-                <div class="search">
-                  <div class="icon">🔎</div>
-                  <input autocomplete="off" id="searchInputOffline" placeholder="Cari materi offline… " type="text" />
-                  <button aria-label="Hapus pencarian" class="clear" id="clearSearchOffline" type="button">×</button>
-                </div>
-                <div class="toolbar-right">
-                  <button class="btn" id="resetFiltersOffline" type="button">Reset</button>
-                  <button class="btn btn-primary" data-go="learn" type="button">Mode Fokus</button>
-                </div>
-              </div>
-              <div class="mini-row" id="categoryChipsOffline"></div>
-            </div>
-            <div aria-label="Daftar materi offline" class="card-grid" id="classGridOffline"></div>
-            <div class="card-grid" id="skeletonGridOffline" style="display:none;"></div>
-            <div class="hint-foot">Tip: klik kartu untuk preview via modal (nggak langsung buka link).</div>
-          </div>
-        </section>
-      </section>
-      <!-- PEMBELAJARAN INTENSIF (halaman baru - mirip Explore) -->
-      <section class="route" data-route="intensif" id="route-intensif">
-        <section class="section">
-          <div class="container">
-            <div class="explore-sticky">
-              <!-- PATCH: BIMBEL TABS START -->
-              <div aria-label="Pilihan Bimbel" class="bimbel-tabs" role="tablist">
-                <a class="btab" data-tab="explore" href="#explore">Bimbel Online</a>
-                <a class="btab" data-tab="offline" href="#offline">Bimbel Offline</a>
-                <a class="btab" data-tab="intensif" href="#intensif">Intensif</a>
-              </div>
-              <!-- PATCH: BIMBEL TABS END -->
-              <div class="section-title-row">
-                <div class="section-title">Pembelajaran Intensif ⚡</div>
-              </div>
-              <div class="toolbar">
-                <div class="search">
-                  <div class="icon">🔎</div>
-                  <input autocomplete="off" id="searchInputIntensif" placeholder="Cari materi intensif… " type="text" />
-                  <button aria-label="Hapus pencarian" class="clear" id="clearSearchIntensif" type="button">×</button>
-                </div>
-                <div class="toolbar-right">
-                  <button class="btn" id="resetFiltersIntensif" type="button">Reset</button>
-                  <button class="btn btn-primary" data-go="learn" type="button">Mode Fokus</button>
-                </div>
-              </div>
-              <div class="mini-row" id="categoryChipsIntensif"></div>
-            </div>
-            <div aria-label="Daftar materi intensif" class="card-grid" id="classGridIntensif"></div>
-            <div class="card-grid" id="skeletonGridIntensif" style="display:none;"></div>
-            <div class="hint-foot">Tip: klik kartu untuk preview via modal (nggak langsung buka link).</div>
-          </div>
-        </section>
-      </section>
-      <!-- PAKET PAGES -->
-      <section class="route" data-route="paket-online" id="route-paket-online">
-        <section class="section">
-          <div class="container">
-            <div class="pkg-page-head">
-              <div>
-                <div class="pkgTitle">Paket Bimbel Online</div>
-                <div class="pkgSubtitle">Gabungan materi online (4 materi per paket).</div>
-              </div>
-              <a class="btn soft" href="#home" data-route="home">Kembali</a>
-            </div>
-            <div class="bundle-grid" aria-label="Daftar paket online"></div>
-          </div>
-        </section>
-      </section>
 
-      <section class="route" data-route="paket-offline" id="route-paket-offline">
-        <section class="section">
-          <div class="container">
-            <div class="pkg-page-head">
-              <div>
-                <div class="pkgTitle">Paket Bimbel Offline</div>
-                <div class="pkgSubtitle">Gabungan materi offline (4 materi per paket).</div>
-              </div>
-              <a class="btn soft" href="#home" data-route="home">Kembali</a>
+        <div id="pending-payment-section" class="mb-6 hidden">
+            <div class="flex items-center justify-between mb-3 px-1">
+                <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <i class="fas fa-credit-card text-amber-500"></i> Pembayaran Belum Selesai
+                </h2>
             </div>
-            <div class="bundle-grid" aria-label="Daftar paket offline"></div>
-          </div>
-        </section>
-      </section>
-
-      <section class="route" data-route="paket-intensif" id="route-paket-intensif">
-        <section class="section">
-          <div class="container">
-            <div class="pkg-page-head">
-              <div>
-                <div class="pkgTitle">Paket Intensif</div>
-                <div class="pkgSubtitle">Program intensif (4 materi per paket).</div>
-              </div>
-              <a class="btn soft" href="#home" data-route="home">Kembali</a>
+            <div id="pending-payment-container" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <!-- Diisi oleh JS -->
             </div>
-            <div class="bundle-grid" aria-label="Daftar paket intensif"></div>
-          </div>
-        </section>
-      </section>
-
-      <section class="route" data-route="tanya-langsung" id="route-tanya-langsung">
-        <section class="section">
-          <div class="container">
-            <div class="pkg-page-head">
-              <div>
-                <div class="pkgTitle">Tanya Langsung</div>
-                <div class="pkgSubtitle">Chat langsung dengan konsultan/pengajar.</div>
-              </div>
-              <a class="btn soft" href="#home" data-route="home">Kembali</a>
-            </div>
-            <div class="bundle-grid" aria-label="Daftar sesi konsultasi"></div>
-          </div>
-        </section>
-      </section>
-
-      <!-- TIPS -->
-      <section class="route" data-route="tips" id="route-tips">
-        <section class="section">
-          <div class="container">
-            <div class="section-title">Tips Fokus 🎯</div>
-            <div class="card-grid">
-              <div class="class-card elite" tabindex="0">
-                <div class="badge premium">FOCUS</div>
-                <h3>Ritual 7 Menit Sebelum Belajar</h3>
-                <p>Rapihin meja → set target kecil → matiin notif → minum air → buka materi. Biar otak “masuk mode”.</p>
-                <div class="meta">🧠 Fokus • ⚡ Cepat • ✅ Konsisten</div>
-              </div>
-              <div class="class-card" tabindex="0">
-                <div class="badge new">TIP</div>
-                <h3>Teknik 25/5 (Pomodoro)</h3>
-                <p>25 menit fokus, 5 menit istirahat. Ulang 3–4 ronde. Setelah itu break lebih panjang.</p>
-                <div class="meta">⏱️ Waktu • 🎯 Fokus • 🔁 Ulang</div>
-              </div>
-              <div class="class-card" tabindex="0">
-                <div class="badge popular">PRO</div>
-                <h3>Belajar “kecil tapi tiap hari”</h3>
-                <p>Lebih menang daripada nunggu mood. Target 10–15 menit pun sah, yang penting rutin.</p>
-                <div class="meta">📆 Konsisten • 📌 Ringan • 🔥 Streak</div>
-              </div>
-              <div class="class-card" tabindex="0">
-                <div class="badge new">ANTI-DRIFT</div>
-                <h3>Kalau mulai terdistraksi…</h3>
-                <p>Tulis gangguan di catatan (parking lot), balik ke materi. Otak tenang karena “nggak lupa”.</p>
-                <div class="meta">📝 Catatan • 🧊 Tenang • 🎧 Flow</div>
-              </div>
-            </div>
-            <div class="tips-actions">
-              <button class="btn btn-primary" data-go="learn" type="button">Praktek di Mode Fokus</button>
-              <button class="btn" data-go="explore" type="button">Cari Materi</button>
-            </div>
-          </div>
-        </section>
-      </section>
-      <!-- LEARN (Focus Mode) -->
-      <section class="route" data-route="learn" id="route-learn">
-        <section class="section">
-          <div class="container">
-            <div class="learn-head">
-              <div>
-                <h2>Mode Fokus ✍️</h2>
-                <p>Pilih materi di kiri → preview di kanan. Catatan &amp; progres otomatis tersimpan.</p>
-              </div>
-              <div class="learn-tools">
-                <div class="progress-mini">
-                  <span class="muted">Progres</span>
-                  <div class="bar"><i id="learnBar"></i></div>
-                  <b id="learnPct">0%</b>
-                </div>
-                <button class="btn" id="learnReset" type="button">Reset</button>
-              </div>
-            </div>
-            <div class="learn-layout">
-              <div class="panel">
-                <div class="panel-hd">
-                  <strong>Daftar Materi</strong>
-                  <span class="small" id="learnCount">0</span>
-                </div>
-                <div class="lesson-list" id="learnList"></div>
-              </div>
-              <div class="learn-main">
-                <div class="viewer">
-                  <div class="viewer-hd">
-                    <div class="title">
-                      <strong id="learnTitle">Pilih materi</strong>
-                      <span id="learnMeta">—</span>
-                    </div>
-                    <div class="viewer-actions">
-                      <button class="btn" id="learnDone" type="button">Tandai Selesai</button>
-                      <button class="btn btn-primary" id="learnOpen" type="button">Buka materi</button>
-                    </div>
-                  </div>
-                  <div class="viewer-body">
-                    <div class="viewer-empty" id="learnEmpty">Pilih satu materi untuk mulai.</div>
-                    <iframe id="learnFrame" loading="lazy" referrerpolicy="no-referrer" title="Preview materi"></iframe>
-                  </div>
-                </div>
-                <div class="notes panel">
-                  <div class="panel-hd">
-                    <strong>Catatan</strong>
-                    <span class="small">tersimpan</span>
-                  </div>
-                  <textarea id="learnNotes" placeholder="Tulis catatan di sini…"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </section>
-      <!-- NEWS -->
-      <section class="route" data-route="news" id="route-news">
-        <section class="section">
-          <div class="container">
-            <div class="news-head">
-              <div>
-                <div class="section-title">Info Mahasiswa 🇮🇩 (Al-Azhar Cairo)</div>
-                <div class="section-sub">Kabar, pengumuman organisasi, kegiatan, dan info penting.</div>
-              </div>
-              <button class="btn btn-primary" data-go="settings" type="button">Panel Reporter</button>
-            </div>
-            <div class="news-filters">
-              <div class="search small">
-                <div class="icon">🔎</div>
-                <input autocomplete="off" id="newsSearch" placeholder="Cari berita…" type="text" />
-              </div>
-              <select aria-label="Filter organisasi" class="select" id="orgFilter">
-                <option value="all">Semua organisasi</option>
-              </select>
-            </div>
-            <div aria-label="Daftar berita" class="news-grid" id="newsGrid"></div>
-            <div class="pager">
-              <button class="btn" id="newsPrev" type="button">Sebelumnya</button>
-              <div class="muted" id="newsPageInfo">—</div>
-              <button class="btn" id="newsNext" type="button">Berikutnya</button>
-            </div>
-          </div>
-        </section>
-      </section>
-      <!-- MARKETPLACE -->
-      <section aria-label="Marketplace" class="route" data-route="market" id="route-market">
-        <section class="section">
-          <div class="container">
-            <div class="market-head">
-              <div>
-                <div class="section-title">Marketplace — Barang &amp; Jasa</div>
-                <div class="section-sub">Tambahan untuk kebutuhan mahasiswa. Klik produk untuk detail &amp; foto.</div>
-              </div>
-              <button class="btn btn-primary" data-go="settings" type="button">Panel Seller</button>
-            </div>
-            <div class="market-tools">
-              <div class="search">
-                <div class="icon">🔎</div>
-                <input autocomplete="off" id="productSearch" placeholder="Cari produk / jasa…" type="search" />
-                <button aria-label="Hapus pencarian" class="clear" id="clearProductSearch" type="button">×</button>
-              </div>
-              <div aria-label="Filter jenis" class="market-filters" role="tablist">
-                <button class="chip is-active" data-filter="all" type="button">Semua</button>
-                <button class="chip" data-filter="barang" type="button">Barang</button>
-                <button class="chip" data-filter="jasa" type="button">Jasa</button>
-              </div>
-            </div>
-            <div aria-label="Daftar produk" class="product-grid" id="productGrid"></div>
-            <div class="pager">
-              <button class="btn" id="prodPrev" type="button">Sebelumnya</button>
-              <div class="muted" id="prodPageInfo">—</div>
-              <button class="btn" id="prodNext" type="button">Berikutnya</button>
-            </div>
-          </div>
-        </section>
-      </section>
-      <!-- SETTINGS -->
-      <section aria-label="Pengaturan" class="route" data-route="settings" id="route-settings">
-        <section class="section">
-          <div class="container">
-            <div class="section-title">Pengaturan ⚙️</div>
-            <div class="grid-2">
-              <div class="panel">
-                <div class="panel-hd">
-                  <strong>Tampilan</strong>
-                  <span class="small">Tema</span>
-                </div>
-                <div class="panel-bd">
-                  <div class="row-between">
-                    <div>
-                      <b>Mode gelap</b>
-                      <div class="muted">Preferensi tersimpan di perangkat.</div>
-                    </div>
-                    <button class="btn btn-soft" id="darkToggleSettings" type="button">Toggle</button>
-                  </div>
-                </div>
-              </div>
-              <div class="panel">
-                <div class="panel-hd">
-                  <strong>Admin</strong>
-                  <span class="small">Seller / Reporter</span>
-                </div>
-                <div class="panel-bd">
-                  <p class="muted">
-                    Untuk menambah produk/berita, admin harus mengaktifkan nomor WhatsApp sebagai <b>Seller</b> atau
-                    <b>Reporter</b>.
-                    Untuk sekarang, daftar ke admin dulu (WA), dan minta admin menambahkan nomor kamu ke sistem.
-                  </p>
-                  <div class="admin-gate">
-                    <label class="muted" for="adminWA">Nomor WhatsApp kamu</label>
-                    <input autocomplete="off" class="input" id="adminWA" placeholder="contoh: 62812..." type="tel" />
-                    <div class="admin-actions">
-                      <button class="btn" id="unlockSeller" type="button">Unlock Seller</button>
-                      <button class="btn" id="unlockReporter" type="button">Unlock Reporter</button>
-                      <button class="btn" id="lockAdmin" type="button">Lock</button>
-                    </div>
-                    <div class="muted" id="adminStatus">Status: terkunci</div>
-                  </div>
-                  <div class="admin-panels">
-                    <div aria-label="Panel Seller" class="admin-panel" hidden="" id="sellerPanel">
-                      <div class="panel-hd2">
-                        <strong>Tambah Produk</strong>
-                        <span class="small">disimpan (hybrid)</span>
-                      </div>
-                      <div class="form">
-                        <input class="input" id="pName" placeholder="Nama produk/jasa" />
-                        <textarea class="input" id="pDesc" placeholder="Deskripsi singkat"></textarea>
-                        <div class="grid-2 tight">
-                          <input class="input" id="pPrice" placeholder="Harga (contoh: 25.000)" />
-                          <select class="select" id="pType">
-                            <option value="barang">Barang</option>
-                            <option value="jasa">Jasa</option>
-                          </select>
-                        </div>
-                        <input class="input" id="pSellerWA" placeholder="WA penjual (contoh: 62812...)" />
-                        <label class="muted">Foto produk (bisa lebih dari 1) — otomatis dikompres sebelum
-                          disimpan</label>
-                        <input accept="image/*" class="input" id="pImages" multiple="" type="file" />
-                        <button class="btn btn-primary" id="addProduct" type="button">Simpan Produk</button>
-                        <div class="muted">
-                          Jika gagal upload (perangkat berat / storage penuh), kirim foto ke admin untuk ditambahkan
-                          manual.
-                        </div>
-                      </div>
-                    </div>
-                    <div aria-label="Panel Reporter" class="admin-panel" hidden="" id="reporterPanel">
-                      <div class="panel-hd2">
-                        <strong>Tambah Berita</strong>
-                        <span class="small">organisasi &amp; kategori</span>
-                      </div>
-                      <div class="form">
-                        <input class="input" id="nTitle" placeholder="Judul berita" />
-                        <textarea class="input" id="nBody" placeholder="Isi berita (ringkas &amp; jelas)"></textarea>
-                        <div class="grid-2 tight">
-                          <input class="input" id="nOrg" placeholder="Nama organisasi (contoh: PPMI / DKKM / Senat)" />
-                          <input class="input" id="nField"
-                            placeholder="Bidang (contoh: sosial / pendidikan / olahraga)" />
-                        </div>
-                        <label class="muted">Foto berita (opsional) — otomatis dikompres</label>
-                        <input accept="image/*" class="input" id="nImage" type="file" />
-                        <button class="btn btn-primary" id="addNews" type="button">Simpan Berita</button>
-                        <div class="muted">
-                          Catatan reporter: sertakan <b>nama organisasi</b> &amp; <b>bidang</b> agar berita bisa
-                          dikategorikan.
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="mini-actions">
-                    <button class="btn" id="btnRegisterSeller2" type="button">Daftar Seller (WA Admin)</button>
-                    <button class="btn" id="btnRegisterReporter" type="button">Daftar Reporter (WA Admin)</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <footer class="container foot subtle">
-              Tip: simpan foto profil pengajar di <b>assets/images/teacher.jpg</b>.
-            </footer>
-          </div>
-        </section>
-      </section>
-    </main>
-    <!-- Modal (Preview: materi & produk) -->
-    <div aria-hidden="true" class="modal-overlay" id="modalOverlay">
-      <div aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog">
-        <div class="modal-header">
-          <div class="modal-title">
-            <strong id="modalTitle">Preview</strong>
-            <span id="modalSubtitle">—</span>
-          </div>
-          <button aria-label="Tutup" class="modal-close" id="modalClose" type="button">×</button>
         </div>
-        <div class="modal-body">
-          <div class="preview" id="modalPreview">
-            <div class="ph" id="modalPlaceholder">Loading preview…</div>
-            <!-- For products: image carousel -->
-            <div class="img-carousel" hidden="" id="modalCarousel">
-              <button aria-label="Sebelumnya" class="ic-nav left" id="icPrev" type="button">‹</button>
-              <img alt="" decoding="async" id="modalImage" loading="lazy" />
-              <button aria-label="Berikutnya" class="ic-nav right" id="icNext" type="button">›</button>
-              <div aria-hidden="true" class="ic-dots" id="icDots"></div>
+
+        <!-- Bagian "Lanjutkan Belajar" (Hanya Muncul Jika Punya Materi) -->
+        <div id="continue-learning-section" class="mb-4 hidden">
+            <div class="flex items-center justify-between mb-3 px-1">
+                <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <i class="fas fa-play-circle text-primary"></i> Lanjutkan Belajar
+                </h2>
+                <button onclick="toggleDrawer()" class="text-xs text-primary font-bold hover:underline">Lihat
+                    Semua</button>
             </div>
-            <!-- For lessons: iframe -->
-            <iframe id="modalFrame" loading="lazy" referrerpolicy="no-referrer" title="Preview"></iframe>
-          </div>
-          <div class="modal-info">
-            <div class="info-row">
-              <strong style="font-size:13px;">Tentang</strong>
-              <p id="modalDesc">—</p>
+            <div class="flex overflow-x-auto hide-scrollbar gap-4 pb-4" id="continue-learning-container">
+                <!-- Diisi oleh JS -->
             </div>
-            <div class="info-badges" id="modalBadges"></div>
-            <p class="muted" id="modalNote">Tip: gunakan preview ini untuk memastikan konten sesuai.</p>
-          </div>
         </div>
-        <div class="modal-actions">
-          <button class="btn" id="modalCancel" type="button">Tutup</button>
-          <button class="btn btn-primary" id="modalPrimary" type="button">Aksi</button>
-          <button class="btn btn-soft" id="modalSecondary" type="button">Buka</button>
+    </section>
+
+    <section id="quiz-evaluation-section" class="hidden bg-gray-50 border-t border-gray-100">
+        <div class="max-w-screen-xl mx-auto px-4 md:px-6 py-6">
+            <div class="flex items-center gap-2 mb-4">
+                <i class="fas fa-chart-line text-primary"></i>
+                <h2 class="text-lg font-bold text-gray-800">Evaluasi Pemahaman Kuis</h2>
+            </div>
+            <div id="quiz-evaluation-container"></div>
         </div>
-      </div>
+    </section>
+
+    <!-- ================= KATALOG & PENCARIAN ================= -->
+    <section id="katalog-section" class="bg-white border-t border-gray-100">
+
+        <!-- Header Katalog & Search Bar -->
+        <div
+            class="sticky-filter sticky bg-white border-b border-gray-100 shadow-sm transition-all duration-300">
+            <div
+                class="max-w-screen-xl mx-auto px-4 md:px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
+
+                <!-- Title (Desktop Only) -->
+                <div class="hidden md:block shrink-0">
+                    <h2 class="text-lg font-bold text-gray-800">Jelajahi Materi</h2>
+                    <p class="text-[10px] text-gray-500">Temukan kelas yang cocok untukmu</p>
+                </div>
+
+                <!-- Kategori Tabs -->
+                <div class="flex items-center justify-start md:justify-center overflow-x-auto hide-scrollbar gap-2 w-full md:w-auto"
+                    id="category-tabs">
+                    <button onclick="changeCategory('syariah')"
+                        class="nav-tab px-4 py-1.5 rounded-full whitespace-nowrap transition-all text-xs font-bold bg-primary text-white"
+                        data-category="syariah">Bimbel Syariah</button>
+                    <button onclick="changeCategory('ushul')"
+                        class="nav-tab px-4 py-1.5 rounded-full whitespace-nowrap transition-all text-xs font-bold text-gray-600 hover:bg-gray-100"
+                        data-category="ushul">Bimbel Ushuludin</button>
+                    <button onclick="changeCategory('tafaqquh')"
+                        class="nav-tab px-4 py-1.5 rounded-full whitespace-nowrap transition-all text-xs font-bold text-gray-600 hover:bg-gray-100"
+                        data-category="tafaqquh">Tafaqquh</button>
+                    <button onclick="changeCategory('tashil')"
+                        class="nav-tab px-4 py-1.5 rounded-full whitespace-nowrap transition-all text-xs font-bold text-gray-600 hover:bg-gray-100"
+                        data-category="tashil">Ilmu Alat</button>
+                    <button onclick="changeCategory('amiyah')"
+                        class="nav-tab px-4 py-1.5 rounded-full whitespace-nowrap transition-all text-xs font-bold text-gray-600 hover:bg-gray-100"
+                        data-category="amiyah">Amiyah Mesir</button>
+                </div>
+
+                <!-- Search Box -->
+                <div class="relative w-full md:w-64 shrink-0">
+                    <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+                    <input type="text" id="catalog-search-input" oninput="applyFilters()"
+                        placeholder="Cari materi atau pengajar..."
+                        class="w-full bg-gray-50 border border-gray-200 pl-8 pr-3 py-1.5 rounded-full text-xs focus:outline-none focus:border-primary focus:bg-white transition-colors">
+                </div>
+            </div>
+
+            <!-- Sub-Filters (Tingkat & Mode) -->
+            <div class="max-w-screen-xl mx-auto px-4 md:px-6 pb-3 flex flex-wrap items-center gap-2"
+                id="sub-filter-container">
+                <!-- Diisi oleh JS -->
+            </div>
+        </div>
+
+        <!-- Grid Materi -->
+        <div class="max-w-screen-xl mx-auto px-4 md:px-6 py-8 min-h-[50vh]">
+            <div id="course-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 mb-12 relative">
+
+                <!-- EMPTY STATE -->
+                <div id="empty-materi-state"
+                    class="col-span-full flex flex-col items-center justify-center py-20 px-4 text-center hidden">
+                    <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-box-open text-3xl text-gray-300"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Materi Tidak Ditemukan</h3>
+                    <p class="text-sm text-gray-500 max-w-sm">Coba ubah kata kunci pencarian atau filter kategori Anda.
+                    </p>
+                    <button onclick="resetFilters()"
+                        class="mt-4 px-4 py-2 bg-primary/10 text-primary text-xs font-bold rounded-lg hover:bg-primary/20 transition-colors">
+                        Reset Filter
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-gray-100 py-8">
+        <div
+            class="max-w-screen-xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-400 text-xs">
+            <div class="font-medium">&copy; 2026 Nuqthah Learning Center.</div>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-primary transition-colors">Syarat & Ketentuan</a>
+                <a href="#" class="hover:text-primary transition-colors">Kebijakan Privasi</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FLOATING WHATSAPP -->
+    <a href="https://wa.me/6285185409887" target="_blank"
+        class="fixed bottom-6 left-6 z-[50000] bg-green-500 text-white w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition-transform hover:scale-110">
+        <i class="fab fa-whatsapp text-2xl md:text-3xl"></i>
+    </a>
+
+    <!-- ================= EDIT MODAL ================= -->
+    <div id="edit-modal" class="fixed inset-0 flex items-center justify-center p-4 hidden modal-container"
+        style="z-index: 9999999;">
+        <div id="edit-modal-overlay" onclick="closeEditModal()"
+            class="absolute inset-0 bg-black/70 backdrop-blur-sm modal-overlay"></div>
+        <div class="modal-content relative bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 space-y-4 modal-fade-in"
+            style="z-index: 9999999;">
+            <div class="bg-primary p-3 text-white rounded-xl mb-2">
+                <h3 class="text-base font-bold text-center">Edit Materi Tersimpan</h3>
+            </div>
+            <div>
+                <label class="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-1">Nama
+                    Materi</label>
+                <input type="text" id="edit-name"
+                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary">
+            </div>
+            <div>
+                <label class="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-1">Link
+                    Materi</label>
+                <input type="text" id="edit-link"
+                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary">
+            </div>
+            <div class="flex gap-3 mt-4">
+                <button onclick="saveEdit()"
+                    class="flex-1 bg-primary text-white font-bold py-2.5 rounded-xl text-xs hover:bg-opacity-90">Simpan</button>
+                <button onclick="closeEditModal()"
+                    class="flex-1 bg-gray-100 text-gray-700 font-bold py-2.5 rounded-xl text-xs hover:bg-gray-200">Batal</button>
+            </div>
+        </div>
     </div>
-    <!-- Toast -->
-    <div aria-live="polite" class="toast" id="toast" role="status">
-      <div class="dotty"></div>
-      <div>
-        <strong id="toastTitle">Berhasil</strong>
-        <span id="toastMsg">—</span>
-      </div>
-      <button aria-label="Tutup" id="toastClose" type="button">×</button>
+
+    <!-- ================= CONFIRM MODAL ================= -->
+    <div id="confirm-modal" class="fixed inset-0 flex items-center justify-center p-4 hidden"
+        style="z-index: 99999998;">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeConfirmModal()"></div>
+        <div class="relative bg-white w-full max-w-sm rounded-2xl shadow-2xl p-6 space-y-4 modal-fade-in">
+            <div class="text-center">
+                <div
+                    class="w-14 h-14 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-exclamation-triangle text-xl"></i>
+                </div>
+                <h3 id="confirm-title" class="text-base font-bold text-gray-800">Konfirmasi</h3>
+                <p id="confirm-message" class="text-xs text-gray-500 mt-1 leading-relaxed"></p>
+            </div>
+            <div class="flex gap-2 pt-2">
+                <button onclick="closeConfirmModal()"
+                    class="flex-1 bg-gray-100 text-gray-700 font-bold py-2.5 rounded-xl text-xs hover:bg-gray-200 transition">Batal</button>
+                <button id="confirm-ok-btn"
+                    class="flex-1 bg-red-500 text-white font-bold py-2.5 rounded-xl text-xs hover:bg-red-600 transition">Ya,
+                    Lanjutkan</button>
+            </div>
+        </div>
     </div>
-  </div>
-  <script defer="" src="assets/js/lessons-data.js"></script>
-  <script defer="" src="assets/js/lessons-offline-data.js"></script>
-  <script defer="" src="assets/js/lessons-intensif-data.js"></script>
-  <script defer="" src="assets/js/news-data.js"></script>
-  <script defer="" src="assets/js/products-data.js"></script>
-  <script defer="" src="assets/js/desktop-only.js"></script>
-  <script defer="" src="assets/js/home-top-fix.js"></script>
-  <script defer="" src="assets/js/mobile-title-pack.js"></script>
-  <script defer="" src="assets/js/teacher-fix.js"></script>
-  <script defer="" src="assets/js/teach.js"></script>
-  <!-- SUBJECT PAGES DATA (kitab per halaman) -->
-  <script defer="" src="assets/js/subject-nahwu-data.js"></script>
-  <script defer="" src="assets/js/subject-sharaf-data.js"></script>
-  <script defer="" src="assets/js/subject-mantiq-data.js"></script>
-  <script defer="" src="assets/js/subject-balaghah-data.js"></script>
-  <script defer="" src="assets/js/subject-adabul-bahs-data.js"></script>
-  <script defer="" src="assets/js/subject-semua-data.js"></script>
-  <script defer="" src="assets/js/subjects-pages.js"></script>
-  <script defer="" src="assets/js/packages.js"></script>
-  <script defer="" src="assets/js/app.js"></script>
-  <script>
-    (function () {
-      const isLocal =
-        location.hostname === "localhost" ||
-        location.hostname === "127.0.0.1" ||
-        location.hostname === "" ||
-        /^192\.168\./.test(location.hostname) ||
-        /^10\./.test(location.hostname);
 
-      const params = new URLSearchParams(location.search);
-      const noSW = params.get("nosw") === "1" || localStorage.getItem("nuqthah_no_sw") === "1";
+    <!-- ================= OTP LOGIN MODAL ================= -->
+    <div id="otp-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden"
+        style="z-index: 99999999;">
+        <div
+            class="modal-fade-in bg-white w-full max-w-md rounded-2xl p-6 space-y-5 shadow-2xl relative max-h-[92vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b pb-3">
+                <div>
+                    <h3 class="font-bold text-primary text-lg">Masuk ke Akun Belajar</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Gunakan email yang Anda pakai saat pendaftaran materi.</p>
+                </div>
+                <button onclick="closeOtpModal()"
+                    class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-500 shrink-0">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
 
-      // Saat DEV: pastikan tidak ada SW nyangkut yang bikin CSS/JS tidak berubah
-      if (isLocal || noSW) {
-        if ("serviceWorker" in navigator) {
-          navigator.serviceWorker.getRegistrations().then((regs) => regs.forEach((r) => r.unregister()));
+            <!-- STEP 1: Email -->
+            <div id="otp-step-email" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-700 uppercase mb-1 tracking-wider">Email
+                        Terdaftar</label>
+                    <input type="email" id="otp-email-input" placeholder="Masukkan email pendaftaran Anda"
+                        class="w-full border border-gray-200 p-3 rounded-xl text-sm focus:outline-none focus:border-primary">
+                </div>
+                <button type="button" id="btn-request-otp" onclick="requestOtpCode()"
+                    class="w-full bg-primary text-white font-bold py-3 rounded-xl text-sm hover:bg-opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed">
+                    Minta Kode OTP
+                </button>
+            </div>
+
+            <!-- STEP 2: OTP Code -->
+            <div id="otp-step-verify" class="space-y-4 hidden">
+                <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl text-xs text-amber-800">
+                    Kode OTP 6 digit telah dikirim ke <strong id="otp-target-email-label">-</strong>.
+                </div>
+                <div>
+                    <label
+                        class="block text-[10px] font-bold text-gray-700 uppercase mb-1 text-center tracking-wider">Masukkan
+                        6 Digit Kode OTP</label>
+                    <input type="text" id="otp-code-input" maxlength="6" placeholder="••••••" inputmode="numeric"
+                        class="w-full border border-gray-200 p-3 rounded-xl text-center tracking-[0.5em] font-bold text-lg focus:outline-none focus:border-primary">
+                </div>
+                <button type="button" id="btn-verify-otp" onclick="verifyOtpCode()"
+                    class="w-full bg-accent text-white font-bold py-3 rounded-xl text-sm hover:bg-opacity-90 transition shadow-md disabled:opacity-60 disabled:cursor-not-allowed">
+                    Verifikasi &amp; Masuk
+                </button>
+                <button type="button" onclick="resetOtpModalSteps()"
+                    class="w-full text-xs text-gray-500 underline hover:text-gray-700 text-center block">
+                    Ganti Email atau Kirim Ulang OTP
+                </button>
+            </div>
+
+            <div class="border-t pt-3 text-center">
+                <p class="text-xs text-gray-500">Belum punya akun atau belum membeli materi?</p>
+                <a href="#katalog-section" onclick="closeOtpModal()"
+                    class="text-xs font-bold text-accent underline mt-1 hover:opacity-80">
+                    Lihat Katalog &amp; Buka Akses Penuh
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUPABASE & LOGIC -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        // ================================================================
+        // CONFIG & STATE
+        // ================================================================
+        const SUPABASE_URL = 'https://idwrkzekykarxnuoaysu.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_N96gYsm_jeSntalN3qMVCA_TpXloD4u';
+        const BACKEND_BASE_URL = 'https://markaznuqtoh.vercel.app'; // URL Backend untuk OTP
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const LOCAL_KEY = 'nuqthah_materimu_local';
+        const DEFAULT_IMG = 'https://userkv.r2.mayar.id/landing-page/assets/nuqthah-kind-kingdom-2402/d50a2464_fdggdd.png';
+
+        let currentUser = null;
+        let savedItems = [];
+        let pendingPaymentItems = [];
+        let pendingPaymentCountdownInterval = null;
+        let isRefreshingExpiredPayments = false;
+        let isLoggedIn = false;
+        let allCourses = [];
+        let purchasedCourseIds = new Set();
+        let confirmCallback = null;
+
+        // ================================================================
+        // HELPER FUNCTIONS
+        // ================================================================
+        function parseCourseLinkMetadata(rawLink) {
+            const value = String(rawLink || '');
+            const marker = value.indexOf('||META::');
+            if (marker === -1) return { mainPart: value, metadata: {} };
+            try {
+                return { mainPart: value.slice(0, marker), metadata: JSON.parse(value.slice(marker + 8)) };
+            } catch (error) {
+                return { mainPart: value.slice(0, marker), metadata: {} };
+            }
         }
-        return;
-      }
 
-      // Production: register SW
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("./service-worker.js")
-            .catch((err) => console.error("Service Worker gagal:", err));
+        function parseBundleInfo(course) {
+            const { mainPart, metadata } = parseCourseLinkMetadata(course?.link);
+            if (mainPart.startsWith('BUNDLE::')) {
+                const withoutPrefix = mainPart.substring(8);
+                const divider = withoutPrefix.indexOf('||');
+                try {
+                    const ids = JSON.parse(divider === -1 ? withoutPrefix : withoutPrefix.slice(0, divider));
+                    const externalLink = divider === -1 ? '' : withoutPrefix.slice(divider + 2);
+                    return { isBundle: true, bundledIds: Array.isArray(ids) ? ids : [], externalLink, pdf: metadata.pdf || null };
+                } catch (e) { return { isBundle: true, bundledIds: [], externalLink: '', pdf: metadata.pdf || null }; }
+            }
+            return { isBundle: false, bundledIds: [], externalLink: mainPart, pdf: metadata.pdf || null };
+        }
+
+        function getCoursePdfInfo(bundleInfo) {
+            const storedPdf = bundleInfo?.pdf;
+            if (storedPdf?.fileId && /^[A-Za-z0-9_-]+$/.test(storedPdf.fileId)) {
+                return {
+                    fileId: storedPdf.fileId,
+                    name: storedPdf.name || 'Modul PDF',
+                    viewUrl: `https://drive.google.com/file/d/${encodeURIComponent(storedPdf.fileId)}/preview`
+                };
+            }
+            try {
+                const url = new URL(bundleInfo?.externalLink || '');
+                if (url.hostname !== 'drive.google.com') return null;
+                const fileId = url.pathname.match(/\/file\/d\/([A-Za-z0-9_-]+)/)?.[1] || url.searchParams.get('id');
+                return fileId && /^[A-Za-z0-9_-]+$/.test(fileId)
+                    ? { fileId, name: 'Modul PDF', viewUrl: `https://drive.google.com/file/d/${encodeURIComponent(fileId)}/preview` }
+                    : null;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        // ================================================================
+        // TOAST SYSTEM
+        // ================================================================
+        const TOAST_STYLE = {
+            success: { icon: 'fa-check', color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-100', bar: 'bg-emerald-500' },
+            error: { icon: 'fa-xmark', color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-100', bar: 'bg-red-500' },
+            warning: { icon: 'fa-exclamation', color: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-100', bar: 'bg-amber-500' },
+            info: { icon: 'fa-info', color: 'text-sky-600', bg: 'bg-sky-50', border: 'border-sky-100', bar: 'bg-sky-500' }
+        };
+
+        function showToast(message, type = 'info', title = '') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            const cfg = TOAST_STYLE[type] || TOAST_STYLE.info;
+            const toast = document.createElement('div');
+            toast.className = `toast-item pointer-events-auto relative w-full sm:w-[350px] bg-white rounded-xl shadow-lg border ${cfg.border} overflow-hidden flex items-start gap-3 p-3`;
+
+            toast.innerHTML = `
+                <div class="w-8 h-8 rounded-lg ${cfg.bg} ${cfg.color} flex items-center justify-center shrink-0">
+                    <i class="fas ${cfg.icon} text-xs"></i>
+                </div>
+                <div class="flex-1 min-w-0 pt-0.5">
+                    ${title ? `<p class="text-[12px] font-bold text-gray-800 leading-tight">${escapeHtml(title)}</p>` : ''}
+                    <p class="text-[11px] text-gray-600 leading-snug mt-0.5 break-words">${escapeHtml(message)}</p>
+                </div>
+                <button type="button" class="toast-close w-6 h-6 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 shrink-0 transition">
+                    <i class="fas fa-xmark text-[10px]"></i>
+                </button>
+                <div class="absolute bottom-0 left-0 h-[2px] ${cfg.bar} toast-progress"></div>
+            `;
+            container.appendChild(toast);
+            const timer = setTimeout(() => dismissToast(toast), 4000);
+            toast.querySelector('.toast-close').addEventListener('click', () => { clearTimeout(timer); dismissToast(toast); });
+        }
+
+        function dismissToast(toast) {
+            if (!toast || toast.classList.contains('leaving')) return;
+            toast.classList.add('leaving');
+            setTimeout(() => toast.remove(), 300);
+        }
+
+        // ================================================================
+        // CONFIRM MODAL
+        // ================================================================
+        function showConfirmModal(title, message, onConfirm, okText = 'Ya, Lanjutkan') {
+            document.getElementById('confirm-title').textContent = title;
+            document.getElementById('confirm-message').textContent = message;
+            document.getElementById('confirm-ok-btn').textContent = okText;
+            confirmCallback = onConfirm;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+        }
+        function closeConfirmModal() { document.getElementById('confirm-modal').classList.add('hidden'); confirmCallback = null; }
+        document.getElementById('confirm-ok-btn').addEventListener('click', async () => {
+            const cb = confirmCallback; closeConfirmModal(); if (typeof cb === 'function') await cb();
         });
-      }
-    })();
-  </script>
 
-  <script>
-    // Safety: always hide splash after page is loaded, even if some JS modules fail.
-    window.addEventListener("load", () => {
-      const splash = document.getElementById("splash");
-      if (!splash) return;
-      splash.classList.add("hide");
-      // remove from DOM after fade
-      setTimeout(() => { try { splash.remove(); } catch (e) { } }, 800);
-    });
-  </script>
+        // ================================================================
+        // AUTH & NAV UI
+        // ================================================================
+        function updateAuthUI() {
+            const container = document.getElementById('nav-auth-container');
+            const greeting = document.getElementById('dashboard-greeting');
+            const statStatus = document.getElementById('stat-status');
 
+            if (!container) return;
+
+            if (isLoggedIn && currentUser && currentUser.email) {
+                // Tampilan jika sudah login
+                container.innerHTML = `
+                    <div class="flex items-center gap-1.5 md:gap-2 bg-white/10 px-2.5 py-1.5 md:px-3 md:py-1.5 rounded-lg border border-white/15">
+                        <span class="text-[11px] md:text-xs text-white max-w-[80px] md:max-w-[120px] truncate hidden sm:inline">${currentUser.email}</span>
+                        <button onclick="confirmLogout()" class="text-red-300 hover:text-red-200 text-[11px] md:text-xs font-bold transition">Keluar</button>
+                    </div>
+                `;
+                if (greeting) greeting.textContent = currentUser.name || currentUser.email.split('@')[0];
+                if (statStatus) {
+                    statStatus.textContent = 'Aktif';
+                    statStatus.classList.add('text-emerald-300');
+                    statStatus.classList.remove('text-gray-300');
+                }
+            } else {
+                // Tampilan jika belum login (Tombol Masuk)
+                container.innerHTML = `
+                    <button onclick="openOtpModal()" class="bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 md:px-4 md:py-1.5 rounded-lg text-[11px] md:text-sm font-bold transition-all border border-white/20 shadow-sm flex items-center gap-1.5">
+                        <i class="fas fa-sign-in-alt"></i> <span class="hidden sm:inline">Masuk</span>
+                    </button>
+                `;
+                if (greeting) greeting.textContent = 'Tamu Nuqthah';
+                if (statStatus) {
+                    statStatus.textContent = 'Guest';
+                    statStatus.classList.remove('text-emerald-300');
+                }
+            }
+        }
+
+        // Fungsi Konfirmasi Logout
+        function confirmLogout() {
+            showConfirmModal(
+                'Konfirmasi Keluar',
+                'Apakah Anda yakin ingin keluar dari akun ini?',
+                () => {
+                    performLogout();
+                },
+                'Ya, Keluar'
+            );
+        }
+
+        // Fungsi Eksekusi Logout
+        function performLogout() {
+            localStorage.removeItem('nuqthah_current_user');
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('nuqthah_access_') || key.startsWith('nuqthah_resume_')) localStorage.removeItem(key);
+            });
+            if (supabaseClient.auth) supabaseClient.auth.signOut().catch(() => { });
+
+            currentUser = null;
+            isLoggedIn = false;
+            sessionStorage.removeItem('nuqthah_welcome_shown');
+
+            // LANGSUNG KOSONGKAN TAMPILAN DRAWER SAAT LOGOUT
+            savedItems = [];
+            pendingPaymentItems = [];
+            updateMaterimuUI();
+
+            updateAuthUI();
+            loadSavedMaterials();
+            renderCoursesToDOM();
+            renderDashboardWidgets();
+            renderUpcomingSchedule(null); // Kosongkan jadwal karena sudah logout
+            showToast('Anda telah keluar dari akun.', 'info', 'Berhasil Keluar');
+
+            // Tutup drawer jika sedang terbuka
+            const drawer = document.getElementById('materimu-drawer');
+            if (!drawer.classList.contains('translate-x-full')) {
+                toggleDrawer();
+            }
+        }
+
+        // ================================================================
+        // DRAWER UI
+        // ================================================================
+        function toggleDrawer() {
+            const drawer = document.getElementById('materimu-drawer');
+            const overlay = document.getElementById('drawer-overlay');
+            const isOpen = !drawer.classList.contains('translate-x-full');
+            if (isOpen) { drawer.classList.add('translate-x-full'); overlay.classList.add('opacity-0', 'pointer-events-none'); }
+            else { drawer.classList.remove('translate-x-full'); overlay.classList.remove('opacity-0', 'pointer-events-none'); }
+        }
+
+        function toggleManualForm() {
+            document.getElementById('manual-form-container').classList.toggle('hidden');
+            document.getElementById('manual-chevron').classList.toggle('rotate-180');
+        }
+
+        // ================================================================
+        // DATA FETCHING
+        // ================================================================
+        function getLocalItems() { try { return JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]'); } catch (e) { return []; } }
+        function setLocalItems(items) { try { localStorage.setItem(LOCAL_KEY, JSON.stringify(items)); } catch (e) { } }
+
+        async function checkSession() {
+            try {
+                const otpUser = JSON.parse(localStorage.getItem('nuqthah_current_user') || 'null');
+                if (otpUser && (otpUser.id || otpUser.email)) { currentUser = otpUser; isLoggedIn = true; return; }
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session) { currentUser = session.user; isLoggedIn = true; }
+            } catch (err) { console.error('Session error', err); }
+        }
+
+        async function fetchPurchasedCourseIds() {
+            const ids = new Set();
+            if (!currentUser || !isLoggedIn) return ids;
+            try {
+                if (currentUser.email) {
+                    const { data: byEmail } = await supabaseClient.from('user_access').select('course_id').eq('user_email', currentUser.email).eq('is_active', true);
+                    (byEmail || []).forEach(row => row.course_id && ids.add(row.course_id));
+                }
+                if (currentUser.id) {
+                    const { data: byId } = await supabaseClient.from('user_access').select('course_id').eq('user_id', currentUser.id).eq('is_active', true);
+                    (byId || []).forEach(row => row.course_id && ids.add(row.course_id));
+                }
+                allCourses.forEach(c => {
+                    if (ids.has(c.course_id)) {
+                        const bInfo = parseBundleInfo(c);
+                        if (bInfo.isBundle && bInfo.bundledIds.length > 0) bInfo.bundledIds.forEach(childId => ids.add(childId));
+                    }
+                });
+                if (currentUser.email) {
+                    allCourses.forEach(c => {
+                        if (ids.has(c.course_id)) {
+                            localStorage.setItem(`nuqthah_access_${c.course_id}`, 'granted');
+                            localStorage.setItem(`nuqthah_access_${c.course_id}_email`, currentUser.email);
+                        } else {
+                            localStorage.removeItem(`nuqthah_access_${c.course_id}`);
+                            localStorage.removeItem(`nuqthah_access_${c.course_id}_email`);
+                        }
+                    });
+                }
+            } catch (e) {
+                if (currentUser.email) {
+                    allCourses.forEach(c => {
+                        const cached = localStorage.getItem(`nuqthah_access_${c.course_id}`);
+                        const cachedEmail = localStorage.getItem(`nuqthah_access_${c.course_id}_email`);
+                        if (cached === 'granted' && cachedEmail === currentUser.email) ids.add(c.course_id);
+                    });
+                }
+            }
+            return ids;
+        }
+
+        async function fetchPendingPaymentItems() {
+            pendingPaymentItems = [];
+            if (!currentUser?.email || !isLoggedIn) return;
+
+            const { data, error } = await supabaseClient
+                .from('transactions')
+                .select('order_id, course_id, gross_amount, payment_type, created_at')
+                .eq('user_email', currentUser.email)
+                .eq('status', 'pending')
+                .not('payment_type', 'is', null)
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Gagal memuat pembayaran tertunda di dashboard:', error);
+                return;
+            }
+
+            const latestByCourse = new Map();
+            (data || []).forEach(transaction => {
+                if (!transaction.course_id || !transaction.payment_type || purchasedCourseIds.has(transaction.course_id) || latestByCourse.has(transaction.course_id)) return;
+                const course = allCourses.find(item => item.course_id === transaction.course_id);
+                latestByCourse.set(transaction.course_id, {
+                    order_id: transaction.order_id,
+                    course_id: transaction.course_id,
+                    title: course?.title || transaction.course_id,
+                    link: `halaman_belajar.html?course_id=${encodeURIComponent(transaction.course_id)}`,
+                    gross_amount: transaction.gross_amount,
+                    payment_type: transaction.payment_type
+                });
+            });
+
+            const verifiedPayments = await Promise.all(Array.from(latestByCourse.values()).map(async item => {
+                try {
+                    const query = new URLSearchParams({
+                        email: String(currentUser.email).trim().toLowerCase(),
+                        course_id: item.course_id
+                    });
+                    const response = await fetch(`${BACKEND_BASE_URL}/api/pending-transaction?${query}`);
+                    const status = await response.json();
+                    if (!response.ok) throw new Error(status.error || 'Gagal memeriksa transaksi tertunda.');
+                    if (!status.active) return null;
+
+                    const courseTransaction = (data || []).find(transaction =>
+                        transaction.order_id === status.order_id
+                    );
+                    return {
+                        ...item,
+                        order_id: status.order_id,
+                        gross_amount: status.gross_amount ?? courseTransaction?.gross_amount ?? item.gross_amount,
+                        payment_type: status.payment_type || item.payment_type,
+                        expires_at: status.expires_at || null,
+                        server_offset_ms: status.server_time
+                            ? Date.parse(status.server_time) - Date.now()
+                            : 0
+                    };
+                } catch (verificationError) {
+                    console.error(`Gagal memverifikasi pembayaran materi ${item.course_id}:`, verificationError);
+                    return null;
+                }
+            }));
+            pendingPaymentItems = verifiedPayments.filter(Boolean);
+        }
+
+        function formatPaymentCountdown(milliseconds) {
+            const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
+            const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+            const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+            const seconds = String(totalSeconds % 60).padStart(2, '0');
+            return `${hours}:${minutes}:${seconds}`;
+        }
+
+        function refreshPendingPaymentsAfterExpiry() {
+            if (isRefreshingExpiredPayments) return;
+            isRefreshingExpiredPayments = true;
+            fetchPendingPaymentItems()
+                .then(renderDashboardWidgets)
+                .catch(error => console.error('Gagal memperbarui pembayaran kedaluwarsa:', error))
+                .finally(() => { isRefreshingExpiredPayments = false; });
+        }
+
+        function updatePendingPaymentCountdowns() {
+            const countdowns = document.querySelectorAll('[data-payment-countdown]');
+            let hasActiveCountdown = false;
+            let hasExpiredCountdown = false;
+
+            countdowns.forEach(countdown => {
+                const expiresAt = Date.parse(countdown.dataset.expiresAt || '');
+                if (!Number.isFinite(expiresAt)) {
+                    countdown.textContent = 'Waktu pembayaran tidak tersedia';
+                    return;
+                }
+
+                const remainingMs = expiresAt - Date.now() - Number(countdown.dataset.serverOffsetMs || 0);
+                if (remainingMs <= 0) {
+                    countdown.textContent = '00:00:00';
+                    countdown.classList.add('text-red-600');
+                    hasExpiredCountdown = true;
+                    return;
+                }
+
+                countdown.textContent = formatPaymentCountdown(remainingMs);
+                hasActiveCountdown = true;
+            });
+
+            if (hasExpiredCountdown) refreshPendingPaymentsAfterExpiry();
+            if (!hasActiveCountdown && pendingPaymentCountdownInterval) {
+                clearInterval(pendingPaymentCountdownInterval);
+                pendingPaymentCountdownInterval = null;
+            }
+        }
+
+        async function loadSavedMaterials() {
+            try {
+                let dbItems = [];
+                if (currentUser && currentUser.id && isLoggedIn) {
+                    const { data } = await supabaseClient.from('saved_materials').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+                    if (data) dbItems = data;
+                }
+                purchasedCourseIds = await fetchPurchasedCourseIds();
+                await fetchPendingPaymentItems();
+
+                let purchasedCourses = [];
+                const purchasedIdsArr = Array.from(purchasedCourseIds).filter(id => !id.startsWith('manual-'));
+                if (purchasedIdsArr.length > 0 && allCourses.length > 0) {
+                    purchasedCourses = allCourses.filter(c => purchasedCourseIds.has(c.course_id));
+                }
+
+                const localItems = getLocalItems().map(item => ({
+                    ...item,
+                    link: item.link && !String(item.link).startsWith('BUNDLE::') ? item.link : `halaman_belajar.html?course_id=${item.course_id}`,
+                    image: item.image || DEFAULT_IMG,
+                    purchased: isLoggedIn && purchasedCourseIds.has(item.course_id)
+                }));
+
+                const mergedMap = new Map();
+                localItems.forEach(item => mergedMap.set(item.course_id, item));
+                dbItems.forEach(item => {
+                    const existing = mergedMap.get(item.course_id);
+                    mergedMap.set(item.course_id, {
+                        ...item,
+                        link: item.link && !String(item.link).startsWith('BUNDLE::') ? item.link : `halaman_belajar.html?course_id=${item.course_id}`,
+                        image: item.image || existing?.image || DEFAULT_IMG,
+                        purchased: isLoggedIn && purchasedCourseIds.has(item.course_id)
+                    });
+                });
+                purchasedCourses.forEach(c => {
+                    const existing = mergedMap.get(c.course_id);
+                    mergedMap.set(c.course_id, {
+                        id: existing?.id || ('access-' + c.course_id),
+                        course_id: c.course_id,
+                        title: existing?.title || c.title || 'Materi',
+                        link: `halaman_belajar.html?course_id=${c.course_id}`,
+                        image: c.image || existing?.image || DEFAULT_IMG,
+                        purchased: true
+                    });
+                });
+
+                savedItems = Array.from(mergedMap.values()).sort((a, b) => a.purchased === b.purchased ? 0 : a.purchased ? -1 : 1);
+                updateMaterimuUI();
+                renderDashboardWidgets();
+
+                // Setelah materi dimuat, muat jadwal terdekat
+                await fetchUpcomingSchedules();
+
+            } catch (err) {
+                console.error('Load error:', err);
+                savedItems = []; updateMaterimuUI(); renderDashboardWidgets();
+            }
+        }
+
+        // ================================================================
+        // FETCH & RENDER JADWAL TERDEKAT (DENGAN RESCHEDULE INFO)
+        // ================================================================
+        async function fetchUpcomingSchedules() {
+            const scheduleContainer = document.getElementById('dashboard-schedule');
+            if (!scheduleContainer) return;
+
+            if (!isLoggedIn || purchasedCourseIds.size === 0) {
+                renderUpcomingSchedule(null);
+                return;
+            }
+
+            const courseIdsArray = Array.from(purchasedCourseIds).filter(id => !id.startsWith('manual-'));
+            if (courseIdsArray.length === 0) {
+                renderUpcomingSchedule(null);
+                return;
+            }
+
+            try {
+                const now = new Date().toISOString();
+
+                const { data: schedules, error } = await supabaseClient
+                    .from('schedules')
+                    .select(`
+                        *,
+                        courses (title, instructor)
+                    `)
+                    .in('course_id', courseIdsArray)
+                    .gte('start_time', now)
+                    .neq('status', 'cancelled')
+                    .order('start_time', { ascending: true })
+                    .limit(1);
+
+                if (error) throw error;
+
+                if (schedules && schedules.length > 0) {
+                    renderUpcomingSchedule(schedules[0]);
+                } else {
+                    renderUpcomingSchedule(null);
+                }
+            } catch (err) {
+                console.error('Gagal memuat jadwal:', err);
+                renderUpcomingSchedule(null);
+            }
+        }
+
+        function renderUpcomingSchedule(schedule) {
+            const container = document.getElementById('dashboard-schedule');
+            if (!container) return;
+
+            if (!schedule) {
+                container.innerHTML = `
+                    <i class="fas fa-mug-hot text-gray-300 text-2xl mb-2"></i>
+                    <p class="text-xs text-gray-500 font-medium text-center">Belum ada jadwal terdekat.</p>
+                    <p class="text-[10px] text-gray-400 mt-1 text-center">Silakan cek katalog untuk mendaftar kelas.</p>
+                `;
+                return;
+            }
+
+            // Format Tanggal
+            const dateObj = new Date(schedule.start_time);
+            const options = { timeZone: 'Africa/Cairo', hourCycle: 'h23', weekday: 'long', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+            const formattedDate = dateObj.toLocaleString('id-ID', options) + ' CLT';
+            const courseTitle = schedule.courses?.title || 'Kelas Anda';
+            const instructor = schedule.courses?.instructor || 'Pengajar';
+
+            const isOnline = schedule.meeting_link && schedule.meeting_link.startsWith('http');
+            const btnText = isOnline ? 'Gabung Meeting' : 'Lihat Detail';
+            const btnAction = isOnline
+                ? `window.open('${schedule.meeting_link}', '_blank')`
+                : `window.location.href='halaman_belajar.html?course_id=${schedule.course_id}'`;
+
+            // Cek apakah jadwal diubah (Rescheduled)
+            let rescheduleAlertHtml = '';
+            let rescheduleBadgeHtml = '';
+            if (schedule.is_rescheduled && schedule.reschedule_reason) {
+                rescheduleBadgeHtml = `<span class="bg-amber-100 text-amber-700 text-[9px] font-bold px-2 py-0.5 rounded uppercase"><i class="fas fa-sync-alt mr-1"></i> Reschedule</span>`;
+                rescheduleAlertHtml = `
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-2 mb-2 flex items-start gap-1.5 text-left">
+                        <i class="fas fa-exclamation-circle text-amber-500 mt-0.5 text-[10px]"></i>
+                        <div class="text-[10px] text-amber-700 leading-tight">
+                            <strong>Jadwal Diubah:</strong> ${escapeHtml(schedule.reschedule_reason)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = `
+                <div class="w-full text-left">
+                    <div class="flex items-center justify-between gap-2 mb-1">
+                        <span class="bg-emerald-100 text-emerald-700 text-[9px] font-bold px-2 py-0.5 rounded uppercase">Terdekat</span>
+                        ${rescheduleBadgeHtml}
+                    </div>
+                    <h4 class="text-sm font-bold text-gray-800 line-clamp-1" title="${escapeHtml(schedule.title)}">${escapeHtml(schedule.title)}</h4>
+                    <p class="text-[10px] text-gray-500 truncate mb-2">${escapeHtml(courseTitle)} • ${escapeHtml(instructor)}</p>
+                    
+                    <div class="flex items-center gap-1.5 text-[11px] font-semibold text-primary mb-3">
+                        <i class="far fa-clock"></i> ${formattedDate}
+                    </div>
+
+                    ${rescheduleAlertHtml}
+
+                    <button onclick="${btnAction}" class="w-full py-1.5 bg-primary hover:bg-opacity-90 text-white text-[10px] font-bold rounded-lg transition-colors flex items-center justify-center gap-1">
+                        <i class="fas ${isOnline ? 'fa-video' : 'fa-book-open'}"></i> ${btnText}
+                    </button>
+                </div>
+            `;
+        }
+
+        // ================================================================
+        // RENDER DASHBOARD WIDGETS
+        // ================================================================
+        function renderDashboardWidgets() {
+            const statPurchased = document.getElementById('stat-purchased');
+            const continueSection = document.getElementById('continue-learning-section');
+            const continueContainer = document.getElementById('continue-learning-container');
+            const pendingSection = document.getElementById('pending-payment-section');
+            const pendingContainer = document.getElementById('pending-payment-container');
+
+            if (pendingSection && pendingContainer) {
+                if (pendingPaymentCountdownInterval) {
+                    clearInterval(pendingPaymentCountdownInterval);
+                    pendingPaymentCountdownInterval = null;
+                }
+                pendingContainer.innerHTML = '';
+                if (isLoggedIn && pendingPaymentItems.length > 0) {
+                    pendingSection.classList.remove('hidden');
+                    pendingPaymentItems.forEach(item => {
+                        const card = document.createElement('a');
+                        card.href = item.link;
+                        card.className = 'bg-white rounded-xl border border-amber-200 p-3 md:p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow group';
+                        const amount = new Intl.NumberFormat('id-ID', {
+                            style: 'currency',
+                            currency: 'IDR',
+                            maximumFractionDigits: 0
+                        }).format(Number(item.gross_amount) || 0);
+                        card.innerHTML = `
+                            <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="min-w-0 flex-grow">
+                                <span class="text-[9px] font-bold text-amber-700 uppercase tracking-wide">Menunggu Pembayaran</span>
+                                <h3 class="text-sm font-bold text-gray-800 truncate">${escapeHtml(item.title)}</h3>
+                                <p class="text-[11px] text-gray-500">${escapeHtml(String(item.payment_type).replace(/_/g, ' '))} · ${amount}</p>
+                                <p class="text-[11px] font-semibold text-amber-700 mt-1">
+                                    Bayar dalam <span data-payment-countdown data-expires-at="${escapeHtml(item.expires_at || '')}" data-server-offset-ms="${item.server_offset_ms || 0}">--:--:--</span>
+                                </p>
+                            </div>
+                            <span class="text-[10px] md:text-xs font-bold text-primary whitespace-nowrap group-hover:underline">
+                                Lanjutkan Pembayaran <i class="fas fa-arrow-right ml-1"></i>
+                            </span>
+                        `;
+                        pendingContainer.appendChild(card);
+                    });
+                    updatePendingPaymentCountdowns();
+                    pendingPaymentCountdownInterval = setInterval(updatePendingPaymentCountdowns, 1000);
+                } else {
+                    pendingSection.classList.add('hidden');
+                }
+            }
+
+            const purchasedItems = savedItems.filter(i => i.purchased);
+
+            if (statPurchased) statPurchased.textContent = purchasedItems.length;
+
+            if (purchasedItems.length > 0 && isLoggedIn) {
+                continueSection.classList.remove('hidden');
+                continueContainer.innerHTML = '';
+
+                purchasedItems.forEach(item => {
+                    const card = document.createElement('a');
+                    card.href = item.link || `halaman_belajar.html?course_id=${item.course_id}`;
+                    card.className = 'continue-card bg-white rounded-xl border border-gray-100 p-3 flex gap-3 shadow-sm hover:shadow-md transition-all flex-shrink-0 group';
+                    card.innerHTML = `
+                        <div class="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-gray-100 relative">
+                            <img src="${item.image || DEFAULT_IMG}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-play text-white text-xs"></i>
+                            </div>
+                        </div>
+                        <div class="flex flex-col justify-center min-w-0">
+                            <span class="text-[9px] font-bold text-emerald-600 uppercase tracking-wider mb-0.5"><i class="fas fa-check-circle mr-1"></i>Terbuka</span>
+                            <h4 class="text-xs font-bold text-gray-800 line-clamp-2 leading-tight">${escapeHtml(item.title)}</h4>
+                            <div class="w-full bg-gray-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                                <div class="bg-primary h-full rounded-full w-[35%]"></div>
+                            </div>
+                        </div>
+                    `;
+                    continueContainer.appendChild(card);
+                });
+            } else {
+                continueSection.classList.add('hidden');
+            }
+            renderQuizEvaluation();
+        }
+
+        function renderQuizEvaluation() {
+            const section = document.getElementById('quiz-evaluation-section');
+            const container = document.getElementById('quiz-evaluation-container');
+            if (!section || !container) return;
+
+            if (!isLoggedIn || !currentUser?.email) {
+                section.classList.add('hidden');
+                container.innerHTML = '';
+                return;
+            }
+
+            const email = currentUser.email.trim().toLowerCase();
+            const history = [];
+            Object.keys(localStorage).forEach(key => {
+                if (!key.startsWith('nuqthah_quiz_history_') ||
+                    key.slice('nuqthah_quiz_history_'.length).toLowerCase() !== email) return;
+                try {
+                    const records = JSON.parse(localStorage.getItem(key) || '[]');
+                    if (Array.isArray(records)) history.push(...records);
+                } catch (error) {
+                    console.warn('Riwayat evaluasi kuis tidak valid:', error);
+                }
+            });
+
+            const validHistory = history.filter(item =>
+                item && Number.isFinite(Number(item.correct)) && Number.isFinite(Number(item.total)) &&
+                Number(item.total) > 0
+            );
+            if (validHistory.length === 0) {
+                section.classList.add('hidden');
+                container.innerHTML = '';
+                return;
+            }
+
+            const courseEvaluations = new Map();
+            validHistory.forEach(item => {
+                const title = String(item.courseTitle || 'Materi').trim();
+                const normalizedTitle = title.toLowerCase();
+                const evaluation = courseEvaluations.get(normalizedTitle) || {
+                    title, total: 0, correct: 0, latest: null
+                };
+                evaluation.total += Number(item.total);
+                evaluation.correct += Number(item.correct);
+                if (!evaluation.latest || new Date(item.date).getTime() > new Date(evaluation.latest.date).getTime()) {
+                    evaluation.latest = item;
+                }
+                courseEvaluations.set(normalizedTitle, evaluation);
+            });
+
+            section.classList.remove('hidden');
+            container.innerHTML = `
+                <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
+                    ${Array.from(courseEvaluations.values())
+                        .sort((a, b) => new Date(b.latest?.date || 0).getTime() - new Date(a.latest?.date || 0).getTime())
+                        .map(item => {
+                        const percentage = item.total > 0 ? Math.round((item.correct / item.total) * 100) : 0;
+                        const level = percentage <= 50
+                            ? { label: 'Perlu Belajar Lagi', color: 'text-red-700', background: 'bg-red-50', bar: 'bg-red-500' }
+                            : percentage <= 80
+                                ? { label: 'Cukup Memahami', color: 'text-amber-700', background: 'bg-amber-50', bar: 'bg-amber-400' }
+                                : { label: 'Mahir / Siap Ujian', color: 'text-emerald-700', background: 'bg-emerald-50', bar: 'bg-emerald-500' };
+                        return `
+                            <article class="rounded-xl border border-gray-100 bg-white px-3 py-2.5 shadow-sm">
+                                <div class="flex min-w-0 items-center justify-between gap-2">
+                                    <h3 class="truncate text-xs font-bold text-gray-800" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</h3>
+                                    <span class="shrink-0 text-xs font-extrabold ${level.color}">${percentage}%</span>
+                                </div>
+                                <div class="mt-1 flex items-center justify-between gap-2">
+                                    <p class="truncate text-[10px] font-semibold ${level.color}">Pemahaman ${escapeHtml(item.title)}: ${percentage}%</p>
+                                    <span class="shrink-0 rounded-full ${level.background} px-2 py-0.5 text-[9px] font-bold ${level.color}">${level.label}</span>
+                                </div>
+                                <div class="mt-2 h-1 overflow-hidden rounded-full bg-gray-100">
+                                    <div class="${level.bar} h-full rounded-full" style="width:${percentage}%"></div>
+                                </div>
+                                <p class="mt-1 text-[9px] text-gray-400">Terakhir: Sesi ${Number(item.latest?.session) || 1} · ${Number(item.latest?.correct) || 0}/${Number(item.latest?.total) || 0}</p>
+                            </article>
+                        `;
+                        }).join('')}
+                </div>
+            `;
+        }
+
+        // ================================================================
+        // RENDER MATERIMU DRAWER
+        // ================================================================
+        function updateMaterimuUI() {
+            const drawerBadge = document.getElementById('materimu-badge');
+            const drawerCountBadge = document.getElementById('drawer-count-badge');
+            const drawerContent = document.getElementById('drawer-content');
+            const emptyState = document.getElementById('drawer-empty');
+            const emailLabel = document.getElementById('drawer-user-email');
+
+            // Set Email di Drawer Header
+            if (emailLabel) {
+                if (isLoggedIn && currentUser && currentUser.email) {
+                    emailLabel.textContent = currentUser.email;
+                } else {
+                    emailLabel.textContent = 'Mode Tamu (Belum Masuk)';
+                }
+            }
+
+            const count = savedItems.length;
+            const purchasedCount = savedItems.filter(i => i.purchased).length;
+
+            if (drawerBadge) drawerBadge.textContent = count;
+            if (drawerCountBadge) drawerCountBadge.textContent = purchasedCount > 0 ? `${purchasedCount} Terbuka` : count;
+
+            if (!drawerContent) return;
+            if (emptyState) emptyState.style.display = count > 0 ? 'none' : 'flex';
+            drawerContent.querySelectorAll('.saved-item').forEach(el => el.remove());
+
+            savedItems.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `saved-item bg-white border rounded-xl p-3 flex gap-3 shadow-sm fade-in relative overflow-hidden ${item.purchased ? 'purchased-item' : 'border-gray-100'}`;
+                const safeTitle = String(item.title).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                const safeLink = String(item.link).replace(/'/g, "\\'");
+                const safeId = String(item.id).replace(/'/g, "\\'");
+
+                const badgeHtml = item.purchased ? `<span class="inline-flex items-center gap-1 text-[8px] bg-emerald-500 text-white px-1.5 py-0.5 rounded font-bold uppercase"><i class="fas fa-check"></i> Terbuka</span>` : '';
+
+                const actionButtons = item.purchased
+                    ? `<button onclick="window.location.href='${safeLink}'" class="px-2 py-1 bg-primary text-white text-[10px] font-bold rounded flex-grow hover:bg-opacity-90">LANJUTKAN</button>`
+                    : `<button onclick="window.location.href='${safeLink}'" class="px-2 py-1 bg-primary text-white text-[10px] font-bold rounded flex-grow hover:bg-opacity-90">BUKA</button>
+                       <button onclick="openEditModal('${safeId}', '${safeTitle}', '${safeLink}')" class="w-6 h-6 text-blue-500 flex items-center justify-center hover:text-blue-700"><i class="fas fa-pen text-[11px]"></i></button>
+                       <button onclick="removeFromMaterimu('${safeId}')" class="w-6 h-6 text-red-500 flex items-center justify-center hover:text-red-700"><i class="far fa-trash-can text-[11px]"></i></button>`;
+
+                itemDiv.innerHTML = `
+                    <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 bg-gray-50 relative">
+                        <img src="${item.image || DEFAULT_IMG}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-grow flex flex-col justify-between min-w-0 py-0.5">
+                        <div>
+                            ${badgeHtml}
+                            <h4 class="text-[11px] font-bold text-gray-800 line-clamp-2 leading-tight mt-0.5">${safeTitle}</h4>
+                        </div>
+                        <div class="flex items-center gap-1.5 mt-2">${actionButtons}</div>
+                    </div>
+                `;
+                drawerContent.appendChild(itemDiv);
+            });
+        }
+
+        // ================================================================
+        // SAVE/REMOVE/EDIT ACTIONS
+        // ================================================================
+        async function saveToMaterimu(courseId) {
+            if (savedItems.find(m => m.course_id === courseId)) { showToast('Materi sudah ada di daftar.', 'info'); toggleDrawer(); return; }
+            const course = allCourses.find(c => c.course_id === courseId);
+            if (!course) return;
+
+            const title = course.title; const link = `halaman_belajar.html?course_id=${course.course_id}`; const image = course.image || DEFAULT_IMG;
+
+            if (currentUser && currentUser.id) {
+                try { await supabaseClient.from('saved_materials').insert({ user_id: currentUser.id, course_id: courseId, title, link, image }); } catch (e) { }
+            }
+            const local = getLocalItems();
+            if (!local.find(m => m.course_id === courseId)) {
+                local.unshift({ id: 'local-' + Date.now(), course_id: courseId, title, link, image });
+                setLocalItems(local);
+            }
+            await loadSavedMaterials();
+            showToast('Materi berhasil disimpan.', 'success'); toggleDrawer();
+        }
+
+        async function removeFromMaterimu(recordId) {
+            const itemToRemove = savedItems.find(i => i.id === recordId);
+            if (!itemToRemove) return;
+            if (itemToRemove.purchased) { showToast('Materi yang dibeli tidak dapat dihapus.', 'warning'); return; }
+
+            if (currentUser && currentUser.id) {
+                try { await supabaseClient.from('saved_materials').delete().eq('id', recordId).eq('user_id', currentUser.id); } catch (e) { }
+            }
+            setLocalItems(getLocalItems().filter(i => i.course_id !== itemToRemove.course_id));
+            await loadSavedMaterials();
+            showToast('Materi dihapus.', 'info');
+        }
+
+        async function saveManualMaterial() {
+            const title = document.getElementById('manual-name').value.trim();
+            const link = document.getElementById('manual-link').value.trim();
+            if (!title || !link) { showToast('Nama dan Link harus diisi.', 'warning'); return; }
+
+            const courseId = 'manual-' + Date.now();
+            if (currentUser && currentUser.id) {
+                try { await supabaseClient.from('saved_materials').insert({ user_id: currentUser.id, course_id: courseId, title, link, image: null }); } catch (e) { }
+            }
+            const local = getLocalItems(); local.unshift({ id: 'local-' + Date.now(), course_id: courseId, title, link, image: null }); setLocalItems(local);
+
+            document.getElementById('manual-name').value = ''; document.getElementById('manual-link').value = '';
+            toggleManualForm(); await loadSavedMaterials(); showToast('Materi ditambahkan.', 'success');
+        }
+
+        let editRecordId = null;
+        function openEditModal(recordId, title, link) {
+            const item = savedItems.find(i => i.id === recordId);
+            if (item && item.purchased) { showToast('Materi yang dibeli tidak dapat diubah.', 'warning'); return; }
+            editRecordId = recordId; document.getElementById('edit-name').value = title; document.getElementById('edit-link').value = link;
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+        function closeEditModal() { document.getElementById('edit-modal').classList.add('hidden'); editRecordId = null; }
+        async function saveEdit() {
+            const newTitle = document.getElementById('edit-name').value.trim();
+            const newLink = document.getElementById('edit-link').value.trim();
+            if (!newTitle || !newLink) { showToast('Data belum lengkap.', 'warning'); return; }
+            const item = savedItems.find(i => i.id === editRecordId);
+            if (currentUser && currentUser.id && item) {
+                try { await supabaseClient.from('saved_materials').update({ title: newTitle, link: newLink }).eq('id', editRecordId).eq('user_id', currentUser.id); } catch (e) { }
+            }
+            if (item) {
+                const local = getLocalItems(); const idx = local.findIndex(i => i.course_id === item.course_id);
+                if (idx > -1) { local[idx].title = newTitle; local[idx].link = newLink; setLocalItems(local); }
+            }
+            await loadSavedMaterials(); closeEditModal(); showToast('Perubahan disimpan.', 'success');
+        }
+
+        // ================================================================
+        // FETCH & RENDER CATALOG
+        // ================================================================
+        async function fetchDynamicCourses() {
+            try {
+                const { data } = await supabaseClient.from('courses').select('*').order('position', { ascending: true }).order('created_at', { ascending: false });
+                allCourses = data || [];
+            } catch (err) { allCourses = []; }
+        }
+
+        function renderCoursesToDOM() {
+            const grid = document.getElementById('course-grid');
+            grid.querySelectorAll('.course-card').forEach(el => el.remove());
+            const fragment = document.createDocumentFragment();
+
+            allCourses.forEach(course => {
+                const isPurchased = purchasedCourseIds.has(course.course_id);
+                const bInfo = parseBundleInfo(course);
+
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'course-card bg-white rounded-2xl overflow-hidden border border-gray-100 flex flex-col h-full fade-in';
+                cardDiv.setAttribute('data-id', course.course_id);
+                cardDiv.setAttribute('data-category', course.category);
+                cardDiv.setAttribute('data-subfilter', course.subfilter);
+                cardDiv.setAttribute('data-mode', course.mode || 'Online');
+                cardDiv.setAttribute('data-title', (course.title || '').toLowerCase());
+                cardDiv.setAttribute('data-instructor', (course.instructor || '').toLowerCase());
+                cardDiv.style.display = 'none';
+
+                const bundleBadgeHtml = bInfo.isBundle && bInfo.bundledIds.length > 0
+                    ? `<span class="inline-flex items-center text-[8px] bg-amber-50 text-amber-700 font-bold px-1.5 py-0.5 rounded border border-amber-200"><i class="fas fa-boxes-stacked mr-1"></i>Paket (${bInfo.bundledIds.length})</span>` : '';
+                const pdfBadgeHtml = getCoursePdfInfo(bInfo)
+                    ? '<span class="inline-flex items-center text-[8px] bg-blue-50 text-blue-700 font-bold px-1.5 py-0.5 rounded border border-blue-200"><i class="fas fa-file-pdf mr-1"></i>PDF</span>'
+                    : '';
+                const facilityBadgeHtml = course.facility?.trim()
+                    ? `<span class="inline-flex min-w-0 max-w-full items-start gap-1 whitespace-normal break-words text-[8px] bg-gray-50 text-gray-600 font-bold px-1.5 py-0.5 rounded border border-gray-200"><i class="fas fa-book-open mt-px shrink-0"></i><span class="min-w-0 break-words">${escapeHtml(course.facility.trim())}</span></span>`
+                    : '';
+                const badgesHtml = [bundleBadgeHtml, pdfBadgeHtml, facilityBadgeHtml].filter(Boolean).join('');
+                const courseMeta = `${escapeHtml(course.class_type || 'E-LEARNING')} • ${escapeHtml(course.meetings || '-')} Pertemuan • Kuota ${escapeHtml(course.quota || '-')}`;
+
+                let topBadgesHtml = isPurchased
+                    ? `<div class="absolute top-2 left-2 z-20 bg-emerald-500 text-white px-2 py-0.5 rounded shadow-sm text-[9px] font-bold uppercase flex items-center gap-1"><i class="fas fa-check"></i> Terbuka</div>`
+                    : `<div class="absolute top-2 left-2 z-20 bg-white/95 backdrop-blur-sm text-primary px-2 py-0.5 rounded shadow-sm text-[9px] font-bold uppercase">${escapeHtml(course.mode || 'Online')}</div>`;
+
+                cardDiv.innerHTML = `
+                    <div class="relative overflow-hidden group aspect-[4/3] bg-gray-100">
+                        <img src="${course.image || DEFAULT_IMG}" alt="${escapeHtml(course.title)}" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        ${topBadgesHtml}
+                        <button onclick="saveToMaterimu('${course.course_id}')" title="Simpan ke Materimu" class="absolute top-2 right-2 z-20 w-7 h-7 bg-white/90 backdrop-blur-sm text-gray-600 hover:text-primary rounded-md flex items-center justify-center shadow-sm transition-colors text-xs cursor-pointer">
+                            <i class="far fa-bookmark"></i>
+                        </button>
+                    </div>
+                    <div class="p-2.5 md:p-4 flex flex-col flex-grow">
+                        <h3 class="min-w-0 text-xs md:text-sm font-bold text-gray-800 leading-snug mb-1.5 break-words">${escapeHtml(course.title)}</h3>
+                        ${badgesHtml ? `<div class="flex flex-wrap gap-1 mb-1.5">${badgesHtml}</div>` : ''}
+                        <div class="flex items-center gap-1.5 text-[10px] text-gray-600 mb-1.5">
+                            <i class="fas fa-user-tie text-accent w-3 shrink-0 text-center"></i>
+                            <span class="min-w-0 break-words font-medium">${escapeHtml(course.instructor || 'Pengajar Nuqthah')}</span>
+                        </div>
+                        <div class="text-[9px] text-gray-500 mb-2 leading-snug break-words">${courseMeta}</div>
+                        <div class="mt-auto pt-2.5 border-t border-gray-100">
+                            <div class="flex flex-wrap items-baseline gap-x-1.5 gap-y-1 mb-2">
+                                ${course.price
+                        ? `<span class="text-primary font-extrabold text-sm md:text-base leading-tight break-words">${escapeHtml(course.price)}</span>`
+                        : '<span class="text-primary font-extrabold text-sm md:text-base leading-tight">Hubungi Admin</span>'}
+                                ${course.price && course.price_le ? `<span class="min-w-0 text-[9px] text-gray-400 font-medium leading-tight break-words">/ ${escapeHtml(course.price_le)}</span>` : ''}
+                            </div>
+                            <a href="halaman_belajar.html?course_id=${course.course_id}" class="w-full py-1.5 md:py-2 ${isPurchased ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-primary hover:bg-opacity-90'} text-white text-[10px] md:text-[11px] font-bold rounded-lg transition-all flex items-center justify-center gap-1">
+                                ${isPurchased ? 'Lanjutkan Belajar' : 'Lihat Detail'} <i class="fas fa-arrow-right text-[8px]"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                fragment.appendChild(cardDiv);
+            });
+            grid.appendChild(fragment);
+            applyFilters();
+        }
+
+        // ================================================================
+        // FILTERS LOGIC
+        // ================================================================
+        const PROGRAMS = {
+            syariah: { label: 'Bimbel Syariah', subs: ['Tingkat 1', 'Tingkat 2', 'Tingkat 3'] },
+            ushul: { label: 'Bimbel Ushuludin', subs: ['Tingkat 1', 'Tingkat 2', 'Tingkat 3'] },
+            tafaqquh: { label: 'Tafaqquh', subs: ['Fiqih', 'Ushul Fiqh', 'Tauhid'] },
+            tashil: { label: "Ilmu Alat", subs: ['Nahwu', 'Sharaf', 'Balaghah', 'Mantiq'] },
+            amiyah: { label: 'Amiyah Mesir', subs: ['Dasar', 'Menengah', 'Lanjut'] }
+        };
+
+        let currentCategory = 'syariah';
+        let currentSubFilter = 'Semua';
+        let currentMode = 'Semua';
+
+        window.changeCategory = function (categoryKey) {
+            if (!PROGRAMS[categoryKey]) return;
+            currentCategory = categoryKey; currentSubFilter = 'Semua'; currentMode = 'Semua';
+
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                const isActive = tab.getAttribute('data-category') === categoryKey;
+                tab.className = `nav-tab px-4 py-1.5 rounded-full whitespace-nowrap transition-all text-xs font-bold ${isActive ? 'bg-primary text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100'}`;
+            });
+            renderSubFilters(); applyFilters();
+        };
+
+        function renderSubFilters() {
+            const container = document.getElementById('sub-filter-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            // Render Mode (Online/Offline)
+            const modes = ['Semua', 'Online', 'Offline'];
+            modes.forEach(mode => {
+                const btn = document.createElement('button');
+                const isActive = currentMode === mode;
+                btn.className = `px-3 py-1 rounded-md text-[10px] font-bold whitespace-nowrap transition-all cursor-pointer border ${isActive ? 'bg-primary text-white border-primary' : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'}`;
+                btn.textContent = mode;
+                btn.onclick = () => { currentMode = mode; renderSubFilters(); applyFilters(); };
+                container.appendChild(btn);
+            });
+
+            // Divider
+            const divider = document.createElement('div');
+            divider.className = 'w-px h-4 bg-gray-300 mx-1';
+            container.appendChild(divider);
+
+            // Render Tingkat/Sub
+            const subs = PROGRAMS[currentCategory]?.subs || [];
+            const allSubs = ['Semua', ...subs];
+            allSubs.forEach(sub => {
+                const btn = document.createElement('button');
+                const isActive = currentSubFilter === sub;
+                btn.className = `px-3 py-1 rounded-md text-[10px] font-bold whitespace-nowrap transition-all cursor-pointer border ${isActive ? 'bg-accent text-white border-accent shadow-sm' : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'}`;
+                btn.textContent = sub;
+                btn.onclick = () => { currentSubFilter = sub; renderSubFilters(); applyFilters(); };
+                container.appendChild(btn);
+            });
+        }
+
+        function applyFilters() {
+            const cards = document.querySelectorAll('.course-card');
+            const searchQuery = (document.getElementById('catalog-search-input')?.value || '').toLowerCase().trim();
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const cat = card.getAttribute('data-category');
+                const sub = card.getAttribute('data-subfilter');
+                const mode = card.getAttribute('data-mode') || 'Online';
+                const title = card.getAttribute('data-title') || '';
+                const instructor = card.getAttribute('data-instructor') || '';
+
+                const matchCat = (cat === currentCategory);
+                const matchSub = (currentSubFilter === 'Semua' || sub === currentSubFilter);
+                const matchMode = (currentMode === 'Semua' || mode.toLowerCase() === currentMode.toLowerCase());
+                const matchSearch = !searchQuery || title.includes(searchQuery) || instructor.includes(searchQuery);
+
+                if (matchCat && matchSub && matchMode && matchSearch) {
+                    card.style.display = 'flex'; visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            const emptyState = document.getElementById('empty-materi-state');
+            if (emptyState) {
+                if (visibleCount === 0) emptyState.classList.remove('hidden');
+                else emptyState.classList.add('hidden');
+            }
+        }
+
+        window.resetFilters = function () {
+            document.getElementById('catalog-search-input').value = '';
+            changeCategory('syariah');
+        }
+
+        // ================================================================
+        // OTP LOGIN LOGIC (KHUSUS INDEX)
+        // ================================================================
+        function openOtpModal() {
+            resetOtpModalSteps();
+            document.getElementById('otp-modal').classList.remove('hidden');
+        }
+
+        function closeOtpModal() {
+            document.getElementById('otp-modal').classList.add('hidden');
+        }
+
+        function resetOtpModalSteps() {
+            document.getElementById('otp-step-email').classList.remove('hidden');
+            document.getElementById('otp-step-verify').classList.add('hidden');
+            document.getElementById('otp-code-input').value = '';
+            document.getElementById('btn-request-otp').disabled = false;
+            document.getElementById('btn-request-otp').innerHTML = 'Minta Kode OTP';
+            document.getElementById('btn-verify-otp').disabled = false;
+            document.getElementById('btn-verify-otp').innerHTML = 'Verifikasi &amp; Masuk';
+        }
+
+        async function requestOtpCode() {
+            const emailInput = document.getElementById('otp-email-input').value.trim().toLowerCase();
+            const btnRequest = document.getElementById('btn-request-otp');
+
+            if (!emailInput) {
+                showToast('Silakan masukkan alamat email Anda.', 'warning', 'Email Kosong');
+                return;
+            }
+
+            btnRequest.disabled = true;
+            btnRequest.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1"></i> Mengecek...';
+
+            try {
+                const res = await fetch(`${BACKEND_BASE_URL}/api/send-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: emailInput })
+                });
+                const data = await res.json();
+
+                if (!res.ok || !data.success) {
+                    throw new Error(data.error || 'Gagal mengirim kode OTP.');
+                }
+
+                document.getElementById('otp-target-email-label').textContent = emailInput;
+                document.getElementById('otp-step-email').classList.add('hidden');
+                document.getElementById('otp-step-verify').classList.remove('hidden');
+
+                showToast('Kode OTP telah dikirim ke email Anda.', 'success', 'OTP Terkirim');
+            } catch (err) {
+                if (err.message.includes('belum terdaftar')) {
+                    showToast('Email belum terdaftar. Silakan pilih kelas di katalog dan lakukan pembelian untuk membuat akun.', 'error', 'Akun Tidak Ditemukan');
+                } else {
+                    showToast(err.message, 'error', 'Gagal Mengirim OTP');
+                }
+            } finally {
+                btnRequest.disabled = false;
+                btnRequest.innerHTML = 'Minta Kode OTP';
+            }
+        }
+
+        async function verifyOtpCode() {
+            const emailInput = document.getElementById('otp-email-input').value.trim().toLowerCase();
+            const codeInput = document.getElementById('otp-code-input').value.trim();
+            const btnVerify = document.getElementById('btn-verify-otp');
+
+            if (!codeInput || codeInput.length < 6) {
+                showToast('Silakan masukkan 6 digit kode OTP dengan benar.', 'warning', 'Kode Tidak Valid');
+                return;
+            }
+
+            btnVerify.disabled = true;
+            btnVerify.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1"></i> Memverifikasi...';
+
+            try {
+                const res = await fetch(`${BACKEND_BASE_URL}/api/verify-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: emailInput, code: codeInput })
+                });
+                const data = await res.json();
+
+                if (!res.ok || !data.success) {
+                    throw new Error(data.error || 'Kode OTP tidak valid.');
+                }
+
+                // === PENGECEKAN AKSES (BETTER SYSTEM) ===
+                const { data: accessData, error: accErr } = await supabaseClient
+                    .from('user_access')
+                    .select('course_id')
+                    .eq('user_email', emailInput)
+                    .eq('is_active', true)
+                    .limit(1);
+
+                if (accErr) {
+                    console.warn("Gagal memverifikasi akses, tapi izinkan login karena OTP valid.", accErr);
+                }
+
+                if (!accErr && (!accessData || accessData.length === 0)) {
+                    showToast('Akun terdaftar namun belum memiliki akses kelas aktif. Silakan lakukan pembelian kelas terlebih dahulu.', 'error', 'Akses Ditolak');
+                    resetOtpModalSteps();
+                    return;
+                }
+
+                // === LOGIN BERHASIL ===
+                currentUser = data.user;
+                localStorage.setItem('nuqthah_current_user', JSON.stringify(currentUser));
+                isLoggedIn = true;
+
+                closeOtpModal();
+                showToast(`Selamat datang kembali, ${currentUser.name || 'Siswa'}!`, 'success', 'Berhasil Masuk');
+
+                await loadSavedMaterials();
+                updateAuthUI();
+                renderCoursesToDOM();
+                renderDashboardWidgets();
+                await fetchUpcomingSchedules(); // Ambil jadwal setelah login
+
+            } catch (err) {
+                showToast(err.message || 'Kode OTP tidak valid.', 'error', 'Verifikasi Gagal');
+            } finally {
+                btnVerify.disabled = false;
+                btnVerify.innerHTML = 'Verifikasi &amp; Masuk';
+            }
+        }
+
+        // ================================================================
+        // INIT APP
+        // ================================================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            const overlay = document.getElementById('page-loading-overlay');
+
+            await checkSession();
+            renderQuizEvaluation();
+            await fetchDynamicCourses();
+            await loadSavedMaterials(); // Di dalam fungsi ini juga memanggil fetchUpcomingSchedules
+
+            renderCoursesToDOM();
+            renderSubFilters();
+            updateAuthUI();
+
+            if (isLoggedIn && currentUser && !sessionStorage.getItem('nuqthah_welcome_shown')) {
+                const purchasedTotal = savedItems.filter(i => i.purchased).length;
+                if (purchasedTotal > 0) {
+                    setTimeout(() => {
+                        showToast(`Anda memiliki ${purchasedTotal} materi terbuka. Lanjutkan belajarmu!`, 'success', `Selamat datang kembali!`);
+                    }, 800);
+                }
+                sessionStorage.setItem('nuqthah_welcome_shown', 'true');
+            } else if (!isLoggedIn) {
+                sessionStorage.removeItem('nuqthah_welcome_shown');
+            }
+
+            if (overlay) {
+                overlay.classList.add('hidden');
+                setTimeout(() => overlay.style.display = 'none', 300);
+            }
+        });
+    </script>
 </body>
 
 </html>

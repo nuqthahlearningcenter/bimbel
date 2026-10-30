@@ -1,0 +1,3297 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruang Belajar - Nuqthah Learning Center</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png"
+        href="https://userkv.r2.mayar.id/landing-page/assets/nuqthah-kind-kingdom-2402/2ef2247a_file_0000000005ac82469e639ea2dfd71b0e.png">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Midtrans Snap JS -->
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="Mid-client-QzcjGlEmaHlfZ81K"></script>
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#234B36',
+                        accent: '#C9A227'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* ============ VIDEO PLAYER ============ */
+        .nuqthah-player-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #000;
+            border-radius: 1rem;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .nuqthah-player-wrapper:fullscreen,
+        .nuqthah-player-wrapper:-webkit-full-screen {
+            border-radius: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: none !important;
+            aspect-ratio: auto !important;
+        }
+
+        .nuqthah-player-wrapper.is-pseudo-fullscreen {
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100vw !important;
+            height: 100dvh !important;
+            z-index: 99990 !important;
+            border-radius: 0 !important;
+            aspect-ratio: auto !important;
+            background-color: #000 !important;
+        }
+
+        /* KHUSUS IPHONE / IOS (SAFARI & CHROME): Putar Layar Lanskap 90 Derajat */
+        .nuqthah-player-wrapper.is-forced-landscape {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            width: 100dvh !important;
+            height: 100vw !important;
+            transform: translate(-50%, -50%) rotate(90deg) !important;
+            z-index: 99990 !important;
+            border-radius: 0 !important;
+            aspect-ratio: auto !important;
+            background-color: #000 !important;
+            max-width: none !important;
+        }
+
+        .video-iframe-layer {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none !important;
+        }
+
+        .video-iframe-layer iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            pointer-events: none !important;
+        }
+
+        .custom-range {
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.25);
+            height: 6px;
+            border-radius: 999px;
+            cursor: pointer;
+            outline: none;
+            transition: height 0.15s ease;
+        }
+
+        .custom-range:hover {
+            height: 8px;
+        }
+
+        .custom-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid #234B36;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+            transition: transform 0.15s ease;
+        }
+
+        .custom-range::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .custom-range::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid #234B36;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+            transition: transform 0.15s ease;
+        }
+
+        .player-controls-bar {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .controls-hidden .player-controls-bar {
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+        }
+
+        .controls-hidden {
+            cursor: none;
+        }
+
+        .nuqthah-player-wrapper.is-sticky-playing {
+            position: sticky;
+            top: 0.75rem;
+            z-index: 40;
+            align-self: start;
+        }
+
+        .nuqthah-player-placeholder {
+            width: 100%;
+        }
+
+        @media (min-width: 1024px) and (orientation: landscape) {
+            .nuqthah-player-wrapper.is-mini-player {
+                position: fixed !important;
+                top: auto !important;
+                left: auto !important;
+                right: 1rem !important;
+                bottom: 1rem !important;
+                width: min(360px, 32vw) !important;
+                height: auto !important;
+                aspect-ratio: 16 / 9 !important;
+                z-index: 99990 !important;
+                border-radius: 0.75rem !important;
+                box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+            }
+        }
+
+        @media (max-width: 1023px) {
+            #modules-list {
+                max-height: none;
+                overflow-y: visible;
+            }
+        }
+
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+
+        /* ============ TOAST ============ */
+        .toast-item {
+            animation: toastIn .35s cubic-bezier(.21, 1.02, .73, 1) forwards;
+        }
+
+        .toast-item.leaving {
+            animation: toastOut .28s ease forwards;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(-14px) scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(-10px) scale(.97);
+            }
+        }
+
+        .toast-progress {
+            animation: toastProgress 4.5s linear forwards;
+        }
+
+        @keyframes toastProgress {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
+
+        /* ============ MODAL ANIMATION ============ */
+        .modal-fade {
+            animation: modalFade .25s ease-out forwards;
+        }
+
+        @keyframes modalFade {
+            from {
+                opacity: 0;
+                transform: scale(.96) translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+    <!-- ================= TOAST CONTAINER ================= -->
+    <div id="toast-container" aria-live="polite"
+        class="fixed top-3 right-3 left-3 sm:left-auto sm:right-5 z-[999999] flex flex-col items-end gap-2.5 pointer-events-none">
+    </div>
+
+    <!-- Top Navigation -->
+    <nav class="bg-primary text-white px-4 sm:px-6 py-3 flex flex-wrap justify-between items-center gap-2 shadow-md">
+        <a href="index.html" class="flex items-center gap-2 font-bold text-xs sm:text-sm hover:opacity-90">
+            <i class="fas fa-arrow-left"></i> Kembali ke Katalog Materi
+        </a>
+
+        <div class="flex items-center gap-2">
+            <button id="nav-login-btn" onclick="openOtpModal()"
+                class="hidden text-[11px] sm:text-xs bg-accent hover:bg-opacity-90 text-white px-3 py-1.5 rounded-full font-bold transition shadow-sm">
+                <i class="fas fa-sign-in-alt mr-1"></i> Masuk Akun
+            </button>
+
+            <div id="user-account-badge"
+                class="hidden items-center gap-2 text-[11px] sm:text-xs bg-white/10 px-3 py-1.5 rounded-full font-semibold border border-white/15">
+                <i class="fas fa-user-check text-emerald-300"></i>
+                <span id="nav-user-email" class="max-w-[120px] sm:max-w-[180px] truncate">-</span>
+                <button onclick="logoutUser()" title="Keluar dari Akun"
+                    class="text-red-300 hover:text-red-200 underline ml-1 font-bold">
+                    Keluar
+                </button>
+            </div>
+
+            <div id="user-status-badge"
+                class="text-[11px] sm:text-xs bg-white/10 px-3 py-1.5 rounded-full font-semibold">
+                Memuat Status Akses...
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main id="learning-layout" class="max-w-6xl mx-auto p-3 sm:p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Kolom Kiri -->
+        <div id="course-content-column" class="lg:col-span-2 space-y-6">
+
+            <!-- Judul Modul Sesi -->
+            <div
+                class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between gap-2">
+                <div class="min-w-0">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Sesi Pembelajaran
+                            Aktif</span>
+                        <span id="current-module-subject-badge"
+                            class="hidden text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md font-bold truncate max-w-[200px]"></span>
+                    </div>
+                    <h2 id="current-module-title" class="text-base sm:text-lg font-bold text-primary truncate mt-0.5">
+                        Memuat Judul Sesi...</h2>
+                </div>
+                <div class="bg-primary/10 text-primary px-3 py-1 rounded-lg text-xs font-bold shrink-0"
+                    id="current-module-badge">
+                    Sesi #1
+                </div>
+            </div>
+
+            <!-- CUSTOM VIDEO PLAYER -->
+            <div id="nuqthah-player-container" class="nuqthah-player-wrapper shadow-lg group">
+
+                <div class="video-iframe-layer">
+                    <div id="youtube-player"></div>
+                </div>
+
+                <div
+                    class="absolute top-3 left-3 sm:top-4 sm:left-4 z-20 bg-black/60 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full text-white text-[10px] sm:text-xs font-bold border border-white/10 pointer-events-none flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Nuqthah Learning
+                </div>
+
+                <div id="video-click-area"
+                    class="absolute inset-0 z-10 flex items-center justify-center cursor-pointer">
+
+                    <div id="player-loader"
+                        class="hidden flex-col items-center gap-2 bg-black/60 p-4 rounded-2xl backdrop-blur-sm">
+                        <i class="fas fa-circle-notch fa-spin text-white text-2xl sm:text-3xl"></i>
+                        <span class="text-white text-xs font-semibold">Memuat Video...</span>
+                    </div>
+
+                    <button id="center-play-btn" type="button" aria-label="Putar Video"
+                        class="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-primary/95 text-white flex items-center justify-center shadow-2xl border-2 border-white/20 transform transition duration-200 hover:scale-110">
+                        <i class="fas fa-play text-xl sm:text-2xl md:text-3xl ml-1"></i>
+                    </button>
+
+                    <div id="player-error"
+                        class="hidden flex-col items-center justify-center text-center p-6 bg-black/90 inset-0 absolute z-30">
+                        <i class="fas fa-exclamation-triangle text-amber-400 text-3xl sm:text-4xl mb-3"></i>
+                        <h4 class="text-white font-bold text-sm sm:text-base mb-1">Video Tidak Dapat Diputar</h4>
+                        <p id="player-error-msg" class="text-gray-300 text-xs max-w-md mb-4">Terjadi kesalahan saat
+                            memuat sumber video pembelajaran ini.</p>
+                        <button onclick="retryLoadVideo()"
+                            class="bg-primary text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-opacity-90 transition">
+                            <i class="fas fa-redo mr-1"></i> Coba Muat Ulang
+                        </button>
+                    </div>
+                </div>
+
+                <div id="player-controls"
+                    class="player-controls-bar absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black/95 via-black/80 to-transparent pt-6 pb-2 sm:pb-3 px-2 sm:px-4 flex flex-col gap-1.5 sm:gap-2.5">
+
+                    <div class="w-full flex items-center">
+                        <input id="progress-slider" type="range" min="0" max="100" step="0.1" value="0"
+                            aria-label="Timeline Video" class="custom-range w-full"
+                            style="background: linear-gradient(to right, #234B36 0%, rgba(255,255,255,0.25) 0%);">
+                    </div>
+
+                    <div class="flex items-center justify-between text-white w-full gap-1 sm:gap-2">
+
+                        <div class="flex items-center gap-0.5 sm:gap-2 min-w-0 flex-1 overflow-hidden">
+
+                            <button id="btn-play-pause" type="button" title="Putar / Jeda (Spasi)"
+                                class="w-7 h-7 sm:w-9 sm:h-9 shrink-0 rounded-lg hover:bg-white/15 active:bg-white/25 flex items-center justify-center transition">
+                                <i id="icon-play-pause" class="fas fa-play text-xs sm:text-sm"></i>
+                            </button>
+
+                            <button id="btn-skip-back" type="button" title="Mundur 10 Detik (Panah Kiri)"
+                                class="px-1.5 h-7 sm:w-9 sm:h-9 shrink-0 rounded-lg hover:bg-white/15 active:bg-white/25 flex items-center justify-center transition text-[10px] sm:text-xs font-bold">
+                                <i class="fas fa-undo-alt mr-0.5"></i>10
+                            </button>
+
+                            <button id="btn-skip-forward" type="button" title="Maju 10 Detik (Panah Kanan)"
+                                class="px-1.5 h-7 sm:w-9 sm:h-9 shrink-0 rounded-lg hover:bg-white/15 active:bg-white/25 flex items-center justify-center transition text-[10px] sm:text-xs font-bold">
+                                10<i class="fas fa-redo-alt ml-0.5"></i>
+                            </button>
+
+                            <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
+                                <button id="btn-mute" type="button" title="Suara / Bisu (M)"
+                                    class="w-7 h-7 sm:w-9 sm:h-9 shrink-0 rounded-lg hover:bg-white/15 active:bg-white/25 flex items-center justify-center transition">
+                                    <i id="icon-volume" class="fas fa-volume-up text-xs sm:text-sm"></i>
+                                </button>
+                                <input id="volume-slider" type="range" min="0" max="100" value="100"
+                                    aria-label="Volume Suara" class="custom-range hidden sm:block w-14 md:w-20"
+                                    style="background: linear-gradient(to right, #234B36 100%, rgba(255,255,255,0.25) 100%);">
+                            </div>
+
+                            <div class="text-[10px] sm:text-xs font-mono text-gray-200 ml-0.5 sm:ml-1 truncate">
+                                <span id="time-current">00:00</span> <span class="text-gray-400">/</span> <span
+                                    id="time-duration">00:00</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-1 sm:gap-2 shrink-0 ml-1">
+
+                            <select id="speed-select" aria-label="Kecepatan Putar" title="Kecepatan Putar"
+                                class="bg-primary hover:bg-primary/90 text-white text-[10px] sm:text-xs font-bold h-7 sm:h-8 px-1.5 sm:px-2.5 rounded-lg border border-white/20 focus:outline-none cursor-pointer">
+                                <option value="0.5">0.5×</option>
+                                <option value="0.75">0.75×</option>
+                                <option value="1" selected>1×</option>
+                                <option value="1.25">1.25×</option>
+                                <option value="1.5">1.5×</option>
+                                <option value="1.75">1.75×</option>
+                                <option value="2">2×</option>
+                            </select>
+
+                            <button id="btn-rotate" type="button" title="Putar Layar Lanskap" aria-label="Putar Layar"
+                                class="w-7 h-7 sm:w-9 sm:h-9 shrink-0 rounded-lg bg-white/10 hover:bg-white/20 active:bg-white/30 flex items-center justify-center transition border border-white/20">
+                                <i class="fas fa-mobile-alt fa-rotate-90 text-xs sm:text-sm"></i>
+                            </button>
+
+                            <button id="btn-fullscreen" type="button" title="Layar Penuh (F)" aria-label="Layar Penuh"
+                                class="w-7 h-7 sm:w-9 sm:h-9 shrink-0 rounded-lg bg-white/10 hover:bg-white/20 active:bg-white/30 flex items-center justify-center transition border border-white/20">
+                                <i id="icon-fullscreen" class="fas fa-expand text-xs sm:text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Materi & Pengajar -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+                <div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span id="course-category-badge"
+                            class="text-xs font-bold text-primary bg-emerald-50 px-3 py-1 rounded-lg uppercase">Kategori</span>
+                        <span id="course-bundle-badge"
+                            class="hidden text-xs font-bold text-amber-800 bg-amber-100 border border-amber-200 px-3 py-1 rounded-lg uppercase">
+                            <i class="fas fa-boxes-stacked mr-1"></i> Paket Bundling
+                        </span>
+                    </div>
+                    <h1 id="course-title" class="text-2xl font-bold text-gray-900 mt-2">Memuat Judul Materi...</h1>
+                </div>
+
+                <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                    <div
+                        class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xl shrink-0">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Pengajar Utama
+                            (Asatidzah)</span>
+                        <h4 id="course-instructor" class="font-bold text-gray-800 text-base">-</h4>
+                    </div>
+                </div>
+
+                <!-- Daftar Materi di Dalam Paket (Muncul otomatis jika materi adalah Paket Bundling) -->
+                <div id="bundle-included-container"
+                    class="hidden p-4 bg-amber-50/60 border border-amber-200 rounded-xl space-y-2.5">
+                    <div class="text-xs font-bold text-amber-900 uppercase flex items-center gap-1.5">
+                        <i class="fas fa-layer-group text-accent"></i> Daftar Materi yang Termasuk dalam Paket Ini:
+                    </div>
+                    <div id="bundle-included-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-sm text-gray-700 uppercase mb-1">Deskripsi &amp; Fasilitas</h3>
+                    <p id="course-facility" class="text-sm text-gray-600 leading-relaxed">-</p>
+                </div>
+            </div>
+
+            <section id="course-pdf-section"
+                class="hidden bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 space-y-3">
+                <h3 class="font-bold text-gray-800"><i class="fas fa-file-pdf text-red-600 mr-2"></i>Modul PDF</h3>
+                <div class="flex justify-end border-b pb-3">
+                    <button id="toggle-course-pdf-button" type="button" onclick="toggleCoursePdfList()"
+                        aria-controls="course-pdf-content" aria-expanded="true"
+                        class="text-[10px] sm:text-xs font-semibold text-primary hover:text-primary/80 focus:outline-none focus:ring-2 focus:ring-primary/30 rounded-lg px-2 py-1 transition whitespace-nowrap">
+                        Sembunyikan daftar
+                        <i id="toggle-course-pdf-icon" class="fas fa-chevron-up ml-1" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div id="course-pdf-content" class="space-y-3">
+                    <div id="course-pdf-list" class="space-y-2"></div>
+                    <iframe id="course-pdf-viewer" title="Viewer Modul PDF"
+                        class="hidden w-full h-[65vh] min-h-[420px] rounded-xl border border-gray-200" loading="lazy"
+                        referrerpolicy="no-referrer" allow="fullscreen"></iframe>
+                </div>
+            </section>
+
+            <!-- ================= LATIHAN SOAL SECTION ================= -->
+            <div id="practice-section" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center shrink-0">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <h3 class="font-bold text-gray-800 text-base leading-tight">Latihan Soal Interaktif</h3>
+                            <p class="text-xs text-gray-500">Uji pemahaman Anda dengan soal latihan materi ini</p>
+                        </div>
+                    </div>
+                    <span id="quiz-count-badge"
+                        class="text-[10px] bg-gray-100 text-gray-500 px-3 py-1 rounded-full font-bold uppercase tracking-wider shrink-0">
+                        Memuat...
+                    </span>
+                </div>
+
+                <div id="practice-content">
+                    <div class="text-center py-6 text-gray-400">
+                        <i class="fas fa-circle-notch fa-spin text-2xl mb-2 opacity-50"></i>
+                        <p class="text-xs">Memuat soal latihan...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAYWALL -->
+            <div id="paywall-container"
+                class="hidden bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 p-6 rounded-2xl text-center space-y-4 shadow-sm">
+                <div
+                    class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mx-auto text-xl">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3 class="text-xl font-bold text-primary">Materi Ini Terkunci</h3>
+                <p id="paywall-desc" class="text-sm text-gray-600 max-w-md mx-auto">
+                    Anda sedang berada di mode Free Trial. Daftarkan akun dan selesaikan pembayaran untuk membuka
+                    seluruh video sesi, penjelasan mendalam, dan latihan soal interaktif secara penuh.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
+                    <button id="course-access-button" onclick="handleCourseAccessClick()"
+                        class="w-full sm:w-auto bg-accent text-white font-bold px-8 py-3 rounded-xl text-sm shadow-md hover:bg-opacity-90 transition transform hover:scale-105">
+                        <span id="course-access-label">Buka Akses Penuh</span>
+                        <span id="paywall-price"> (Rp 0)</span>
+                    </button>
+                    <button onclick="openOtpModal()"
+                        class="w-full sm:w-auto bg-white text-primary border border-primary/30 font-bold px-6 py-3 rounded-xl text-sm hover:bg-gray-50 transition">
+                        Sudah Punya Akun? Masuk OTP
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kolom Kanan: Daftar Modul Sesi Pembelajaran -->
+        <div id="modules-sidebar"
+            class="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4 h-fit">
+            <div class="border-b pb-3 space-y-2.5">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-bold text-gray-800 text-base flex items-center gap-2">
+                        <i class="fas fa-list text-primary"></i> Daftar Sesi Pembelajaran
+                    </h3>
+                    <span id="total-modules-badge"
+                        class="text-[10px] bg-primary/10 text-primary px-2.5 py-0.5 rounded-full font-bold shrink-0">0
+                        Sesi</span>
+                </div>
+            </div>
+
+            <!-- Kolom Pencarian Sesi Video -->
+            <div id="module-search-wrapper" class="relative hidden">
+                <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+                <input type="text" id="module-search-input" oninput="renderModulesList()"
+                    placeholder="Cari judul sesi video / materi..."
+                    class="w-full border border-gray-200 pl-8 pr-3 py-1.5 rounded-xl text-xs focus:outline-none focus:border-primary bg-gray-50">
+            </div>
+
+            <div class="flex justify-end border-b pb-3">
+                <button id="toggle-module-list-button" type="button" onclick="toggleModuleList()"
+                    aria-controls="module-list-content" aria-expanded="true"
+                    class="text-[10px] sm:text-xs font-semibold text-primary hover:text-primary/80 focus:outline-none focus:ring-2 focus:ring-primary/30 rounded-lg px-2 py-1 transition whitespace-nowrap">
+                    Sembunyikan daftar
+                    <i id="toggle-module-list-icon" class="fas fa-chevron-up ml-1" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div id="module-list-content">
+                <div id="modules-list" class="space-y-2.5 max-h-[560px] overflow-y-auto pr-1">
+                    <p class="text-xs text-gray-400 text-center py-4">Memuat sesi...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= MODAL 1: CHECKOUT ================= -->
+    <div id="checkout-modal"
+        class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden"
+        style="z-index: 99995;">
+        <div
+            class="modal-fade bg-white w-full max-w-md rounded-2xl p-6 space-y-5 shadow-2xl relative max-h-[92vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b pb-3">
+                <div>
+                    <h3 class="font-bold text-primary text-lg">Daftar Akun &amp; Buka Akses</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Akun ini digunakan untuk mengakses materi di semua
+                        perangkat Anda.</p>
+                </div>
+                <button onclick="closeCheckoutModal()"
+                    class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-500 shrink-0">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="checkout-form" onsubmit="handleCheckoutFormSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-700 uppercase mb-1 tracking-wider">Alamat
+                        Email Aktif</label>
+                    <input type="email" id="reg-email" required placeholder="contoh@email.com"
+                        class="w-full border border-gray-200 p-3 rounded-xl text-sm focus:outline-none focus:border-primary">
+                    <span class="text-[10px] text-gray-400 mt-1 block">Kode OTP akan dikirimkan ke email ini saat Anda
+                        login di perangkat lain.</span>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-700 uppercase mb-1 tracking-wider">Nama
+                        Lengkap</label>
+                    <input type="text" id="reg-name" required placeholder="Masukkan nama lengkap Anda"
+                        class="w-full border border-gray-200 p-3 rounded-xl text-sm focus:outline-none focus:border-primary">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-700 uppercase mb-1 tracking-wider">Nomor
+                        WhatsApp</label>
+                    <input type="tel" id="reg-whatsapp" required placeholder="cth: 081234567890"
+                        class="w-full border border-gray-200 p-3 rounded-xl text-sm focus:outline-none focus:border-primary">
+                </div>
+
+                <div class="bg-emerald-50 border border-emerald-100 p-3 rounded-xl flex items-center justify-between">
+                    <span class="text-xs font-semibold text-gray-600">Total Pembayaran Materi:</span>
+                    <span id="modal-checkout-price" class="text-base font-bold text-primary">Rp 0</span>
+                </div>
+
+                <button type="submit" id="btn-submit-checkout"
+                    class="w-full bg-accent text-white font-bold py-3.5 rounded-xl text-sm shadow-md hover:bg-opacity-90 transition flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed">
+                    <i class="fas fa-credit-card"></i> Bayar Sekarang &amp; Buka Materi
+                </button>
+            </form>
+
+            <div class="border-t pt-3 text-center">
+                <p class="text-xs text-gray-500">Sudah pernah mendaftar dan membayar sebelumnya?</p>
+                <button type="button" onclick="switchCheckoutToOtp()"
+                    class="text-xs font-bold text-primary underline mt-1 hover:opacity-80">
+                    Masuk Menggunakan Email &amp; Kode OTP
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 2: OTP ================= -->
+    <div id="otp-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden"
+        style="z-index: 99996;">
+        <div
+            class="modal-fade bg-white w-full max-w-md rounded-2xl p-6 space-y-5 shadow-2xl relative max-h-[92vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b pb-3">
+                <div>
+                    <h3 class="font-bold text-primary text-lg">Masuk ke Akun Belajar</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Gunakan email yang Anda pakai saat pendaftaran materi.</p>
+                </div>
+                <button onclick="closeOtpModal()"
+                    class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-500 shrink-0">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div id="otp-step-email" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-700 uppercase mb-1 tracking-wider">Email
+                        Terdaftar</label>
+                    <input type="email" id="otp-email-input" placeholder="Masukkan email pendaftaran Anda"
+                        class="w-full border border-gray-200 p-3 rounded-xl text-sm focus:outline-none focus:border-primary">
+                </div>
+                <button type="button" id="btn-request-otp" onclick="requestOtpCode()"
+                    class="w-full bg-primary text-white font-bold py-3 rounded-xl text-sm hover:bg-opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed">
+                    Minta Kode OTP
+                </button>
+            </div>
+
+            <div id="otp-step-verify" class="space-y-4 hidden">
+                <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl text-xs text-amber-800">
+                    Kode OTP 6 digit telah dikirimkan ke <strong id="otp-target-email-label">-</strong>.
+                </div>
+                <div>
+                    <label
+                        class="block text-[10px] font-bold text-gray-700 uppercase mb-1 text-center tracking-wider">Masukkan
+                        6 Digit Kode OTP</label>
+                    <input type="text" id="otp-code-input" maxlength="6" placeholder="••••••" inputmode="numeric"
+                        class="w-full border border-gray-200 p-3 rounded-xl text-center tracking-[0.5em] font-bold text-lg focus:outline-none focus:border-primary">
+                </div>
+                <button type="button" id="btn-verify-otp" onclick="verifyOtpCode()"
+                    class="w-full bg-accent text-white font-bold py-3 rounded-xl text-sm hover:bg-opacity-90 transition shadow-md disabled:opacity-60 disabled:cursor-not-allowed">
+                    Verifikasi &amp; Buka Akses Materi
+                </button>
+                <button type="button" onclick="resetOtpModalSteps()"
+                    class="w-full text-xs text-gray-500 underline hover:text-gray-700 text-center block">
+                    Ganti Email atau Kirim Ulang OTP
+                </button>
+            </div>
+
+            <div class="border-t pt-3 text-center">
+                <p class="text-xs text-gray-500">Belum punya akun atau belum membeli materi ini?</p>
+                <button type="button" onclick="switchOtpToCheckout()"
+                    class="text-xs font-bold text-accent underline mt-1 hover:opacity-80">
+                    Daftar &amp; Buka Akses Penuh Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 3: QUIZ TENGAH VIDEO (stop_time) ================= -->
+    <div id="quiz-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden"
+        style="z-index: 99999;">
+        <div class="modal-fade bg-white w-full max-w-lg rounded-2xl p-6 space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b pb-2">
+                <h3 class="font-bold text-primary text-base"><i class="fas fa-brain mr-2"></i>Kuis Pemahaman Materi</h3>
+                <span class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">Wajib Dijawab</span>
+            </div>
+            <p id="quiz-question-text" class="text-sm font-semibold text-gray-800">Pertanyaan kuis akan muncul di
+                sini...</p>
+
+            <div id="quiz-options-container" class="space-y-2"></div>
+            <div id="quiz-feedback" class="text-xs font-bold text-center hidden"></div>
+
+            <button id="submit-quiz-btn" onclick="verifyQuizAnswer()" disabled
+                class="w-full bg-gray-300 text-white font-bold py-2.5 rounded-xl transition cursor-not-allowed">
+                Lanjutkan Video
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 4: LATIHAN SOAL LENGKAP ================= -->
+    <div id="practice-quiz-modal"
+        class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 hidden"
+        style="z-index: 999997;">
+
+        <div
+            class="modal-fade bg-white w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden">
+
+            <!-- Header -->
+            <div class="bg-primary text-white p-4 sm:p-5 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
+                        <i class="fas fa-brain text-sm"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <h3 id="pq-modal-title" class="font-bold text-sm sm:text-base leading-tight truncate">Latihan
+                            Soal Interaktif</h3>
+                        <p id="pq-modal-subtitle" class="text-[10px] sm:text-xs text-emerald-200 truncate">Uji pemahaman
+                            materi Anda</p>
+                    </div>
+                </div>
+                <button onclick="closePracticeQuiz()"
+                    class="w-8 h-8 rounded-full hover:bg-white/20 flex items-center justify-center transition shrink-0">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="bg-gray-50 px-4 sm:px-6 py-3 border-b shrink-0">
+                <div class="w-full bg-gray-200 h-2.5 rounded-full overflow-hidden">
+                    <div id="pq-progress" class="bg-primary h-full transition-all duration-300" style="width:0%"></div>
+                </div>
+                <div
+                    class="flex justify-between items-center text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider mt-2">
+                    <span id="pq-counter">Soal 1 dari 1</span>
+                    <span id="pq-score" class="text-accent">Skor: 0</span>
+                </div>
+            </div>
+
+            <!-- VIEW: QUESTIONS -->
+            <div id="pq-question-view" class="flex flex-col flex-1 overflow-hidden">
+                <div class="p-4 sm:p-6 space-y-5 overflow-y-auto flex-1 custom-scrollbar"
+                    style="scrollbar-width: thin;">
+                    <div id="pq-subject-tag"
+                        class="hidden inline-block text-[10px] font-bold bg-emerald-50 text-primary border border-emerald-200 px-2.5 py-1 rounded-lg uppercase">
+                    </div>
+                    <h3 id="pq-question" class="text-base sm:text-lg font-bold text-gray-800 leading-relaxed"></h3>
+                    <div id="pq-options" class="space-y-3"></div>
+                    <div id="pq-feedback" class="hidden text-xs font-bold text-center p-3 rounded-xl leading-snug">
+                    </div>
+                </div>
+
+                <div class="p-4 sm:p-5 border-t bg-gray-50 shrink-0 mt-auto">
+                    <button id="pq-next-btn" onclick="nextPracticeQuestion()" disabled
+                        class="w-full bg-gray-300 text-white font-bold py-3.5 rounded-xl cursor-not-allowed transition-all text-sm sm:text-base flex items-center justify-center gap-2">
+                        Lanjut <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- VIEW: RESULT -->
+            <div id="pq-result-view"
+                class="hidden flex-col flex-1 overflow-y-auto p-6 text-center justify-center space-y-5">
+                <div
+                    class="w-24 h-24 bg-amber-50 text-accent rounded-full flex items-center justify-center mx-auto text-5xl shadow-inner">
+                    🏆
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-primary mb-2">Latihan Selesai!</h2>
+                    <p id="pq-result-message" class="text-sm text-gray-500 leading-relaxed max-w-sm mx-auto">Kerja bagus
+                        telah menyelesaikan latihan soal ini.</p>
+                </div>
+
+                <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 max-w-xs mx-auto w-full">
+                    <span class="text-[10px] uppercase font-bold text-gray-400 tracking-widest block mb-1">Skor
+                        Akhir</span>
+                    <span id="pq-final-score" class="text-4xl font-extrabold text-primary">0 / 0</span>
+                </div>
+
+                <div class="flex gap-3 max-w-sm mx-auto w-full pt-2">
+                    <button onclick="closePracticeQuiz()"
+                        class="flex-1 bg-gray-100 text-gray-700 font-bold py-3.5 rounded-xl hover:bg-gray-200 transition text-sm">
+                        Tutup
+                    </button>
+                    <button onclick="restartPracticeQuiz()"
+                        class="flex-1 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-opacity-90 transition text-sm shadow-md">
+                        Ulangi Latihan
+                    </button>
+                </div>
+            </div>
+
+            <div id="pq-session-modal" class="fixed inset-0 z-[1000000] hidden items-center justify-center bg-black/60 p-4">
+            <div class="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-5 text-center shadow-2xl sm:p-6">
+                    <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-2xl">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2 id="pq-session-title" class="mb-2 text-2xl font-bold text-primary">Sesi Selesai!</h2>
+                    <p id="pq-session-summary" class="mb-4 text-sm text-gray-600">0 Benar, 0 Salah</p>
+                    <div id="pq-session-wrong-list" class="mb-4 space-y-2 text-left"></div>
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                        <button id="pq-retry-wrong-btn" onclick="retryPracticeWrongQuestions()"
+                            class="hidden w-full rounded-xl bg-amber-50 px-4 py-3 text-sm font-bold text-amber-800 transition hover:bg-amber-100">
+                            Ulangi Soal yang Salah
+                        </button>
+                        <button id="pq-continue-session-btn" onclick="continuePracticeSession()"
+                            class="w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white transition hover:bg-opacity-90">
+                            Lanjut
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        /* ================================================================
+           KONFIGURASI
+        ================================================================ */
+        const SUPABASE_URL = 'https://idwrkzekykarxnuoaysu.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_N96gYsm_jeSntalN3qMVCA_TpXloD4u';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const BACKEND_BASE_URL = 'https://markaznuqtoh.vercel.app';
+        const SOAL_PER_SESI = 20;
+
+        /* ================================================================
+           STATE
+        ================================================================ */
+        let currentUser = null;
+        try {
+            currentUser = JSON.parse(localStorage.getItem('nuqthah_current_user')) || null;
+        } catch (e) {
+            currentUser = null;
+        }
+
+        let player = null;
+        let isYtApiReady = false;
+        let pendingVideoInit = null;
+        let playerHomeTop = null;
+        let playerPlaceholder = null;
+        let pendingPaymentInfo = null;
+        let pendingPaymentStatusInterval = null;
+        let currentModules = [];
+        let activeModuleIndex = 0;
+        let isUserHasAccess = false;
+        let userAccessibleCourseIds = [];
+        let currentCoursePdfInfos = [];
+        let activeCoursePdfIndex = null;
+        let courseData = null;
+
+        // State Bundling (Paket)
+        let isBundleCourse = false;
+        let bundledCourseIds = [];
+        let bundledCoursesMap = {}; // { course_id: courseObj }
+        let parentBundleIdsContainingCurrentCourse = []; // Jika user buka materi satuan, cek apakah ada paket yang memuat materi ini
+
+        let currentQuizData = null; // mid-video quiz
+        let selectedOption = null; // mid-video quiz
+        let quizTriggeredForCurrentModule = false;
+
+        /* Practice quiz state */
+        let allLoadedQuizzes = []; // Semua kuis untuk course ini (atau gabungan paket)
+        let activePracticeQuizzes = []; // Kuis yang sedang dikerjakan di modal
+        let activePracticeTitle = 'Latihan Soal Interaktif';
+        let activePracticeCourseTitle = 'Latihan Soal Interaktif';
+        let activePracticeCourseId = null;
+        let pqIndex = 0;
+        let pqScore = 0;
+        let pqTotalSessions = 0;
+        let pqSessionStartScore = 0;
+        let pqReviewMode = false;
+        let pqReviewQuestions = [];
+        let pqReviewIndex = 0;
+        let pqPendingSessionResult = null;
+        let pqSelected = null;
+
+        let playerSyncInterval = null;
+        let controlsHideTimeout = null;
+        let isDraggingTimeline = false;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('course_id');
+        const pendingPaymentStorageKey = `nuqthah_pending_payment_${courseId}`;
+
+        /* Player UI refs */
+        const playerContainer = document.getElementById('nuqthah-player-container');
+        const videoClickArea = document.getElementById('video-click-area');
+        const centerPlayBtn = document.getElementById('center-play-btn');
+        const playerLoader = document.getElementById('player-loader');
+        const playerError = document.getElementById('player-error');
+        const playerErrorMsg = document.getElementById('player-error-msg');
+        const btnPlayPause = document.getElementById('btn-play-pause');
+        const iconPlayPause = document.getElementById('icon-play-pause');
+        const btnSkipBack = document.getElementById('btn-skip-back');
+        const btnSkipForward = document.getElementById('btn-skip-forward');
+        const btnMute = document.getElementById('btn-mute');
+        const iconVolume = document.getElementById('icon-volume');
+        const volumeSlider = document.getElementById('volume-slider');
+        const progressSlider = document.getElementById('progress-slider');
+        const timeCurrentEl = document.getElementById('time-current');
+        const timeDurationEl = document.getElementById('time-duration');
+        const speedSelect = document.getElementById('speed-select');
+        const btnFullscreen = document.getElementById('btn-fullscreen');
+        const iconFullscreen = document.getElementById('icon-fullscreen');
+        const btnRotate = document.getElementById('btn-rotate');
+
+        /* ================================================================
+           HELPER PARSE BUNDLING PAKET
+        ================================================================ */
+        function parseBundleInfo(course) {
+            const rawLink = String(course?.link || '');
+            const metadataMarker = rawLink.indexOf('||META::');
+            let mainPart = rawLink;
+            let metadata = {};
+            if (metadataMarker !== -1) {
+                mainPart = rawLink.slice(0, metadataMarker);
+                try { metadata = JSON.parse(rawLink.slice(metadataMarker + 8)); } catch (e) { }
+            }
+            if (mainPart.startsWith('BUNDLE::')) {
+                const withoutPrefix = mainPart.substring(8);
+                const divider = withoutPrefix.indexOf('||');
+                try {
+                    const ids = JSON.parse(divider === -1 ? withoutPrefix : withoutPrefix.slice(0, divider));
+                    return {
+                        isBundle: true,
+                        bundledIds: Array.isArray(ids) ? ids : [],
+                        externalLink: divider === -1 ? '' : withoutPrefix.slice(divider + 2),
+                        pdf: metadata.pdf || null,
+                        pdfs: Array.isArray(metadata.pdfs) && metadata.pdfs.length ? metadata.pdfs : (metadata.pdf ? [metadata.pdf] : [])
+                    };
+                } catch (e) {
+                    return { isBundle: true, bundledIds: [], externalLink: '', pdf: metadata.pdf || null, pdfs: Array.isArray(metadata.pdfs) && metadata.pdfs.length ? metadata.pdfs : (metadata.pdf ? [metadata.pdf] : []) };
+                }
+            }
+            return {
+                isBundle: false,
+                bundledIds: [],
+                externalLink: mainPart,
+                pdf: metadata.pdf || null,
+                pdfs: Array.isArray(metadata.pdfs) && metadata.pdfs.length ? metadata.pdfs : (metadata.pdf ? [metadata.pdf] : [])
+            };
+        }
+
+        function getCoursePdfInfos(bundleInfo) {
+            const storedPdfs = Array.isArray(bundleInfo?.pdfs) && bundleInfo.pdfs.length
+                ? bundleInfo.pdfs
+                : (bundleInfo?.pdf ? [bundleInfo.pdf] : []);
+            const pdfs = storedPdfs
+                .filter(pdf => pdf?.fileId && /^[A-Za-z0-9_-]+$/.test(pdf.fileId))
+                .map(pdf => ({
+                    fileId: pdf.fileId,
+                    name: pdf.name || 'Modul PDF',
+                    viewUrl: `https://drive.google.com/file/d/${encodeURIComponent(pdf.fileId)}/preview`,
+                    downloadUrl: `https://drive.google.com/uc?export=download&id=${encodeURIComponent(pdf.fileId)}`
+                }));
+            if (pdfs.length) return pdfs;
+            try {
+                const url = new URL(bundleInfo?.externalLink || '');
+                if (url.hostname !== 'drive.google.com') return [];
+                const fileId = url.pathname.match(/\/file\/d\/([A-Za-z0-9_-]+)/)?.[1] || url.searchParams.get('id');
+                return fileId && /^[A-Za-z0-9_-]+$/.test(fileId)
+                    ? [{
+                        fileId,
+                        name: 'Modul PDF',
+                        viewUrl: `https://drive.google.com/file/d/${encodeURIComponent(fileId)}/preview`,
+                        downloadUrl: `https://drive.google.com/uc?export=download&id=${encodeURIComponent(fileId)}`
+                    }]
+                    : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function toggleCoursePdfViewer(index) {
+            const viewer = document.getElementById('course-pdf-viewer');
+            const isSamePdfOpen = !viewer.classList.contains('hidden') && activeCoursePdfIndex === index;
+
+            document.querySelectorAll('[data-course-pdf-toggle]').forEach(button => {
+                button.innerHTML = '<i class="fas fa-book-open"></i><span class="hidden sm:inline">Buka / Baca PDF</span>';
+                button.setAttribute('aria-label', `Buka / baca ${button.dataset.pdfName}`);
+                button.setAttribute('aria-expanded', 'false');
+            });
+            if (!isSamePdfOpen && currentCoursePdfInfos[index]) {
+                viewer.src = currentCoursePdfInfos[index].viewUrl;
+                viewer.classList.remove('hidden');
+                const button = document.querySelector(`[data-course-pdf-toggle="${index}"]`);
+                button.innerHTML = '<i class="fas fa-eye-slash"></i><span class="hidden sm:inline">Tutup PDF</span>';
+                button.setAttribute('aria-label', `Tutup PDF ${button.dataset.pdfName}`);
+                button.setAttribute('aria-expanded', 'true');
+                activeCoursePdfIndex = index;
+            } else {
+                viewer.removeAttribute('src');
+                viewer.classList.add('hidden');
+                activeCoursePdfIndex = null;
+            }
+        }
+
+        /* ================================================================
+           TOAST SYSTEM
+        ================================================================ */
+        const TOAST_STYLE = {
+            success: { icon: 'fa-check', color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-100', bar: 'bg-emerald-500' },
+            error: { icon: 'fa-xmark', color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-100', bar: 'bg-red-500' },
+            warning: { icon: 'fa-exclamation', color: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-100', bar: 'bg-amber-500' },
+            info: { icon: 'fa-info', color: 'text-sky-600', bg: 'bg-sky-50', border: 'border-sky-100', bar: 'bg-sky-500' }
+        };
+
+        function escapeHtml(str) {
+            return String(str ?? '').replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
+        }
+
+        function showToast(message, type = 'info', title = '') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const cfg = TOAST_STYLE[type] || TOAST_STYLE.info;
+            const toast = document.createElement('div');
+            toast.className = `toast-item pointer-events-auto relative w-full sm:w-[380px] bg-white rounded-2xl shadow-lg shadow-black/5 border ${cfg.border} overflow-hidden flex items-start gap-3 p-3.5`;
+
+            toast.innerHTML = `
+                <div class="w-9 h-9 rounded-xl ${cfg.bg} ${cfg.color} flex items-center justify-center shrink-0">
+                    <i class="fas ${cfg.icon} text-sm"></i>
+                </div>
+                <div class="flex-1 min-w-0 pt-0.5">
+                    ${title ? `<p class="text-[13px] font-bold text-gray-800 leading-tight">${escapeHtml(title)}</p>` : ''}
+                    <p class="text-xs text-gray-600 leading-snug mt-0.5 break-words">${escapeHtml(message)}</p>
+                </div>
+                <button type="button" class="toast-close w-6 h-6 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 shrink-0 transition" aria-label="Tutup">
+                    <i class="fas fa-xmark text-[11px]"></i>
+                </button>
+                <div class="absolute bottom-0 left-0 h-[3px] ${cfg.bar} toast-progress"></div>
+            `;
+
+            container.appendChild(toast);
+
+            const timer = setTimeout(() => dismissToast(toast), 4500);
+            toast.querySelector('.toast-close').addEventListener('click', () => {
+                clearTimeout(timer);
+                dismissToast(toast);
+            });
+        }
+
+        function dismissToast(toast) {
+            if (!toast || toast.classList.contains('leaving')) return;
+            toast.classList.add('leaving');
+            setTimeout(() => toast.remove(), 300);
+        }
+
+        /* ================================================================
+           NAV AKUN
+        ================================================================ */
+        function updateNavUserBadge() {
+            const loginBtn = document.getElementById('nav-login-btn');
+            const accountBadge = document.getElementById('user-account-badge');
+            const emailLabel = document.getElementById('nav-user-email');
+
+            if (currentUser && currentUser.email) {
+                loginBtn.classList.add('hidden');
+                accountBadge.classList.remove('hidden');
+                accountBadge.classList.add('flex');
+                emailLabel.textContent = currentUser.email;
+            } else {
+                loginBtn.classList.remove('hidden');
+                accountBadge.classList.add('hidden');
+                accountBadge.classList.remove('flex');
+            }
+        }
+
+        function updateModuleSidebarPosition() {
+            const layout = document.getElementById('learning-layout');
+            const contentColumn = document.getElementById('course-content-column');
+            const modulesSidebar = document.getElementById('modules-sidebar');
+            const pdfSection = document.getElementById('course-pdf-section');
+
+            if (window.matchMedia('(max-width: 1023px)').matches) {
+                if (modulesSidebar.parentElement !== contentColumn) {
+                    contentColumn.insertBefore(modulesSidebar, pdfSection);
+                }
+            } else if (modulesSidebar.parentElement !== layout) {
+                layout.appendChild(modulesSidebar);
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('nuqthah_current_user');
+            localStorage.removeItem(`nuqthah_access_${courseId}`);
+            localStorage.removeItem(`nuqthah_access_${courseId}_email`);
+            window.location.reload();
+        }
+
+        /* ================================================================
+           CEK AKSES KETAT (STRICT MODE DENGAN KOLOM is_active & FALLBACK OFFLINE)
+        ================================================================ */
+        function saveAccessCache(cId, email) {
+            if (!cId || !email) return;
+            localStorage.setItem(`nuqthah_access_${cId}`, 'granted');
+            localStorage.setItem(`nuqthah_access_${cId}_email`, email);
+        }
+
+        async function verifyUserCourseAccess() {
+            userAccessibleCourseIds = [];
+            if (!currentUser || !currentUser.email) return false;
+
+            // Daftar ID yang valid untuk membuka materi ini (ID materi ini sendiri + ID Paket Induk jika ada)
+            const validAccessIds = [courseId, ...parentBundleIdsContainingCurrentCourse];
+
+            try {
+                // 1. CEK KETAT KE SUPABASE: Hanya izinkan jika ada di user_access DAN is_active = true
+                const { data: accByEmail, error: emailErr } = await supabaseClient
+                    .from('user_access')
+                    .select('course_id')
+                    .in('course_id', validAccessIds)
+                    .eq('user_email', currentUser.email)
+                    .eq('is_active', true);
+
+                if (emailErr) throw emailErr;
+
+                if (accByEmail && accByEmail.length > 0) {
+                    userAccessibleCourseIds = [...new Set(accByEmail.map(access => access.course_id))];
+                    userAccessibleCourseIds.forEach(cId => saveAccessCache(cId, currentUser.email));
+                    return true;
+                }
+
+                // Cek juga berdasarkan user_id jika tersedia
+                if (currentUser.id) {
+                    const { data: accById, error: idErr } = await supabaseClient
+                        .from('user_access')
+                        .select('course_id')
+                        .in('course_id', validAccessIds)
+                        .eq('user_id', currentUser.id)
+                        .eq('is_active', true);
+
+                    if (idErr) throw idErr;
+
+                    if (accById && accById.length > 0) {
+                        userAccessibleCourseIds = [...new Set(accById.map(access => access.course_id))];
+                        userAccessibleCourseIds.forEach(cId => saveAccessCache(cId, currentUser.email));
+                        return true;
+                    }
+                }
+
+                // 2. JIKA DIBLOKIR ADMIN (is_active = false) ATAU DIHAPUS DARI user_access:
+                // Hancurkan cache akses lokal di perangkat siswa agar materi langsung terkunci kembali
+                validAccessIds.forEach(cid => {
+                    localStorage.removeItem(`nuqthah_access_${cid}`);
+                    localStorage.removeItem(`nuqthah_access_${cid}_email`);
+                });
+                return false;
+
+            } catch (e) {
+                console.warn('Koneksi ke database terganggu, memeriksa fallback cache lokal:', e);
+                // 3. FALLBACK DARURAT SAAT JARINGAN BURUK / OFFLINE:
+                // Agar siswa yang sudah punya akses sah tidak ter-logout/terkunci saat sinyal hilang
+                for (const cid of validAccessIds) {
+                    const localAccessEmail = localStorage.getItem(`nuqthah_access_${cid}_email`);
+                    if (localStorage.getItem(`nuqthah_access_${cid}`) === 'granted' && localAccessEmail === currentUser.email) {
+                        userAccessibleCourseIds.push(cid);
+                    }
+                }
+                return userAccessibleCourseIds.length > 0;
+            }
+
+            return false;
+        }
+
+        /* ================================================================
+           INIT HALAMAN
+        ================================================================ */
+        window.onYouTubeIframeAPIReady = function () {
+            isYtApiReady = true;
+            if (pendingVideoInit) {
+                createOrLoadYtPlayer(pendingVideoInit.videoId, pendingVideoInit.resumeTime);
+                pendingVideoInit = null;
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            updateModuleSidebarPosition();
+            playerHomeTop = playerContainer.getBoundingClientRect().top + window.scrollY;
+            window.addEventListener('scroll', updatePlayerScrollMode, { passive: true });
+            window.addEventListener('resize', updatePlayerScrollMode);
+            const moduleLayoutQuery = window.matchMedia('(max-width: 1023px)');
+            if (moduleLayoutQuery.addEventListener) {
+                moduleLayoutQuery.addEventListener('change', updateModuleSidebarPosition);
+            } else {
+                moduleLayoutQuery.addListener(updateModuleSidebarPosition);
+            }
+
+            if (!courseId) {
+                showToast('Course ID tidak ditemukan. Mengalihkan ke katalog materi...', 'error', 'Kesalahan');
+                setTimeout(() => window.location.href = 'index.html', 1600);
+                return;
+            }
+            updateNavUserBadge();
+            setupCustomPlayerEvents();
+            await initializePageData();
+        });
+
+        async function initializePageData() {
+            try {
+                // Ambil seluruh courses untuk memetakan relasi Paket Bundling & Satuan
+                const { data: allCourses, error: cErr } = await supabaseClient
+                    .from('courses')
+                    .select('*')
+                    .order('position', { ascending: true });
+
+                if (cErr || !allCourses) throw new Error('Gagal memuat data materi.');
+
+                const course = allCourses.find(c => c.course_id === courseId);
+                if (!course) throw new Error('Materi tidak ditemukan.');
+                courseData = course;
+
+                // Simpan map semua course
+                allCourses.forEach(c => {
+                    bundledCoursesMap[c.course_id] = c;
+                });
+
+                // Cek apakah materi ini adalah Paket Bundling
+                const bInfo = parseBundleInfo(course);
+                isBundleCourse = bInfo.isBundle;
+                bundledCourseIds = bInfo.bundledIds || [];
+
+                // Fallback pintar: Jika materi bernama "Paket ..." tapi belum diset BUNDLE:: di link, otomatis gabungkan materi non-paket di kategori & subfilter yang sama
+                if (!isBundleCourse && String(course.title || '').toLowerCase().includes('paket')) {
+                    const autoBundled = allCourses.filter(c =>
+                        c.course_id !== course.course_id &&
+                        c.category === course.category &&
+                        c.subfilter === course.subfilter &&
+                        !parseBundleInfo(c).isBundle &&
+                        !String(c.title || '').toLowerCase().includes('paket')
+                    ).map(c => c.course_id);
+
+                    if (autoBundled.length > 0) {
+                        isBundleCourse = true;
+                        bundledCourseIds = autoBundled;
+                    }
+                }
+
+                // Cek apakah materi satuan ini ada di dalam Paket Bundling tertentu (agar jika user sudah beli Paket, materi satuan ini ikut terbuka)
+                parentBundleIdsContainingCurrentCourse = allCourses
+                    .filter(c => {
+                        const info = parseBundleInfo(c);
+                        return info.isBundle && info.bundledIds.includes(courseId);
+                    })
+                    .map(c => c.course_id);
+
+                // Render Info Materi
+                document.getElementById('course-title').textContent = course.title;
+                document.getElementById('course-category-badge').textContent = `${course.category} • ${course.subfilter || ''} • ${course.mode || 'Online'}`;
+                document.getElementById('course-instructor').textContent = course.instructor || 'Pengajar Nuqthah';
+                document.getElementById('course-facility').textContent = `${course.facility || '-'} | Kuota: ${course.quota || 'Tak Terbatas'}`;
+                document.getElementById('paywall-price').textContent = course.price || 'Hubungi Admin';
+                document.getElementById('modal-checkout-price').textContent = course.price || 'Hubungi Admin';
+
+                // Tampilkan Daftar Materi jika Paket Bundling
+                if (isBundleCourse && bundledCourseIds.length > 0) {
+                    document.getElementById('course-bundle-badge').classList.remove('hidden');
+                    const incContainer = document.getElementById('bundle-included-container');
+                    const incList = document.getElementById('bundle-included-list');
+                    incContainer.classList.remove('hidden');
+                    incList.innerHTML = '';
+
+                    bundledCourseIds.forEach((cid, i) => {
+                        const subCourse = bundledCoursesMap[cid];
+                        if (!subCourse) return;
+                        const item = document.createElement('a');
+                        item.href = `halaman_belajar.html?course_id=${encodeURIComponent(cid)}`;
+                        item.className = 'bg-white p-2.5 rounded-xl border border-amber-200/80 flex items-center gap-2.5 shadow-sm transition hover:border-amber-400 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary';
+                        item.setAttribute('aria-label', `Buka materi ${subCourse.title}`);
+                        item.innerHTML = `
+                            <div class="w-7 h-7 rounded-lg bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0">${i + 1}</div>
+                            <div class="min-w-0 flex-1">
+                                <div class="text-xs font-bold text-gray-800 truncate">${escapeHtml(subCourse.title)}</div>
+                                <div class="text-[10px] text-gray-500 truncate">${escapeHtml(subCourse.instructor || 'Pengajar Nuqthah')} • ${escapeHtml(subCourse.mode || 'Online')}</div>
+                            </div>
+                        `;
+                        incList.appendChild(item);
+                    });
+                }
+
+                // Verifikasi Akses
+                isUserHasAccess = await verifyUserCourseAccess();
+                if (isUserHasAccess) clearPendingPayment();
+                else await restorePendingPayment();
+
+                if (isUserHasAccess) {
+                    document.getElementById('user-status-badge').innerHTML = '<i class="fas fa-check-circle text-emerald-300 mr-1"></i> Akses Penuh Terbuka';
+                    document.getElementById('paywall-container').classList.add('hidden');
+                } else {
+                    document.getElementById('user-status-badge').innerHTML = '<i class="fas fa-lock text-amber-300 mr-1"></i> Mode Free Trial';
+                    document.getElementById('paywall-container').classList.remove('hidden');
+                }
+
+                let pdfInfos = getCoursePdfInfos(bInfo);
+                if (!pdfInfos.length) {
+                    for (const parentBundleId of parentBundleIdsContainingCurrentCourse) {
+                        if (!userAccessibleCourseIds.includes(parentBundleId)) continue;
+                        const parentBundle = bundledCoursesMap[parentBundleId];
+                        pdfInfos = getCoursePdfInfos(parseBundleInfo(parentBundle));
+                        if (pdfInfos.length) break;
+                    }
+                }
+                const pdfSection = document.getElementById('course-pdf-section');
+                const pdfList = document.getElementById('course-pdf-list');
+                if (pdfInfos.length && isUserHasAccess) {
+                    currentCoursePdfInfos = pdfInfos;
+                    activeCoursePdfIndex = null;
+                    pdfList.innerHTML = pdfInfos.map((pdfInfo, index) => {
+                        const downloadParams = new URLSearchParams({
+                            fileId: pdfInfo.fileId,
+                            fileName: pdfInfo.name || 'Modul.pdf'
+                        });
+                        const downloadUrl = `${BACKEND_BASE_URL}/api/download-google-drive?${downloadParams.toString()}`;
+                        const accessibleName = escapeHtml(pdfInfo.name || `Modul PDF ${index + 1}`);
+                        return `
+                            <div class="flex min-w-0 items-center justify-between gap-2 rounded-xl border border-gray-100 p-3">
+                                <div class="flex min-w-0 items-center gap-2">
+                                    <i class="fas fa-file-pdf text-red-600 shrink-0"></i>
+                                    <span class="min-w-0 truncate text-sm font-semibold text-gray-800" title="${accessibleName}">${accessibleName}</span>
+                                </div>
+                                <div class="flex shrink-0 items-center gap-1.5">
+                                    <button type="button" data-course-pdf-toggle="${index}" data-pdf-name="${accessibleName}"
+                                        onclick="toggleCoursePdfViewer(${index})" aria-expanded="false"
+                                        aria-label="Buka / baca ${accessibleName}" title="Buka / Baca PDF"
+                                        class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2 text-xs font-bold text-white">
+                                        <i class="fas fa-book-open"></i><span class="hidden sm:inline">Buka / Baca PDF</span>
+                                    </button>
+                                    <a href="${downloadUrl}" aria-label="Download ${accessibleName}" title="Download PDF"
+                                        class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2 text-xs font-bold text-white">
+                                        <i class="fas fa-download"></i><span class="hidden sm:inline">Download PDF</span>
+                                    </a>
+                                </div>
+                            </div>`;
+                    }).join('');
+                    const pdfViewer = document.getElementById('course-pdf-viewer');
+                    pdfViewer.removeAttribute('src');
+                    pdfViewer.classList.add('hidden');
+                    pdfSection.classList.remove('hidden');
+                } else {
+                    currentCoursePdfInfos = [];
+                    activeCoursePdfIndex = null;
+                    document.getElementById('course-pdf-viewer').removeAttribute('src');
+                    document.getElementById('course-pdf-viewer').classList.add('hidden');
+                    pdfList.innerHTML = '';
+                    pdfSection.classList.add('hidden');
+                }
+
+                // Target ID untuk mengambil Modul Video & Kuis
+                const targetIdsForContent = isBundleCourse
+                    ? [courseId, ...bundledCourseIds]
+                    : [courseId];
+                const practiceCourseIds = [...new Set(targetIdsForContent.flatMap(getPracticeCourseGroupIds))];
+
+                // Muat Modul Video
+                const { data: modules, error: mErr } = await supabaseClient
+                    .from('modules')
+                    .select('*')
+                    .in('course_id', targetIdsForContent)
+                    .order('position', { ascending: true });
+
+                if (!mErr && modules) {
+                    // Urutkan agar sesuai urutan materi di dalam paket, lalu urutan position modul
+                    currentModules = modules.sort((a, b) => {
+                        const orderA = targetIdsForContent.indexOf(a.course_id);
+                        const orderB = targetIdsForContent.indexOf(b.course_id);
+                        if (orderA !== orderB) return orderA - orderB;
+                        return (a.position || 0) - (b.position || 0);
+                    });
+                } else {
+                    currentModules = [];
+                }
+
+                document.getElementById('total-modules-badge').textContent = `${currentModules.length} Sesi`;
+                if (currentModules.length > 4 || isBundleCourse) {
+                    document.getElementById('module-search-wrapper').classList.remove('hidden');
+                }
+
+                renderModulesList();
+
+                if (currentModules.length > 0) {
+                    loadModule(0);
+                } else {
+                    document.getElementById('modules-list').innerHTML = '<p class="text-xs text-gray-400 text-center py-4">Belum ada modul video.</p>';
+                    document.getElementById('current-module-title').textContent = 'Belum ada sesi';
+                }
+
+                // Muat Latihan Soal (untuk satuan maupun paket)
+                await loadPracticeQuizzes(practiceCourseIds);
+                updateAccessActionButtons();
+
+            } catch (err) {
+                console.error(err);
+                showToast(err.message || 'Terjadi kesalahan saat memuat materi.', 'error', 'Gagal Memuat');
+            }
+        }
+
+        /* ================================================================
+           MODUL VIDEO (DENGAN PENGELOMPOKAN RAPI UNTUK PAKET BUNDLING)
+        ================================================================ */
+        function toggleSubjectAccordion(accId) {
+            const el = document.getElementById(accId);
+            const icon = document.getElementById('icon-' + accId);
+            if (!el) return;
+            el.classList.toggle('hidden');
+            if (icon) icon.classList.toggle('rotate-180');
+        }
+
+        function toggleModuleList() {
+            const content = document.getElementById('module-list-content');
+            const button = document.getElementById('toggle-module-list-button');
+            const icon = document.getElementById('toggle-module-list-icon');
+            toggleCollapsibleContent(content, button, icon);
+        }
+
+        function toggleCoursePdfList() {
+            const content = document.getElementById('course-pdf-content');
+            const button = document.getElementById('toggle-course-pdf-button');
+            const icon = document.getElementById('toggle-course-pdf-icon');
+            toggleCollapsibleContent(content, button, icon);
+        }
+
+        function toggleCollapsibleContent(content, button, icon) {
+            if (!content || !button || !icon) return;
+            content.hidden = !content.hidden;
+            const isExpanded = !content.hidden;
+            button.setAttribute('aria-expanded', String(isExpanded));
+            button.firstChild.textContent = isExpanded ? 'Sembunyikan daftar ' : 'Tampilkan daftar ';
+            icon.classList.toggle('fa-chevron-up', isExpanded);
+            icon.classList.toggle('fa-chevron-down', !isExpanded);
+        }
+
+        function renderModulesList() {
+            const container = document.getElementById('modules-list');
+            const searchQuery = (document.getElementById('module-search-input')?.value || '').toLowerCase().trim();
+            container.innerHTML = '';
+
+            if (currentModules.length === 0) {
+                container.innerHTML = '<p class="text-xs text-gray-400 text-center py-4">Belum ada modul video.</p>';
+                return;
+            }
+
+            // Jika Materi Paket (Bundling), kelompokkan video berdasarkan mata pelajaran (course_id)
+            if (isBundleCourse && bundledCourseIds.length > 0) {
+                const groups = {};
+                const groupOrder = [courseId, ...bundledCourseIds];
+
+                currentModules.forEach((mod, globalIdx) => {
+                    const cId = mod.course_id;
+                    const cObj = bundledCoursesMap[cId];
+                    const cTitle = cObj ? cObj.title : 'Materi Paket';
+
+                    if (searchQuery) {
+                        const matchTitle = (mod.title || '').toLowerCase().includes(searchQuery);
+                        const matchCourse = cTitle.toLowerCase().includes(searchQuery);
+                        if (!matchTitle && !matchCourse) return;
+                    }
+
+                    if (!groups[cId]) groups[cId] = [];
+                    groups[cId].push({ mod, globalIdx });
+                });
+
+                const activeCourseId = currentModules[activeModuleIndex]?.course_id;
+                let renderedGroupCount = 0;
+
+                groupOrder.forEach(cId => {
+                    const items = groups[cId];
+                    if (!items || items.length === 0) return;
+                    renderedGroupCount++;
+
+                    const cObj = bundledCoursesMap[cId];
+                    const groupTitle = cObj ? cObj.title : 'Sesi Paket Utama';
+                    const groupInstructor = cObj?.instructor || '';
+                    const accId = `bundle-mod-acc-${cId.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+                    const isGroupActive = (cId === activeCourseId) || Boolean(searchQuery);
+
+                    const groupWrapper = document.createElement('div');
+                    groupWrapper.className = 'border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm';
+
+                    let itemsHtml = '';
+                    items.forEach((entry, localIdx) => {
+                        const { mod, globalIdx } = entry;
+                        const isLocked = !isUserHasAccess && !mod.is_free_trial;
+                        const isActive = globalIdx === activeModuleIndex;
+
+                        itemsHtml += `
+                            <div onclick="handleModuleItemClick(${globalIdx}, ${isLocked})"
+                                class="p-3 border-t border-gray-100 flex items-center justify-between transition cursor-pointer ${isActive ? 'bg-primary/10 border-l-4 border-l-primary' : 'hover:bg-gray-50'}">
+                                <div class="flex items-center gap-2.5 min-w-0 pr-2">
+                                    <div class="w-7 h-7 rounded-lg ${isActive ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600'} flex items-center justify-center font-bold text-[11px] shrink-0">
+                                        ${localIdx + 1}
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h4 class="text-xs font-bold ${isActive ? 'text-primary' : 'text-gray-800'} line-clamp-1">${escapeHtml(mod.title)}</h4>
+                                        <span class="text-[10px] ${mod.is_free_trial ? 'text-emerald-600 font-semibold' : 'text-gray-400'}">${mod.is_free_trial ? 'Free Trial' : 'Berbayar'}</span>
+                                    </div>
+                                </div>
+                                <div class="shrink-0">
+                                    ${isLocked ? '<i class="fas fa-lock text-gray-400 text-xs"></i>' : `<i class="fas ${isActive ? 'fa-volume-up' : 'fa-play'} text-primary text-xs"></i>`}
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    groupWrapper.innerHTML = `
+                        <button type="button" onclick="toggleSubjectAccordion('${accId}')"
+                            class="w-full bg-gray-50 hover:bg-gray-100 px-3.5 py-2.5 flex items-center justify-between text-left transition">
+                            <div class="min-w-0 pr-2">
+                                <div class="text-xs font-bold text-primary flex items-center gap-1.5">
+                                    <i class="fas fa-book-open text-accent"></i>
+                                    <span class="truncate">${escapeHtml(groupTitle)}</span>
+                                </div>
+                                ${groupInstructor ? `<div class="text-[10px] text-gray-400 truncate mt-0.5">${escapeHtml(groupInstructor)}</div>` : ''}
+                            </div>
+                            <div class="flex items-center gap-2 shrink-0">
+                                <span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full">${items.length} Video</span>
+                                <i id="icon-${accId}" class="fas fa-chevron-down text-[10px] text-gray-400 transition-transform duration-200 ${isGroupActive ? 'rotate-180' : ''}"></i>
+                            </div>
+                        </button>
+                        <div id="${accId}" class="${isGroupActive ? '' : 'hidden'}">
+                            ${itemsHtml}
+                        </div>
+                    `;
+                    container.appendChild(groupWrapper);
+                });
+
+                if (renderedGroupCount === 0) {
+                    container.innerHTML = '<p class="text-xs text-gray-400 text-center py-4">Tidak ada sesi video yang cocok dengan pencarian.</p>';
+                }
+                return;
+            }
+
+            // Jika Materi Satuan (Standar)
+            let visibleCount = 0;
+            currentModules.forEach((mod, index) => {
+                if (searchQuery && !(mod.title || '').toLowerCase().includes(searchQuery)) return;
+                visibleCount++;
+
+                const isLocked = !isUserHasAccess && !mod.is_free_trial;
+                const isActive = index === activeModuleIndex;
+
+                const div = document.createElement('div');
+                div.className = `p-3 rounded-xl border flex items-center justify-between transition cursor-pointer ${isActive ? 'bg-primary/5 border-primary' : 'bg-white border-gray-100 hover:bg-gray-50'}`;
+
+                div.innerHTML = `
+                    <div class="flex items-center gap-3 min-w-0 pr-2">
+                        <div class="w-8 h-8 rounded-lg ${isActive ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600'} flex items-center justify-center font-bold text-xs shrink-0">
+                            ${index + 1}
+                        </div>
+                        <div class="min-w-0">
+                            <h4 class="text-xs font-bold text-gray-800 line-clamp-1">${escapeHtml(mod.title)}</h4>
+                            <span class="text-[10px] text-gray-400">${mod.is_free_trial ? 'Free Trial' : 'Berbayar'}</span>
+                        </div>
+                    </div>
+                    <div class="shrink-0">
+                        ${isLocked ? '<i class="fas fa-lock text-gray-400 text-xs"></i>' : '<i class="fas fa-play text-primary text-xs"></i>'}
+                    </div>
+                `;
+
+                div.onclick = () => handleModuleItemClick(index, isLocked);
+                container.appendChild(div);
+            });
+
+            if (visibleCount === 0) {
+                container.innerHTML = '<p class="text-xs text-gray-400 text-center py-4">Sesi tidak ditemukan.</p>';
+            }
+        }
+
+        function handleModuleItemClick(index, isLocked) {
+            if (isLocked) {
+                openCheckoutModal();
+                return;
+            }
+            loadModule(index);
+        }
+
+        function getResumeKey(modId) {
+            return `nuqthah_resume_${courseId}_${modId}`;
+        }
+
+        function loadModule(index) {
+            activeModuleIndex = index;
+            quizTriggeredForCurrentModule = false;
+            const mod = currentModules[index];
+            renderModulesList();
+
+            document.getElementById('current-module-title').textContent = mod.title;
+            document.getElementById('current-module-badge').textContent = `Sesi #${index + 1}`;
+
+            // Tampilkan badge nama mata pelajaran jika sedang berada di Paket Bundling
+            const subjBadge = document.getElementById('current-module-subject-badge');
+            if (isBundleCourse && bundledCoursesMap[mod.course_id]) {
+                subjBadge.textContent = bundledCoursesMap[mod.course_id].title;
+                subjBadge.classList.remove('hidden');
+            } else {
+                subjBadge.classList.add('hidden');
+            }
+
+            if (!isUserHasAccess && !mod.is_free_trial) {
+                document.getElementById('paywall-container').classList.remove('hidden');
+                if (player && typeof player.stopVideo === 'function') player.stopVideo();
+                return;
+            } else {
+                document.getElementById('paywall-container').classList.add('hidden');
+            }
+
+            playerError.classList.add('hidden');
+            playerError.classList.remove('flex');
+            showLoader(true);
+
+            const ytId = extractYouTubeId(mod.youtube_url);
+            const savedTime = parseFloat(localStorage.getItem(getResumeKey(mod.id || index))) || 0;
+
+            if (isYtApiReady || (window.YT && window.YT.Player)) {
+                isYtApiReady = true;
+                createOrLoadYtPlayer(ytId, savedTime);
+            } else {
+                pendingVideoInit = { videoId: ytId, resumeTime: savedTime };
+            }
+        }
+
+        function retryLoadVideo() {
+            if (currentModules[activeModuleIndex]) {
+                loadModule(activeModuleIndex);
+            }
+        }
+
+        function extractYouTubeId(url) {
+            if (!url) return '';
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : url.trim();
+        }
+
+        function createOrLoadYtPlayer(videoId, resumeTime = 0) {
+            if (!videoId) {
+                showVideoError('ID atau URL video tidak valid.');
+                return;
+            }
+
+            if (player && typeof player.loadVideoById === 'function') {
+                const videoOptions = {
+                    videoId: videoId,
+                    startSeconds: resumeTime > 2 ? resumeTime : 0
+                };
+                player.loadVideoById(videoOptions);
+                disablePlayerCaptions();
+                return;
+            }
+
+            player = new YT.Player('youtube-player', {
+                height: '100%',
+                width: '100%',
+                videoId: videoId,
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'rel': 0,
+                    'modestbranding': 1,
+                    'iv_load_policy': 3,
+                    'cc_load_policy': 0,
+                    'playsinline': 1,
+                    'start': Math.floor(resumeTime > 2 ? resumeTime : 0)
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange,
+                    'onError': onPlayerError
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            const playerIframe = event.target.getIframe();
+            if (playerIframe) playerIframe.setAttribute('tabindex', '-1');
+            disablePlayerCaptions();
+            showLoader(false);
+            updateDurationDisplay();
+            const currentVol = player.getVolume ? player.getVolume() : 100;
+            volumeSlider.value = currentVol;
+            updateRangeBackground(volumeSlider, currentVol);
+        }
+
+        function disablePlayerCaptions() {
+            if (player && typeof player.unloadModule === 'function') {
+                player.unloadModule('captions');
+            }
+        }
+
+        function onPlayerStateChange(event) {
+            const state = event.data;
+
+            if (state === YT.PlayerState.PLAYING) {
+                disablePlayerCaptions();
+                playerContainer.classList.add('is-sticky-playing');
+                updatePlayerScrollMode();
+                showLoader(false);
+                centerPlayBtn.classList.add('hidden');
+                iconPlayPause.className = 'fas fa-pause text-xs sm:text-sm';
+                updateDurationDisplay();
+                startPlayerSync();
+                scheduleHideControls();
+            } else if (state === YT.PlayerState.PAUSED) {
+                playerContainer.classList.remove('is-sticky-playing', 'is-mini-player');
+                removePlayerPlaceholder();
+                showLoader(false);
+                centerPlayBtn.classList.remove('hidden');
+                iconPlayPause.className = 'fas fa-play text-xs sm:text-sm';
+                stopPlayerSync();
+                showControls();
+            } else if (state === YT.PlayerState.BUFFERING) {
+                playerContainer.classList.remove('is-sticky-playing', 'is-mini-player');
+                removePlayerPlaceholder();
+                showLoader(true);
+                centerPlayBtn.classList.add('hidden');
+            } else if (state === YT.PlayerState.ENDED) {
+                playerContainer.classList.remove('is-sticky-playing', 'is-mini-player');
+                removePlayerPlaceholder();
+                showLoader(false);
+                centerPlayBtn.classList.remove('hidden');
+                iconPlayPause.className = 'fas fa-redo text-xs sm:text-sm';
+                stopPlayerSync();
+                showControls();
+                const currentMod = currentModules[activeModuleIndex];
+                if (currentMod) {
+                    localStorage.removeItem(getResumeKey(currentMod.id || activeModuleIndex));
+                }
+            } else if (state === YT.PlayerState.CUED) {
+                playerContainer.classList.remove('is-sticky-playing', 'is-mini-player');
+                removePlayerPlaceholder();
+                showLoader(false);
+                centerPlayBtn.classList.remove('hidden');
+                iconPlayPause.className = 'fas fa-play text-xs sm:text-sm';
+                updateDurationDisplay();
+            }
+        }
+
+        function onPlayerError(event) {
+            showLoader(false);
+            stopPlayerSync();
+            playerContainer.classList.remove('is-sticky-playing', 'is-mini-player');
+            removePlayerPlaceholder();
+            let message = 'Video tidak dapat dimuat saat ini.';
+            if (event.data === 2) message = 'Parameter ID video tidak valid.';
+            else if (event.data === 5) message = 'Pemutar HTML5 mengalami kendala teknis.';
+            else if (event.data === 100) message = 'Video tidak ditemukan atau telah diatur menjadi privat.';
+            else if (event.data === 101 || event.data === 150) message = 'Pemilik video tidak mengizinkan pemutaran tersemat (embed).';
+            showVideoError(message);
+        }
+
+        function showLoader(isLoading) {
+            if (isLoading) {
+                playerLoader.classList.remove('hidden');
+                playerLoader.classList.add('flex');
+            } else {
+                playerLoader.classList.add('hidden');
+                playerLoader.classList.remove('flex');
+            }
+        }
+
+        function updatePlayerScrollMode() {
+            const desktopLandscape = window.matchMedia('(min-width: 1024px) and (orientation: landscape)').matches;
+            const isPlaying = player && window.YT && player.getPlayerState() === YT.PlayerState.PLAYING;
+
+            if (!desktopLandscape || !isPlaying) {
+                playerContainer.classList.remove('is-mini-player');
+                removePlayerPlaceholder();
+                if (isPlaying) playerContainer.classList.add('is-sticky-playing');
+                else playerContainer.classList.remove('is-sticky-playing');
+                return;
+            }
+
+            if (playerHomeTop === null) {
+                playerHomeTop = playerContainer.getBoundingClientRect().top + window.scrollY;
+            }
+
+            const shouldMinimize = window.scrollY > playerHomeTop + 40;
+            if (shouldMinimize && !playerContainer.classList.contains('is-mini-player')) {
+                const bounds = playerContainer.getBoundingClientRect();
+                playerPlaceholder = document.createElement('div');
+                playerPlaceholder.className = 'nuqthah-player-placeholder';
+                playerPlaceholder.style.height = `${bounds.height}px`;
+                playerContainer.before(playerPlaceholder);
+                playerContainer.classList.remove('is-sticky-playing');
+                playerContainer.classList.add('is-mini-player');
+            } else if (!shouldMinimize && playerContainer.classList.contains('is-mini-player')) {
+                playerContainer.classList.remove('is-mini-player');
+                playerContainer.classList.add('is-sticky-playing');
+                removePlayerPlaceholder();
+            }
+        }
+
+        function removePlayerPlaceholder() {
+            if (playerPlaceholder) {
+                playerPlaceholder.remove();
+                playerPlaceholder = null;
+            }
+        }
+
+        function showVideoError(msg) {
+            playerErrorMsg.textContent = msg;
+            playerError.classList.remove('hidden');
+            playerError.classList.add('flex');
+        }
+
+        function startPlayerSync() {
+            stopPlayerSync();
+            playerSyncInterval = setInterval(() => {
+                if (!player || typeof player.getCurrentTime !== 'function') return;
+
+                const currentTime = player.getCurrentTime() || 0;
+                const duration = player.getDuration() || 0;
+
+                if (!isDraggingTimeline && duration > 0) {
+                    const percent = (currentTime / duration) * 100;
+                    progressSlider.value = percent;
+                    updateRangeBackground(progressSlider, percent);
+                    timeCurrentEl.textContent = formatTime(currentTime);
+                    timeDurationEl.textContent = formatTime(duration);
+                }
+
+                const currentMod = currentModules[activeModuleIndex];
+                if (currentMod && currentTime > 3) {
+                    localStorage.setItem(getResumeKey(currentMod.id || activeModuleIndex), Math.floor(currentTime));
+                }
+
+                if (currentMod) {
+                    const targetStop = currentMod.stop_time || 0;
+                    if (targetStop > 0 && !quizTriggeredForCurrentModule && currentTime >= targetStop) {
+                        quizTriggeredForCurrentModule = true;
+                        player.pauseVideo();
+                        stopPlayerSync();
+                        triggerQuiz(currentMod.course_id);
+                    }
+                }
+            }, 500);
+        }
+
+        function stopPlayerSync() {
+            if (playerSyncInterval) {
+                clearInterval(playerSyncInterval);
+                playerSyncInterval = null;
+            }
+        }
+
+        function updateDurationDisplay() {
+            if (player && typeof player.getDuration === 'function') {
+                const dur = player.getDuration();
+                if (dur > 0) {
+                    timeDurationEl.textContent = formatTime(dur);
+                }
+            }
+        }
+
+        function formatTime(seconds) {
+            const sec = Math.max(0, Math.floor(seconds || 0));
+            const hrs = Math.floor(sec / 3600);
+            const mins = Math.floor((sec % 3600) / 60);
+            const remSecs = sec % 60;
+            if (hrs > 0) return `${hrs}:${String(mins).padStart(2, '0')}:${String(remSecs).padStart(2, '0')}`;
+            return `${String(mins).padStart(2, '0')}:${String(remSecs).padStart(2, '0')}`;
+        }
+
+        function updateRangeBackground(sliderEl, percent) {
+            const clamped = Math.max(0, Math.min(100, percent));
+            sliderEl.style.background = `linear-gradient(to right, #234B36 ${clamped}%, rgba(255,255,255,0.25) ${clamped}%)`;
+        }
+
+        function togglePlayPause() {
+            if (!player || typeof player.getPlayerState !== 'function') return;
+            const state = player.getPlayerState();
+            if (state === YT.PlayerState.PLAYING || state === YT.PlayerState.BUFFERING) {
+                player.pauseVideo();
+            } else {
+                player.playVideo();
+            }
+        }
+
+        function skipTime(deltaSeconds) {
+            if (!player || typeof player.getCurrentTime !== 'function') return;
+            const duration = player.getDuration() || 0;
+            const current = player.getCurrentTime() || 0;
+            const target = Math.max(0, Math.min(duration, current + deltaSeconds));
+            player.seekTo(target, true);
+            timeCurrentEl.textContent = formatTime(target);
+            if (duration > 0) {
+                const pct = (target / duration) * 100;
+                progressSlider.value = pct;
+                updateRangeBackground(progressSlider, pct);
+            }
+        }
+
+        function toggleMute() {
+            if (!player || typeof player.isMuted !== 'function') return;
+            if (player.isMuted()) {
+                player.unMute();
+                const vol = player.getVolume() || 100;
+                volumeSlider.value = vol;
+                updateRangeBackground(volumeSlider, vol);
+                updateVolumeIcon(vol, false);
+            } else {
+                player.mute();
+                volumeSlider.value = 0;
+                updateRangeBackground(volumeSlider, 0);
+                updateVolumeIcon(0, true);
+            }
+        }
+
+        function updateVolumeIcon(vol, isMuted) {
+            if (isMuted || Number(vol) === 0) {
+                iconVolume.className = 'fas fa-volume-mute text-xs sm:text-sm text-red-400';
+            } else if (Number(vol) < 50) {
+                iconVolume.className = 'fas fa-volume-down text-xs sm:text-sm';
+            } else {
+                iconVolume.className = 'fas fa-volume-up text-xs sm:text-sm';
+            }
+        }
+
+        /* ================================================================
+           FULLSCREEN & PUTAR LAYAR LANSKAP (SUPPORT ANDROID & IPHONE/IOS)
+        ================================================================ */
+        async function toggleFullscreen() {
+            const isNativeFs = document.fullscreenElement || document.webkitFullscreenElement;
+            const isPseudoFs = playerContainer.classList.contains('is-pseudo-fullscreen');
+            const isForcedLandscape = playerContainer.classList.contains('is-forced-landscape');
+
+            if (!isNativeFs && !isPseudoFs && !isForcedLandscape) {
+                try {
+                    if (playerContainer.requestFullscreen) {
+                        await playerContainer.requestFullscreen();
+                    } else if (playerContainer.webkitRequestFullscreen) {
+                        await playerContainer.webkitRequestFullscreen();
+                    } else {
+                        // Fallback untuk iPhone (Safari & Chrome iOS)
+                        playerContainer.classList.add('is-pseudo-fullscreen');
+                        document.body.style.overflow = 'hidden';
+                        iconFullscreen.className = 'fas fa-compress text-xs sm:text-sm';
+                    }
+                    if (screen.orientation && screen.orientation.lock) {
+                        screen.orientation.lock('landscape').catch(() => { });
+                    }
+                } catch (err) {
+                    playerContainer.classList.add('is-pseudo-fullscreen');
+                    document.body.style.overflow = 'hidden';
+                    iconFullscreen.className = 'fas fa-compress text-xs sm:text-sm';
+                }
+            } else {
+                if (isNativeFs) {
+                    if (document.exitFullscreen) await document.exitFullscreen();
+                    else if (document.webkitExitFullscreen) await document.webkitExitFullscreen();
+                }
+                if (isPseudoFs || isForcedLandscape) {
+                    playerContainer.classList.remove('is-pseudo-fullscreen', 'is-forced-landscape');
+                    document.body.style.overflow = '';
+                    iconFullscreen.className = 'fas fa-expand text-xs sm:text-sm';
+                }
+                if (screen.orientation && screen.orientation.unlock) {
+                    try { screen.orientation.unlock(); } catch (e) { }
+                }
+            }
+        }
+
+        async function forceLandscape() {
+            const isForcedLandscape = playerContainer.classList.contains('is-forced-landscape');
+
+            // Jika sedang dalam mode rotasi CSS (iPhone), kembalikan ke posisi semula (Portrait)
+            if (isForcedLandscape) {
+                playerContainer.classList.remove('is-forced-landscape', 'is-pseudo-fullscreen');
+                document.body.style.overflow = '';
+                iconFullscreen.className = 'fas fa-expand text-xs sm:text-sm';
+                return;
+            }
+
+            // 1. Coba gunakan fitur rotasi native terlebih dahulu (untuk Android)
+            if (screen.orientation && screen.orientation.lock) {
+                try {
+                    const isNativeFs = document.fullscreenElement || document.webkitFullscreenElement;
+                    if (!isNativeFs && playerContainer.requestFullscreen) {
+                        await playerContainer.requestFullscreen();
+                    }
+                    if (screen.orientation.type.includes('portrait')) {
+                        await screen.orientation.lock('landscape');
+                    } else {
+                        await screen.orientation.lock('portrait');
+                    }
+                    return; // Berhasil di Android
+                } catch (err) {
+                    // Jika ditolak oleh sistem (seperti pada iPhone/iOS), lanjut ke fallback CSS di bawah
+                }
+            }
+
+            // 2. FALLBACK OTOMATIS UNTUK IPHONE (Safari & Chrome iOS):
+            // Putar layar penuh menggunakan CSS 90 derajat secara instan
+            playerContainer.classList.remove('is-pseudo-fullscreen');
+            playerContainer.classList.add('is-forced-landscape');
+            document.body.style.overflow = 'hidden';
+            iconFullscreen.className = 'fas fa-compress text-xs sm:text-sm';
+        }
+
+        function showControls() {
+            playerContainer.classList.remove('controls-hidden');
+            if (controlsHideTimeout) clearTimeout(controlsHideTimeout);
+            if (player && typeof player.getPlayerState === 'function' && player.getPlayerState() === YT.PlayerState.PLAYING) {
+                scheduleHideControls();
+            }
+        }
+
+        function scheduleHideControls() {
+            if (controlsHideTimeout) clearTimeout(controlsHideTimeout);
+            controlsHideTimeout = setTimeout(() => {
+                if (player && typeof player.getPlayerState === 'function' && player.getPlayerState() === YT.PlayerState.PLAYING && !isDraggingTimeline) {
+                    playerContainer.classList.add('controls-hidden');
+                }
+            }, 3000);
+        }
+
+        function setupCustomPlayerEvents() {
+            videoClickArea.addEventListener('click', (e) => {
+                if (e.target.closest('#player-error')) return;
+                if (e.target.closest('#center-play-btn')) togglePlayPause();
+                showControls();
+            });
+
+            videoClickArea.addEventListener('dblclick', (e) => {
+                if (e.target.closest('#player-error')) return;
+                toggleFullscreen();
+            });
+
+            btnPlayPause.addEventListener('click', togglePlayPause);
+            btnSkipBack.addEventListener('click', () => skipTime(-10));
+            btnSkipForward.addEventListener('click', () => skipTime(10));
+            btnMute.addEventListener('click', toggleMute);
+            btnRotate.addEventListener('click', forceLandscape);
+
+            progressSlider.addEventListener('input', (e) => {
+                isDraggingTimeline = true;
+                const pct = parseFloat(e.target.value);
+                updateRangeBackground(progressSlider, pct);
+                if (player && typeof player.getDuration === 'function') {
+                    const dur = player.getDuration() || 0;
+                    timeCurrentEl.textContent = formatTime((pct / 100) * dur);
+                }
+            });
+
+            progressSlider.addEventListener('change', (e) => {
+                if (player && typeof player.getDuration === 'function') {
+                    const dur = player.getDuration() || 0;
+                    const pct = parseFloat(e.target.value);
+                    player.seekTo((pct / 100) * dur, true);
+                }
+                isDraggingTimeline = false;
+                scheduleHideControls();
+            });
+
+            volumeSlider.addEventListener('input', (e) => {
+                const vol = parseInt(e.target.value, 10);
+                updateRangeBackground(volumeSlider, vol);
+                if (player && typeof player.setVolume === 'function') {
+                    player.setVolume(vol);
+                    if (vol > 0 && player.isMuted()) player.unMute();
+                    updateVolumeIcon(vol, vol === 0);
+                }
+            });
+
+            speedSelect.addEventListener('change', (e) => {
+                const rate = parseFloat(e.target.value);
+                if (player && typeof player.setPlaybackRate === 'function') {
+                    player.setPlaybackRate(rate);
+                }
+            });
+
+            btnFullscreen.addEventListener('click', toggleFullscreen);
+
+            document.addEventListener('fullscreenchange', () => {
+                if (document.fullscreenElement === playerContainer) {
+                    iconFullscreen.className = 'fas fa-compress text-xs sm:text-sm';
+                } else {
+                    iconFullscreen.className = 'fas fa-expand text-xs sm:text-sm';
+                    if (screen.orientation && screen.orientation.unlock) {
+                        try { screen.orientation.unlock(); } catch (e) { }
+                    }
+                }
+            });
+
+            document.addEventListener('webkitfullscreenchange', () => {
+                if (document.webkitFullscreenElement === playerContainer) {
+                    iconFullscreen.className = 'fas fa-compress text-xs sm:text-sm';
+                } else {
+                    iconFullscreen.className = 'fas fa-expand text-xs sm:text-sm';
+                    if (screen.orientation && screen.orientation.unlock) {
+                        try { screen.orientation.unlock(); } catch (e) { }
+                    }
+                }
+            });
+
+            playerContainer.addEventListener('mousemove', showControls);
+            playerContainer.addEventListener('touchstart', showControls, { passive: true });
+            playerContainer.addEventListener('mouseleave', () => {
+                if (player && typeof player.getPlayerState === 'function' && player.getPlayerState() === YT.PlayerState.PLAYING) {
+                    playerContainer.classList.add('controls-hidden');
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+                if (['input', 'textarea', 'select', 'button'].includes(activeTag)) return;
+
+                const quizModal = document.getElementById('quiz-modal');
+                const checkoutModal = document.getElementById('checkout-modal');
+                const otpModal = document.getElementById('otp-modal');
+                const pqModal = document.getElementById('practice-quiz-modal');
+                const anyModalOpen =
+                    (quizModal && !quizModal.classList.contains('hidden')) ||
+                    (checkoutModal && !checkoutModal.classList.contains('hidden')) ||
+                    (otpModal && !otpModal.classList.contains('hidden')) ||
+                    (pqModal && !pqModal.classList.contains('hidden'));
+                if (anyModalOpen) return;
+
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    togglePlayPause();
+                    showControls();
+                } else if (e.code === 'ArrowRight') {
+                    e.preventDefault();
+                    skipTime(10);
+                    showControls();
+                } else if (e.code === 'ArrowLeft') {
+                    e.preventDefault();
+                    skipTime(-10);
+                    showControls();
+                } else if (e.key === 'm' || e.key === 'M') {
+                    e.preventDefault();
+                    toggleMute();
+                    showControls();
+                } else if (e.key === 'f' || e.key === 'F') {
+                    e.preventDefault();
+                    toggleFullscreen();
+                } else if (e.key === 'r' || e.key === 'R') {
+                    e.preventDefault();
+                    forceLandscape();
+                } else if (e.key === 'Escape' && (playerContainer.classList.contains('is-pseudo-fullscreen') || playerContainer.classList.contains('is-forced-landscape'))) {
+                    toggleFullscreen();
+                }
+            });
+        }
+
+        /* ================================================================
+           KUIS TENGAH VIDEO (stop_time)
+        ================================================================ */
+        async function triggerQuiz(cId) {
+            const { data: quizzes, error } = await supabaseClient
+                .from('quizzes').select('*').eq('course_id', cId);
+
+            if (error || !quizzes || quizzes.length === 0) {
+                player.playVideo();
+                return;
+            }
+
+            currentQuizData = quizzes[Math.floor(Math.random() * quizzes.length)];
+
+            document.getElementById('quiz-question-text').textContent = currentQuizData.question;
+            const optContainer = document.getElementById('quiz-options-container');
+            optContainer.innerHTML = '';
+
+            ['A', 'B', 'C', 'D'].forEach(opt => {
+                const optText = currentQuizData[`option_-${opt.toLowerCase()}`] || currentQuizData[`option_${opt.toLowerCase()}`];
+                if (!optText) return;
+
+                const label = document.createElement('label');
+                label.className = 'flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-gray-50 cursor-pointer transition text-sm';
+                label.innerHTML = `
+                    <input type="radio" name="quiz_opt" value="${opt}" onclick="selectQuizOption('${opt}')" class="text-primary focus:ring-primary">
+                    <span class="font-bold mr-2">${opt}.</span> <span>${escapeHtml(optText)}</span>
+                `;
+                optContainer.appendChild(label);
+            });
+
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            document.getElementById('submit-quiz-btn').disabled = true;
+            document.getElementById('submit-quiz-btn').className = 'w-full bg-gray-300 text-white font-bold py-2.5 rounded-xl cursor-not-allowed';
+
+            document.getElementById('quiz-modal').classList.remove('hidden');
+        }
+
+        function selectQuizOption(opt) {
+            selectedOption = opt;
+            const btn = document.getElementById('submit-quiz-btn');
+            btn.disabled = false;
+            btn.className = 'w-full bg-primary text-white font-bold py-2.5 rounded-xl hover:bg-opacity-90 transition cursor-pointer';
+        }
+
+        function verifyQuizAnswer() {
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.classList.remove('hidden');
+
+            if (selectedOption === currentQuizData.correct_answer) {
+                feedback.textContent = 'Jawaban Benar! Melanjutkan video...';
+                feedback.className = 'text-xs font-bold text-center text-emerald-600 mt-2';
+                setTimeout(() => {
+                    document.getElementById('quiz-modal').classList.add('hidden');
+                    player.playVideo();
+                }, 1200);
+            } else {
+                feedback.textContent = `Jawaban Salah. Kunci yang benar adalah ${currentQuizData.correct_answer}. Silakan coba lagi.`;
+                feedback.className = 'text-xs font-bold text-center text-red-600 mt-2';
+            }
+        }
+
+        /* ================================================================
+           LATIHAN SOAL (MENDUKUNG PENGELOMPOKAN PAKET BUNDLING & SATUAN)
+        ================================================================ */
+        async function loadPracticeQuizzes(targetIds) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('quizzes')
+                    .select('*')
+                    .in('course_id', targetIds);
+
+                if (error || !data) {
+                    allLoadedQuizzes = [];
+                } else {
+                    allLoadedQuizzes = sortPracticeQuestions(data, targetIds);
+                }
+            } catch (e) {
+                console.warn('Gagal memuat soal latihan:', e);
+                allLoadedQuizzes = [];
+            }
+            renderPracticeSection();
+        }
+
+        function normalizePracticeCourseTitle(title) {
+            return String(title || '').replace(/\s*\(?(Online|Offline)\)?/gi, '').trim();
+        }
+
+        function getPracticeCourseGroupIds(baseCourseId) {
+            const baseCourse = bundledCoursesMap[baseCourseId];
+            if (!baseCourse) return [baseCourseId];
+            if (parseBundleInfo(baseCourse).isBundle || String(baseCourse.title || '').toLowerCase().includes('paket')) {
+                return [baseCourseId];
+            }
+
+            const normalizedTitle = normalizePracticeCourseTitle(baseCourse.title);
+            return Object.values(bundledCoursesMap)
+                .filter(course =>
+                    course.category === baseCourse.category &&
+                    course.subfilter === baseCourse.subfilter &&
+                    !parseBundleInfo(course).isBundle &&
+                    !String(course.title || '').toLowerCase().includes('paket') &&
+                    normalizePracticeCourseTitle(course.title) === normalizedTitle
+                )
+                .sort((a, b) =>
+                    (Number(a.position) || 0) - (Number(b.position) || 0) ||
+                    String(a.course_id).localeCompare(String(b.course_id))
+                )
+                .map(course => course.course_id);
+        }
+
+        function sortPracticeQuestions(questions, courseIds) {
+            const courseOrder = new Map(courseIds.map((id, index) => [String(id), index]));
+            return [...questions].sort((a, b) => {
+                const courseDifference =
+                    (courseOrder.get(String(a.course_id)) ?? Number.MAX_SAFE_INTEGER) -
+                    (courseOrder.get(String(b.course_id)) ?? Number.MAX_SAFE_INTEGER);
+                if (courseDifference !== 0) return courseDifference;
+
+                const questionA = [a.question, a.option_a || a['option_-a'], a.option_b || a['option_-b'],
+                    a.option_c || a['option_-c'], a.option_d || a['option_-d'], a.correct_answer]
+                    .map(value => String(value || '')).join('|');
+                const questionB = [b.question, b.option_a || b['option_-a'], b.option_b || b['option_-b'],
+                    b.option_c || b['option_-c'], b.option_d || b['option_-d'], b.correct_answer]
+                    .map(value => String(value || '')).join('|');
+                return questionA.localeCompare(questionB);
+            });
+        }
+
+        function getPracticeProgress(progressCourseId) {
+            try {
+                return JSON.parse(localStorage.getItem(`nuqthah_quiz_progress_${progressCourseId}`) || 'null');
+            } catch (error) {
+                console.warn('Progres latihan tersimpan tidak valid:', error);
+                return null;
+            }
+        }
+
+        function getPracticeStartScore(progressCourseId) {
+            const storedScore = Number(localStorage.getItem(`nuqthah_quiz_session_start_${progressCourseId}`));
+            return Number.isFinite(storedScore) ? storedScore : 0;
+        }
+
+        function getPracticeActionLabel(progressCourseId) {
+            const progress = getPracticeProgress(progressCourseId);
+            if (progress && !progress.isCompleted && progress.lastIndex > 0) return 'Lanjut';
+            return 'Mulai';
+        }
+
+        function savePracticeProgress(isCompleted = false) {
+            if (!activePracticeCourseId) return;
+            localStorage.setItem(`nuqthah_quiz_progress_${activePracticeCourseId}`, JSON.stringify({
+                lastIndex: pqIndex,
+                currentSession: Math.min(pqTotalSessions, Math.floor(pqIndex / SOAL_PER_SESI) + 1),
+                totalCorrect: pqScore,
+                totalAnswered: pqIndex,
+                isCompleted
+            }));
+        }
+
+        function savePracticeSessionHistory(session, correct, total) {
+            if (!currentUser?.email) return;
+
+            const email = currentUser.email.trim().toLowerCase();
+            const key = `nuqthah_quiz_history_${email}`;
+            let history = [];
+            try {
+                const stored = JSON.parse(localStorage.getItem(key) || '[]');
+                if (Array.isArray(stored)) history = stored;
+            } catch (error) {
+                console.warn('Riwayat latihan tersimpan tidak valid:', error);
+            }
+
+            history.push({
+                courseTitle: activePracticeCourseTitle,
+                session,
+                correct,
+                total,
+                date: new Date().toISOString()
+            });
+            localStorage.setItem(key, JSON.stringify(history));
+        }
+
+        function getPracticeQuestionKey(question) {
+            return question.id || `${question.course_id || ''}|${question.question || ''}`;
+        }
+
+        function getPracticeWrongQuestions() {
+            try {
+                const questions = JSON.parse(localStorage.getItem(`nuqthah_quiz_wrong_${activePracticeCourseId}`) || '[]');
+                return Array.isArray(questions) ? questions : [];
+            } catch (error) {
+                console.warn('Daftar soal latihan yang salah tidak valid:', error);
+                return [];
+            }
+        }
+
+        function savePracticeWrongQuestions(questions) {
+            if (activePracticeCourseId) {
+                localStorage.setItem(`nuqthah_quiz_wrong_${activePracticeCourseId}`, JSON.stringify(questions));
+            }
+        }
+
+        function addPracticeWrongQuestion(question) {
+            const wrongQuestions = getPracticeWrongQuestions();
+            const key = getPracticeQuestionKey(question);
+            if (!wrongQuestions.some(item => item.key === key)) {
+                wrongQuestions.push({ key, question });
+                savePracticeWrongQuestions(wrongQuestions);
+            }
+        }
+
+        function removePracticeWrongQuestion(question) {
+            const key = getPracticeQuestionKey(question);
+            savePracticeWrongQuestions(getPracticeWrongQuestions().filter(item => item.key !== key));
+        }
+
+        function getPracticeExplanation(question) {
+            return question.explanation || question.pembahasan || question.discussion ||
+                question.answer_explanation || question.explanation_text || '';
+        }
+
+        function renderPracticeWrongQuestions() {
+            const container = document.getElementById('pq-session-wrong-list');
+            const retryButton = document.getElementById('pq-retry-wrong-btn');
+            const wrongQuestions = getPracticeWrongQuestions();
+            retryButton.classList.toggle('hidden', wrongQuestions.length === 0);
+            container.innerHTML = wrongQuestions.length ? `
+                <p class="text-xs font-bold text-gray-700">Soal yang perlu diulang (${wrongQuestions.length})</p>
+                <div class="max-h-44 space-y-2 overflow-y-auto pr-1">
+                    ${wrongQuestions.map((item, index) => {
+                        const question = item.question || {};
+                        const key = String(question.correct_answer || '').toLowerCase();
+                        const answerText = question[`option_${key}`] || question[`option_-${key}`] || '';
+                        const explanation = getPracticeExplanation(question);
+                        return `<article class="rounded-xl border border-amber-100 bg-amber-50/60 p-3">
+                            <p class="text-xs font-semibold text-gray-800">${index + 1}. ${escapeHtml(question.question || 'Soal')}</p>
+                            <p class="mt-1 text-[11px] font-bold text-emerald-700">Kunci: ${escapeHtml(String(question.correct_answer || '').toUpperCase())}${answerText ? ` · ${escapeHtml(answerText)}` : ''}</p>
+                            ${explanation ? `<p class="mt-1 text-[11px] leading-relaxed text-gray-600">Pembahasan: ${escapeHtml(explanation)}</p>` : ''}
+                        </article>`;
+                    }).join('')}
+                </div>
+            ` : '<p class="text-xs text-emerald-700">Tidak ada soal yang perlu diulang.</p>';
+        }
+
+        function renderPracticeSection() {
+            const container = document.getElementById('practice-content');
+            const badge = document.getElementById('quiz-count-badge');
+
+            badge.textContent = `${allLoadedQuizzes.length} Soal`;
+
+            /* === Belum punya akses === */
+            if (!isUserHasAccess) {
+                container.innerHTML = `
+                    <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-5 text-center">
+                        <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <p class="text-sm font-bold text-amber-800 mb-1">Latihan Soal Terkunci</p>
+                        <p class="text-xs text-amber-700 mb-4 max-w-sm mx-auto leading-relaxed">
+                            Buka akses penuh untuk mengerjakan <b>${allLoadedQuizzes.length} soal latihan interaktif</b>
+                            beserta seluruh video pembelajaran ${isBundleCourse ? 'di dalam paket ini' : 'untuk materi ini'}.
+                        </p>
+                        <button id="practice-access-button" onclick="handleCourseAccessClick()"
+                            class="bg-accent text-white font-bold px-6 py-2.5 rounded-xl text-xs shadow-md hover:bg-opacity-90 transition inline-flex items-center gap-1.5">
+                            <i class="fas fa-unlock"></i> <span id="practice-access-label">Buka Akses Sekarang</span>
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            /* === Belum ada soal === */
+            if (allLoadedQuizzes.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-6 text-gray-400">
+                        <i class="fas fa-file-circle-question text-3xl mb-2 opacity-50"></i>
+                        <p class="text-xs">Belum ada soal latihan untuk materi ini.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            /* === Sudah punya akses & Materi adalah PAKET BUNDLING === */
+            if (isBundleCourse && bundledCourseIds.length > 0) {
+                const groupOrder = [courseId, ...bundledCourseIds];
+                let cardsHtml = '';
+
+                groupOrder.forEach(cId => {
+                    const groupIds = getPracticeCourseGroupIds(cId).map(String);
+                    const qList = allLoadedQuizzes.filter(q => groupIds.includes(String(q.course_id)));
+                    if (qList.length === 0) return;
+                    const cObj = bundledCoursesMap[cId];
+                    const title = cObj ? cObj.title : 'Latihan Paket';
+                    const progressId = getPracticeCourseGroupIds(cId)[0] || cId;
+
+                    cardsHtml += `
+                        <div class="p-3.5 rounded-xl border border-gray-200 bg-gray-50/60 hover:bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition shadow-sm">
+                            <div class="min-w-0">
+                                <h4 class="text-xs sm:text-sm font-bold text-gray-800 truncate">${escapeHtml(title)}</h4>
+                                <span class="text-[11px] text-emerald-700 font-semibold">${qList.length} Soal Tersedia</span>
+                            </div>
+                            <button onclick="startPracticeQuizByCourse('${cId}')"
+                                class="w-full sm:w-auto shrink-0 whitespace-nowrap bg-primary text-white font-bold px-3.5 py-2 rounded-xl text-xs hover:bg-opacity-90 transition inline-flex items-center justify-center gap-1.5 shadow-sm">
+                                <i class="fas fa-play text-[10px]"></i> ${escapeHtml(getPracticeActionLabel(progressId))}
+                            </button>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <p class="text-sm font-bold text-emerald-900 flex items-center gap-1.5">
+                                    <i class="fas fa-layer-group text-emerald-600"></i> Evaluasi Gabungan Seluruh Paket
+                                </p>
+                                <p class="text-xs text-emerald-700 mt-0.5">Kerjakan seluruh ${allLoadedQuizzes.length} soal dari semua materi di dalam paket ini sekaligus.</p>
+                            </div>
+                            <button onclick="startPracticeQuizAll()"
+                                class="w-full sm:w-auto shrink-0 whitespace-nowrap bg-accent text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-md hover:bg-opacity-90 transition inline-flex items-center justify-center gap-1.5">
+                                <i class="fas fa-bolt"></i> ${escapeHtml(getPracticeActionLabel(courseId) === 'Lanjut' ? 'Lanjut' : `Mulai Semua (${allLoadedQuizzes.length} Soal)`)}
+                            </button>
+                        </div>
+                        <div class="text-xs font-bold text-gray-500 uppercase tracking-wider pt-1">Atau Pilih Latihan per Materi:</div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            ${cardsHtml}
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            /* === Sudah punya akses & Materi SATUAN === */
+            container.innerHTML = `
+                <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-bold text-emerald-800 flex items-center gap-1.5">
+                                <i class="fas fa-circle-check text-emerald-600"></i> Latihan Soal Terbuka
+                            </p>
+                            <p class="text-xs text-emerald-600 mt-0.5">${allLoadedQuizzes.length} soal siap dikerjakan untuk menguji pemahaman Anda.</p>
+                        </div>
+                        <button onclick="startPracticeQuizAll()"
+                            class="w-full sm:w-auto shrink-0 whitespace-nowrap bg-primary text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-md hover:bg-opacity-90 transition inline-flex items-center justify-center gap-1.5">
+                            <i class="fas fa-play"></i> ${escapeHtml(getPracticeActionLabel(getPracticeCourseGroupIds(courseId)[0] || courseId))}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function startPracticeQuizByCourse(targetCId) {
+            if (!isUserHasAccess) {
+                openCheckoutModal();
+                return;
+            }
+            const groupIds = getPracticeCourseGroupIds(targetCId);
+            const groupIdsSet = new Set(groupIds.map(String));
+            const filtered = allLoadedQuizzes.filter(q => groupIdsSet.has(String(q.course_id)));
+            const cObj = bundledCoursesMap[targetCId];
+            activePracticeTitle = cObj ? `Latihan: ${cObj.title}` : 'Latihan Soal Interaktif';
+            activePracticeCourseTitle = cObj ? normalizePracticeCourseTitle(cObj.title) : 'Latihan Soal Interaktif';
+            launchPracticeQuizModal(filtered, groupIds[0] || targetCId);
+        }
+
+        function startPracticeQuizAll() {
+            if (!isUserHasAccess) {
+                openCheckoutModal();
+                return;
+            }
+            activePracticeTitle = courseData ? `Latihan: ${courseData.title}` : 'Latihan Soal Interaktif';
+            activePracticeCourseTitle = courseData ? normalizePracticeCourseTitle(courseData.title) : 'Latihan Soal Interaktif';
+            const progressCourseId = isBundleCourse ? courseId : (getPracticeCourseGroupIds(courseId)[0] || courseId);
+            launchPracticeQuizModal(allLoadedQuizzes, progressCourseId);
+        }
+
+        function launchPracticeQuizModal(quizArray, progressCourseId = activePracticeCourseId, resume = true) {
+            if (!quizArray || quizArray.length === 0) {
+                showToast('Belum ada soal latihan untuk bagian ini.', 'warning', 'Soal Belum Tersedia');
+                return;
+            }
+
+            activePracticeQuizzes = sortPracticeQuestions(quizArray, [...new Set(quizArray.map(q => q.course_id))]);
+            activePracticeCourseId = progressCourseId;
+            pqTotalSessions = Math.ceil(activePracticeQuizzes.length / SOAL_PER_SESI);
+            const progress = activePracticeCourseId ? getPracticeProgress(activePracticeCourseId) : null;
+            const canResume = resume && progress && !progress.isCompleted && progress.lastIndex > 0;
+            pqReviewMode = false;
+            pqPendingSessionResult = null;
+            pqReviewQuestions = [];
+            pqReviewIndex = 0;
+            pqIndex = canResume ? Math.min(progress.lastIndex, activePracticeQuizzes.length - 1) : 0;
+            pqScore = canResume ? Math.min(Number(progress.totalCorrect) || 0, pqIndex) : 0;
+            pqSessionStartScore = canResume
+                ? Math.min(getPracticeStartScore(activePracticeCourseId), pqScore)
+                : 0;
+            if (activePracticeCourseId && !canResume) {
+                localStorage.setItem(`nuqthah_quiz_session_start_${activePracticeCourseId}`, '0');
+                localStorage.setItem(`nuqthah_quiz_progress_${activePracticeCourseId}`, JSON.stringify({
+                    lastIndex: 0,
+                    currentSession: 1,
+                    totalCorrect: 0,
+                    totalAnswered: 0,
+                    isCompleted: false
+                }));
+            }
+            pqSelected = null;
+
+            document.getElementById('pq-modal-title').textContent = activePracticeTitle;
+            document.getElementById('pq-question-view').classList.remove('hidden');
+            document.getElementById('pq-question-view').classList.add('flex');
+            document.getElementById('pq-result-view').classList.add('hidden');
+            document.getElementById('pq-result-view').classList.remove('flex');
+
+            document.getElementById('practice-quiz-modal').classList.remove('hidden');
+            renderPracticeQuestion();
+        }
+
+        function closePracticeQuiz() {
+            document.getElementById('practice-quiz-modal').classList.add('hidden');
+        }
+
+        function restartPracticeQuiz() {
+            launchPracticeQuizModal(activePracticeQuizzes, activePracticeCourseId, false);
+        }
+
+        function renderPracticeQuestion() {
+            if (pqIndex >= activePracticeQuizzes.length) {
+                showPracticeResult();
+                return;
+            }
+
+            pqSelected = null;
+            const q = pqReviewMode ? pqReviewQuestions[pqReviewIndex] : activePracticeQuizzes[pqIndex];
+            const total = activePracticeQuizzes.length;
+
+            const currentSession = Math.floor(pqIndex / SOAL_PER_SESI) + 1;
+            document.getElementById('pq-counter').textContent = pqReviewMode
+                ? `Ulangi Soal Salah ${pqReviewIndex + 1} dari ${pqReviewQuestions.length}`
+                : `Soal ${pqIndex + 1} dari ${total} · Sesi ${currentSession} dari ${pqTotalSessions}`;
+            document.getElementById('pq-score').textContent = `Skor: ${pqScore}`;
+            document.getElementById('pq-progress').style.width =
+                `${((pqReviewMode ? pqReviewIndex + 1 : pqIndex + 1) / (pqReviewMode ? pqReviewQuestions.length : total)) * 100}%`;
+            document.getElementById('pq-question').textContent = q.question || '';
+
+            const subjTag = document.getElementById('pq-subject-tag');
+            if (isBundleCourse && bundledCoursesMap[q.course_id]) {
+                subjTag.textContent = bundledCoursesMap[q.course_id].title;
+                subjTag.classList.remove('hidden');
+            } else {
+                subjTag.classList.add('hidden');
+            }
+
+            const feedback = document.getElementById('pq-feedback');
+            feedback.classList.add('hidden');
+            feedback.textContent = '';
+
+            const optsContainer = document.getElementById('pq-options');
+            optsContainer.innerHTML = '';
+
+            ['a', 'b', 'c', 'd'].forEach((key) => {
+                const text = q[`option_${key}`] || q[`option_-${key}`];
+                if (!text) return;
+
+                const label = key.toUpperCase();
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.dataset.key = label;
+                btn.className = 'pq-option w-full text-left p-4 rounded-xl border-2 border-gray-100 hover:border-primary/40 bg-gray-50 hover:bg-emerald-50/30 font-medium text-sm flex items-center gap-3 group transition-all';
+                btn.innerHTML = `
+                    <span class="pq-key w-8 h-8 rounded-lg bg-white border border-gray-200 group-hover:border-primary group-hover:bg-primary group-hover:text-white flex items-center justify-center font-bold text-xs transition-colors shrink-0">${label}</span>
+                    <span class="flex-grow leading-relaxed text-gray-700">${escapeHtml(text)}</span>
+                `;
+                btn.onclick = () => selectPracticeAnswer(label, btn);
+                optsContainer.appendChild(btn);
+            });
+
+            const nextBtn = document.getElementById('pq-next-btn');
+            nextBtn.disabled = true;
+            nextBtn.className = 'w-full bg-gray-300 text-white font-bold py-3.5 rounded-xl cursor-not-allowed transition-all text-sm sm:text-base flex items-center justify-center gap-2';
+            nextBtn.innerHTML = pqReviewMode
+                ? 'Lanjut'
+                : (pqIndex === activePracticeQuizzes.length - 1) ? 'Lihat Hasil <i class="fas fa-flag-checkered"></i>' : 'Lanjut <i class="fas fa-arrow-right"></i>';
+
+            const body = document.querySelector('#pq-question-view .overflow-y-auto');
+            if (body) body.scrollTop = 0;
+        }
+
+        function selectPracticeAnswer(ansKey, btnElement) {
+            pqSelected = ansKey;
+
+            const allBtns = document.getElementById('pq-options').querySelectorAll('.pq-option');
+            allBtns.forEach(btn => {
+                btn.className = 'pq-option w-full text-left p-4 rounded-xl border-2 border-gray-100 hover:border-primary/40 bg-gray-50 hover:bg-emerald-50/30 font-medium text-sm flex items-center gap-3 group transition-all';
+                const k = btn.querySelector('.pq-key');
+                if (k) k.className = 'pq-key w-8 h-8 rounded-lg bg-white border border-gray-200 group-hover:border-primary group-hover:bg-primary group-hover:text-white flex items-center justify-center font-bold text-xs transition-colors shrink-0';
+            });
+
+            btnElement.className = 'pq-option w-full text-left p-4 rounded-xl border-2 border-primary bg-primary/5 text-primary font-semibold text-sm flex items-center gap-3 shadow-sm transition-all';
+            const keyEl = btnElement.querySelector('.pq-key');
+            if (keyEl) keyEl.className = 'pq-key w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs shrink-0';
+
+            const nextBtn = document.getElementById('pq-next-btn');
+            nextBtn.disabled = false;
+            nextBtn.className = 'w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-opacity-90 transition-all text-sm sm:text-base flex items-center justify-center gap-2 shadow-md';
+        }
+
+        function nextPracticeQuestion() {
+            if (pqSelected === null) return;
+
+            if (pqReviewMode) {
+                const reviewedQuestion = pqReviewQuestions[pqReviewIndex];
+                if (pqSelected === reviewedQuestion.correct_answer) {
+                    removePracticeWrongQuestion(reviewedQuestion);
+                }
+                pqReviewIndex++;
+                if (pqReviewIndex < pqReviewQuestions.length) {
+                    renderPracticeQuestion();
+                } else {
+                    pqReviewMode = false;
+                    showPracticeSessionComplete(
+                        pqPendingSessionResult.session,
+                        pqPendingSessionResult.correct,
+                        pqPendingSessionResult.total,
+                        pqPendingSessionResult.isFinal
+                    );
+                }
+                return;
+            }
+
+            const q = activePracticeQuizzes[pqIndex];
+            if (pqSelected === q.correct_answer) {
+                pqScore++;
+            } else {
+                addPracticeWrongQuestion(q);
+            }
+            document.getElementById('pq-score').textContent = `Skor: ${pqScore}`;
+
+            pqIndex++;
+            savePracticeProgress();
+            if (activePracticeCourseId) {
+                localStorage.setItem(`nuqthah_quiz_session_start_${activePracticeCourseId}`, String(pqSessionStartScore));
+            }
+            if (pqIndex < activePracticeQuizzes.length && pqIndex % SOAL_PER_SESI !== 0) {
+                renderPracticeQuestion();
+            } else {
+                const session = Math.ceil(pqIndex / SOAL_PER_SESI);
+                const totalInSession = pqIndex - ((session - 1) * SOAL_PER_SESI);
+                savePracticeSessionHistory(session, pqScore - pqSessionStartScore, totalInSession);
+                pqPendingSessionResult = {
+                    session,
+                    correct: pqScore - pqSessionStartScore,
+                    total: totalInSession,
+                    isFinal: pqIndex >= activePracticeQuizzes.length
+                };
+                if (pqPendingSessionResult.isFinal) savePracticeProgress(true);
+                pqSessionStartScore = pqScore;
+                if (activePracticeCourseId) {
+                    localStorage.setItem(`nuqthah_quiz_session_start_${activePracticeCourseId}`, String(pqScore));
+                }
+                showPracticeSessionComplete(session, pqPendingSessionResult.correct, totalInSession, pqPendingSessionResult.isFinal);
+            }
+        }
+
+        function showPracticeSessionComplete(session, correct, total, isFinal = false) {
+            document.getElementById('pq-session-title').textContent = `Sesi ${session} Selesai!`;
+            document.getElementById('pq-session-summary').textContent =
+                `${correct} Benar, ${total - correct} Salah`;
+            document.getElementById('pq-continue-session-btn').textContent = isFinal ? 'Lihat Hasil' : 'Lanjut';
+            renderPracticeWrongQuestions();
+            const modal = document.getElementById('pq-session-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closePracticeSessionModal() {
+            const modal = document.getElementById('pq-session-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function continuePracticeSession() {
+            closePracticeSessionModal();
+            if (pqPendingSessionResult?.isFinal) {
+                pqPendingSessionResult = null;
+                showPracticeResult();
+                return;
+            }
+            pqPendingSessionResult = null;
+            renderPracticeQuestion();
+        }
+
+        function retryPracticeWrongQuestions() {
+            pqReviewQuestions = getPracticeWrongQuestions().map(item => item.question).filter(Boolean);
+            if (!pqReviewQuestions.length) {
+                renderPracticeWrongQuestions();
+                return;
+            }
+            pqReviewIndex = 0;
+            pqReviewMode = true;
+            closePracticeSessionModal();
+            renderPracticeQuestion();
+        }
+
+        function showPracticeResult(isPartial = false) {
+            const total = activePracticeQuizzes.length;
+            const answered = isPartial ? pqIndex : total;
+            const pct = answered > 0 ? (pqScore / answered) * 100 : 0;
+
+            document.getElementById('pq-final-score').textContent = `${pqScore} / ${answered}`;
+
+            const msg = document.getElementById('pq-result-message');
+            if (isPartial) {
+                msg.textContent = `Anda telah menjawab ${answered} dari ${total} soal. Progres tersimpan dan dapat dilanjutkan nanti.`;
+            } else if (pct === 100) {
+                msg.textContent = 'Luar biasa! Kamu menguasai materi ini dengan sempurna! 🎉';
+            } else if (pct >= 70) {
+                msg.textContent = 'Kerja bagus! Pemahaman materimu sudah sangat baik. 👍';
+            } else {
+                msg.textContent = 'Terus tingkatkan belajarmu! Coba simak kembali materinya dan ulangi kuisnya. 📚';
+            }
+
+            document.getElementById('pq-question-view').classList.add('hidden');
+            document.getElementById('pq-question-view').classList.remove('flex');
+            document.getElementById('pq-result-view').classList.remove('hidden');
+            document.getElementById('pq-result-view').classList.add('flex');
+        }
+
+        /* ================================================================
+           CHECKOUT / DAFTAR AKUN
+        ================================================================ */
+        function openCheckoutModal() {
+            if (currentUser) {
+                document.getElementById('reg-email').value = currentUser.email || '';
+                document.getElementById('reg-name').value = currentUser.name || '';
+                document.getElementById('reg-whatsapp').value = currentUser.whatsapp || '';
+            }
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function updateAccessActionButtons() {
+            const isPending = Boolean(
+                pendingPaymentInfo &&
+                pendingPaymentInfo.courseId === courseId &&
+                pendingPaymentInfo.userEmail === String(currentUser?.email || '').trim().toLowerCase() &&
+                pendingPaymentInfo.methodSelected === true &&
+                pendingPaymentInfo.active !== false &&
+                (!pendingPaymentInfo.expiresAt || Date.parse(pendingPaymentInfo.expiresAt) > Date.now())
+            );
+            const mainLabel = document.getElementById('course-access-label');
+            const price = document.getElementById('paywall-price');
+            const practiceLabel = document.getElementById('practice-access-label');
+
+            if (mainLabel) mainLabel.textContent = isPending ? 'Lanjutkan Pembayaran' : 'Buka Akses Penuh';
+            if (price) price.classList.toggle('hidden', isPending);
+            if (practiceLabel) practiceLabel.textContent = isPending ? 'Lanjutkan Pembayaran' : 'Buka Akses Sekarang';
+        }
+
+        function savePendingPayment(info) {
+            pendingPaymentInfo = {
+                ...info,
+                courseId,
+                userEmail: String(info.userEmail || '').trim().toLowerCase(),
+                methodSelected: true,
+                active: true
+            };
+            localStorage.setItem(pendingPaymentStorageKey, JSON.stringify(pendingPaymentInfo));
+            updateAccessActionButtons();
+            startPendingPaymentStatusChecks();
+        }
+
+        function clearPendingPayment(stopStatusChecks = true) {
+            if (stopStatusChecks && pendingPaymentStatusInterval) {
+                clearInterval(pendingPaymentStatusInterval);
+                pendingPaymentStatusInterval = null;
+            }
+            pendingPaymentInfo = null;
+            localStorage.removeItem(pendingPaymentStorageKey);
+            updateAccessActionButtons();
+        }
+
+        function refreshAccessAfterExternalPayment() {
+            clearPendingPayment();
+            isUserHasAccess = true;
+            if (currentUser?.email) saveAccessCache(courseId, currentUser.email);
+            document.getElementById('user-status-badge').innerHTML = '<i class="fas fa-check-circle text-emerald-300 mr-1"></i> Akses Penuh Terbuka';
+            document.getElementById('paywall-container').classList.add('hidden');
+            showToast('Pembayaran berhasil! Akses materi sedang diperbarui.', 'success', 'Pembayaran Berhasil');
+            setTimeout(() => window.location.reload(), 1000);
+        }
+
+        async function checkPendingPaymentStatus() {
+            if (!pendingPaymentInfo) {
+                clearPendingPayment();
+                return false;
+            }
+
+            const query = new URLSearchParams({
+                email: pendingPaymentInfo.userEmail,
+                course_id: courseId
+            });
+            const response = await fetch(
+                `${BACKEND_BASE_URL}/api/transaction-status/${encodeURIComponent(pendingPaymentInfo.orderId)}?${query}`
+            );
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Gagal memeriksa status pembayaran.');
+
+            if (data.status === 'success') {
+                refreshAccessAfterExternalPayment();
+                return false;
+            }
+
+            if (!data.active) {
+                clearPendingPayment(false);
+                return false;
+            }
+
+            pendingPaymentInfo.active = true;
+            pendingPaymentInfo.methodSelected = Boolean(data.payment_type);
+            pendingPaymentInfo.paymentType = data.payment_type || pendingPaymentInfo.paymentType || null;
+            pendingPaymentInfo.expiresAt = data.expires_at || null;
+            localStorage.setItem(pendingPaymentStorageKey, JSON.stringify(pendingPaymentInfo));
+            updateAccessActionButtons();
+            return true;
+        }
+
+        function startPendingPaymentStatusChecks() {
+            if (pendingPaymentStatusInterval) clearInterval(pendingPaymentStatusInterval);
+            pendingPaymentStatusInterval = setInterval(async () => {
+                try {
+                    if (pendingPaymentInfo) await checkPendingPaymentStatus();
+                    else await restorePendingPayment(true);
+                } catch (error) {
+                    console.warn('Pengecekan berkala status pembayaran gagal:', error);
+                }
+            }, 30000);
+        }
+
+        async function restorePendingPayment(silent = false) {
+            const userEmail = String(currentUser?.email || '').trim().toLowerCase();
+            if (!userEmail) return false;
+            try {
+                const storedPayment = localStorage.getItem(pendingPaymentStorageKey);
+                const localPayment = storedPayment ? JSON.parse(storedPayment) : null;
+                const query = new URLSearchParams({ email: userEmail, course_id: courseId });
+                const response = await fetch(`${BACKEND_BASE_URL}/api/pending-transaction?${query}`);
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || 'Gagal memeriksa transaksi pembayaran.');
+
+                if (data.status === 'success') {
+                    refreshAccessAfterExternalPayment();
+                    return false;
+                }
+
+                if (!data.active) {
+                    clearPendingPayment(false);
+                    startPendingPaymentStatusChecks();
+                    return false;
+                }
+
+                const sameLocalTransaction = localPayment?.orderId === data.order_id &&
+                    localPayment?.userEmail === userEmail;
+                pendingPaymentInfo = {
+                    ...(sameLocalTransaction ? localPayment : {}),
+                    orderId: data.order_id,
+                    courseId,
+                    userEmail,
+                    active: true,
+                    methodSelected: true,
+                    paymentType: data.payment_type || null,
+                    expiresAt: data.expires_at || null
+                };
+                localStorage.setItem(pendingPaymentStorageKey, JSON.stringify(pendingPaymentInfo));
+                updateAccessActionButtons();
+                startPendingPaymentStatusChecks();
+                return true;
+            } catch (error) {
+                console.error('Gagal memulihkan transaksi pembayaran:', error);
+                const storedPayment = localStorage.getItem(pendingPaymentStorageKey);
+                if (storedPayment) {
+                    try {
+                        const localPayment = JSON.parse(storedPayment);
+                        if (
+                            localPayment.courseId === courseId &&
+                            localPayment.userEmail === userEmail &&
+                            localPayment.methodSelected === true
+                        ) {
+                            pendingPaymentInfo = localPayment;
+                            updateAccessActionButtons();
+                            startPendingPaymentStatusChecks();
+                        }
+                    } catch (parseError) {
+                        console.warn('Data pembayaran tersimpan di perangkat tidak valid:', parseError);
+                        localStorage.removeItem(pendingPaymentStorageKey);
+                    }
+                }
+                if (!silent) {
+                    showToast('Status pembayaran belum dapat diperiksa. Coba muat ulang halaman.', 'warning', 'Status Pembayaran');
+                }
+                return false;
+            }
+        }
+
+        async function handleCourseAccessClick() {
+            if (!pendingPaymentInfo && currentUser?.email) {
+                await restorePendingPayment(true);
+            }
+            if (isUserHasAccess) return;
+            if (pendingPaymentInfo && pendingPaymentInfo.userEmail === String(currentUser?.email || '').trim().toLowerCase()) {
+                try {
+                    if (await checkPendingPaymentStatus()) {
+                        if (pendingPaymentInfo.token) {
+                            launchMidtransPayment(pendingPaymentInfo, currentUser);
+                        } else {
+                            showToast('Pembayaran ini dimulai di perangkat lain. Untuk menghindari transaksi ganda, selesaikan pembayaran dari perangkat tersebut.', 'info', 'Pembayaran Sedang Berjalan');
+                        }
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Gagal memeriksa transaksi pembayaran:', error);
+                    showToast(error.message || 'Status pembayaran belum dapat diperiksa.', 'error', 'Gagal Memeriksa Pembayaran');
+                    return;
+                }
+            }
+            if (isUserHasAccess) return;
+            openCheckoutModal();
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function openOtpModal() {
+            resetOtpModalSteps();
+            document.getElementById('otp-modal').classList.remove('hidden');
+        }
+
+        function closeOtpModal() {
+            document.getElementById('otp-modal').classList.add('hidden');
+        }
+
+        function switchCheckoutToOtp() {
+            closeCheckoutModal();
+            openOtpModal();
+        }
+
+        function switchOtpToCheckout() {
+            closeOtpModal();
+            openCheckoutModal();
+        }
+
+        function resetOtpModalSteps() {
+            document.getElementById('otp-step-email').classList.remove('hidden');
+            document.getElementById('otp-step-verify').classList.add('hidden');
+            document.getElementById('otp-code-input').value = '';
+        }
+
+        async function handleCheckoutFormSubmit(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('reg-email').value.trim().toLowerCase();
+            const name = document.getElementById('reg-name').value.trim();
+            const whatsapp = document.getElementById('reg-whatsapp').value.trim();
+            const submitBtn = document.getElementById('btn-submit-checkout');
+
+            if (!email || !name || !whatsapp) {
+                showToast('Harap lengkapi semua kolom pendaftaran.', 'warning', 'Data Belum Lengkap');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Memproses Akun &amp; Pembayaran...';
+
+            try {
+                const { data: savedUser, error: userErr } = await supabaseClient
+                    .from('users')
+                    .upsert([{ email, name, whatsapp }], { onConflict: 'email' })
+                    .select()
+                    .single();
+
+                if (userErr) throw new Error('Gagal menyimpan data akun: ' + userErr.message);
+
+                currentUser = savedUser || { email, name, whatsapp };
+                localStorage.setItem('nuqthah_current_user', JSON.stringify(currentUser));
+                updateNavUserBadge();
+
+                const alreadyHasAccess = await verifyUserCourseAccess();
+                if (alreadyHasAccess) {
+                    closeCheckoutModal();
+                    showToast('Email ini sudah memiliki akses penuh. Silakan masuk dengan kode OTP untuk verifikasi.', 'info', 'Akses Sudah Aktif');
+                    openOtpModal();
+                    document.getElementById('otp-email-input').value = email;
+                    return;
+                }
+
+                await triggerMidtransPayment(currentUser);
+
+            } catch (err) {
+                console.error(err);
+                showToast(err.message || 'Terjadi kesalahan saat memproses pendaftaran.', 'error', 'Gagal Memproses');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-credit-card"></i> Bayar Sekarang &amp; Buka Materi';
+            }
+        }
+
+        async function triggerMidtransPayment(userObj) {
+            const userToUse = userObj || currentUser;
+            if (!userToUse || !userToUse.email) {
+                openCheckoutModal();
+                return;
+            }
+
+            try {
+                if (
+                    pendingPaymentInfo &&
+                    pendingPaymentInfo.userEmail === String(userToUse.email).trim().toLowerCase() &&
+                    await checkPendingPaymentStatus()
+                ) {
+                    if (!pendingPaymentInfo.token) {
+                        showToast('Pembayaran untuk materi ini sedang berjalan di perangkat lain. Selesaikan transaksi tersebut terlebih dahulu.', 'info', 'Pembayaran Sedang Berjalan');
+                        return;
+                    }
+                    closeCheckoutModal();
+                    launchMidtransPayment(pendingPaymentInfo, userToUse);
+                    return;
+                }
+
+                if (isUserHasAccess) return;
+
+                const response = await fetch(`${BACKEND_BASE_URL}/api/create-transaction`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        course_id: courseId,
+                        price: courseData.price,
+                        user_id: userToUse.id || null,
+                        user_email: userToUse.email
+                    })
+                });
+
+                const data = await response.json();
+                if (!data.token) throw new Error(data.error || 'Gagal mendapatkan token pembayaran.');
+
+                closeCheckoutModal();
+                const paymentInfo = {
+                    token: data.token,
+                    orderId: data.order_id,
+                    expiresAt: data.expires_at || null,
+                    userEmail: userToUse.email
+                };
+                launchMidtransPayment(paymentInfo, userToUse);
+
+            } catch (err) {
+                console.error(err);
+                showToast(err.message || 'Terjadi kesalahan koneksi ke server pembayaran.', 'error', 'Koneksi Gagal');
+            }
+        }
+
+        function launchMidtransPayment(paymentInfo, userToUse) {
+            window.snap.pay(paymentInfo.token, {
+                onSuccess: async function () {
+                    clearPendingPayment();
+                    try {
+                        await supabaseClient.from('transactions')
+                            .update({ status: 'success' })
+                            .eq('order_id', paymentInfo.orderId);
+
+                        // Jika membeli Paket Bundling, buka akses untuk Paket sekaligus seluruh materi di dalam paket
+                        const accessIdsToGrant = isBundleCourse
+                            ? [courseId, ...bundledCourseIds]
+                            : [courseId];
+
+                        // CEK ANTI-DOUBLE: Hanya insert jika belum dimasukkan oleh Webhook Server
+                        for (const cid of accessIdsToGrant) {
+                            const { data: existingAcc } = await supabaseClient
+                                .from('user_access')
+                                .select('id')
+                                .eq('user_email', userToUse.email)
+                                .eq('course_id', cid)
+                                .limit(1);
+
+                            if (!existingAcc || existingAcc.length === 0) {
+                                await supabaseClient.from('user_access').insert([{
+                                    user_id: userToUse.id || null,
+                                    user_email: userToUse.email,
+                                    course_id: cid,
+                                    order_id: paymentInfo.orderId,
+                                    is_active: true
+                                }]);
+                            }
+                            saveAccessCache(cid, userToUse.email);
+                        }
+                    } catch (dbErr) {
+                        console.warn('Info sinkronisasi akses:', dbErr);
+                    }
+
+                    saveAccessCache(courseId, userToUse.email);
+                    showToast('Pembayaran berhasil! Seluruh materi dan latihan soal kini terbuka.', 'success', 'Alhamdulillah');
+                    setTimeout(() => window.location.reload(), 1400);
+                },
+                onPending: function (result) {
+                    savePendingPayment({
+                        ...paymentInfo,
+                        userEmail: userToUse.email,
+                        paymentType: result?.payment_type || null
+                    });
+                    checkPendingPaymentStatus().catch(error => {
+                        console.error('Gagal menyinkronkan metode pembayaran:', error);
+                        showToast('Metode pembayaran dipilih, tetapi status transaksi belum dapat disinkronkan.', 'warning', 'Status Pembayaran');
+                    });
+                    showToast('Pembayaran Anda menunggu penyelesaian. Akses terbuka otomatis setelah dikonfirmasi.', 'warning', 'Menunggu Pembayaran');
+                },
+                onError: function () {
+                    showToast('Pembayaran gagal dilakukan. Silakan coba kembali.', 'error', 'Pembayaran Gagal');
+                },
+                onClose: async function () {
+                    if (!pendingPaymentInfo) return;
+                    try {
+                        const isStillActive = await checkPendingPaymentStatus();
+                        if (isStillActive) {
+                            showToast('Pembayaran masih aktif. Klik "Lanjutkan Pembayaran" untuk membuka kembali halaman pembayaran.', 'info', 'Pembayaran Belum Selesai');
+                        } else {
+                            showToast('Transaksi pembayaran sudah tidak aktif. Anda dapat memulai pembayaran baru.', 'info', 'Pembayaran Tidak Aktif');
+                        }
+                    } catch (error) {
+                        console.error('Gagal memeriksa status transaksi setelah popup ditutup:', error);
+                        showToast('Popup pembayaran ditutup, tetapi status transaksi belum dapat diperiksa. Silakan coba tombol lanjutkan pembayaran.', 'warning', 'Status Pembayaran');
+                    }
+                }
+            });
+        }
+
+        /* ================================================================
+           OTP
+        ================================================================ */
+        async function requestOtpCode() {
+            const emailInput = document.getElementById('otp-email-input').value.trim().toLowerCase();
+            const btnRequest = document.getElementById('btn-request-otp');
+
+            if (!emailInput) {
+                showToast('Silakan masukkan alamat email pendaftaran Anda.', 'warning', 'Email Kosong');
+                return;
+            }
+
+            btnRequest.disabled = true;
+            btnRequest.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1"></i> Mengirim OTP...';
+
+            try {
+                const res = await fetch(`${BACKEND_BASE_URL}/api/send-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: emailInput })
+                });
+                const data = await res.json();
+
+                if (!res.ok || !data.success) {
+                    throw new Error(data.error || 'Gagal mengirim kode OTP.');
+                }
+
+                document.getElementById('otp-target-email-label').textContent = emailInput;
+                document.getElementById('otp-step-email').classList.add('hidden');
+                document.getElementById('otp-step-verify').classList.remove('hidden');
+
+                showToast('Kode OTP telah dikirim ke email Anda.', 'success', 'OTP Terkirim');
+
+            } catch (err) {
+                showToast(err.message || 'Gagal mengirim kode OTP.', 'error', 'Gagal Mengirim');
+            } finally {
+                btnRequest.disabled = false;
+                btnRequest.innerHTML = 'Minta Kode OTP';
+            }
+        }
+
+        async function verifyOtpCode() {
+            const emailInput = document.getElementById('otp-email-input').value.trim().toLowerCase();
+            const codeInput = document.getElementById('otp-code-input').value.trim();
+            const btnVerify = document.getElementById('btn-verify-otp');
+
+            if (!codeInput || codeInput.length < 6) {
+                showToast('Silakan masukkan 6 digit kode OTP dengan benar.', 'warning', 'Kode Tidak Valid');
+                return;
+            }
+
+            btnVerify.disabled = true;
+            btnVerify.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1"></i> Memverifikasi...';
+
+            try {
+                const res = await fetch(`${BACKEND_BASE_URL}/api/verify-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: emailInput, code: codeInput })
+                });
+                const data = await res.json();
+
+                if (!res.ok || !data.success) {
+                    throw new Error(data.error || 'Kode OTP tidak valid.');
+                }
+
+                currentUser = data.user;
+                localStorage.setItem('nuqthah_current_user', JSON.stringify(currentUser));
+                updateNavUserBadge();
+
+                const hasAccess = await verifyUserCourseAccess();
+                closeOtpModal();
+
+                if (hasAccess) {
+                    showToast(`Selamat datang kembali, ${currentUser.name || 'Siswa'}! Akses materi Anda telah dibuka.`, 'success', 'Berhasil Masuk');
+                    setTimeout(() => window.location.reload(), 1400);
+                } else {
+                    showToast(`Halo ${currentUser.name || 'Siswa'}, akun ini belum tercatat memiliki akses aktif ke materi ini. Silakan lanjutkan pembayaran.`, 'info', 'Akses Belum Aktif');
+                    openCheckoutModal();
+                }
+
+            } catch (err) {
+                showToast(err.message || 'Kode OTP tidak valid.', 'error', 'Verifikasi Gagal');
+            } finally {
+                btnVerify.disabled = false;
+                btnVerify.innerHTML = 'Verifikasi &amp; Buka Akses Materi';
+            }
+        }
+    </script>
+</body>
+
+</html>
